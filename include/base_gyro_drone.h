@@ -20,6 +20,8 @@
 
 #define PID_MAX 400
 
+#define MOTOR_COUNT 16
+
 template <class SomeGyroPidType>
 class BaseGyroDrone
 {
@@ -27,9 +29,10 @@ public:
   /*
    * Create a drone
    */
-  BaseGyroDrone(uint8_t (&motor_pin_numbers)[16]) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
+  BaseGyroDrone(uint8_t *motor_pin_numbers) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
   {
     this->motor_pin_numbers = motor_pin_numbers;
+    this->motors = new Servo[MOTOR_COUNT];
   }
   virtual void setup() {};
   virtual void run() {};
@@ -169,15 +172,13 @@ public:
   {
     Serial.println("SETTING UP MOTORS...");
 
-    for(int i = 0; i < 16; i++) {
+    for(int i = 0; i < MOTOR_COUNT; i++) {
       if(motor_pin_numbers[i] <= 0) continue;
 
       pinMode(motor_pin_numbers[i], OUTPUT);
 
-      Servo motor;
-      motors[motor_pin_numbers[i]] = motor;
-      motors[motor_pin_numbers[i]].attach(motor_pin_numbers[i]);
-      motors[motor_pin_numbers[i]].writeMicroseconds(THROTTLE_MINIMUM);
+      motors[i].attach(motor_pin_numbers[i]);
+      motors[i].writeMicroseconds(THROTTLE_MINIMUM);
     }
 
     delay(1000);
@@ -190,10 +191,10 @@ public:
   }
   void stopMotors()
   {
-    for(int i = 0; i < 16; i++) {
+    for(int i = 0; i < MOTOR_COUNT; i++) {
       if(motor_pin_numbers[i] <= 0) continue;
 
-      motors[motor_pin_numbers[i]].writeMicroseconds(THROTTLE_MINIMUM);
+      motors[i].writeMicroseconds(THROTTLE_MINIMUM);
     }
   }
   bool updateGyro()
