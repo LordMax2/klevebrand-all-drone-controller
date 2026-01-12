@@ -30,14 +30,12 @@ public:
   /*
    * Create a drone
    */
-  BaseGyroDrone(BaseDroneMotor* motors) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
-  {
-    this->motors = motors;
-    this->motors = new BaseDroneMotor[MOTOR_COUNT];
-  }
+  BaseGyroDrone() : pid(0, 0, 0, 0, 0, 0, 0, 0, 0);
   virtual void setup() {};
   virtual void run() {};
   virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw) {};
+  virtual void stopMotors();
+  virtual void setupMotors();
   SomeGyroPidType pid;
 
   void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd)
@@ -172,22 +170,6 @@ public:
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
     pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle, yaw_compass_mode);
-  }
-  void stopMotors()
-  {
-    for(int i = 0; i < MOTOR_COUNT; i++) {
-      motors[i].setSpeed(0);
-    }
-  }
-  void setupMotors()
-  {
-    Serial.println("SETTING UP MOTORS...");
-
-    stopMotors();
-
-    delay(1000);
-
-    Serial.println("MOTORS SETUP!");
   }
   bool updateGyro()
   {
