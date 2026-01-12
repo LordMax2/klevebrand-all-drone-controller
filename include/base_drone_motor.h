@@ -4,8 +4,8 @@
 template<class MotorInterface>
 class BaseDroneMotor {
 public:
-    BaseDroneMotor(MotorInterface& motor);
-    void setSpeed(float percentage);
+    BaseDroneMotor(MotorInterface& motor) : motor(motor) {};
+    virtual void setSpeed(float percentage);
     MotorInterface& motor;
 };
 
