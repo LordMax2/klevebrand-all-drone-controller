@@ -3,10 +3,11 @@
 
 #include <Arduino.h>
 #include <Servo.h>
-#include "./gyro.h"
-#include "./gyro_pid.h"
-#include "./flight_mode.h"
-#include "./eeprom_pid_repository.h"
+#include "gyro.h"
+#include "base_drone_motor.h"
+#include "gyro_pid.h"
+#include "flight_mode.h"
+#include "eeprom_pid_repository.h"
 
 #define TRANSMITION_TIMEOUT_DEFINITION_MILLISECONDS 500
 
@@ -29,10 +30,10 @@ public:
   /*
    * Create a drone
    */
-  BaseGyroDrone(uint8_t *motor_pin_numbers) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
+  BaseGyroDrone(BaseDroneMotor* motors) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
   {
-    this->motor_pin_numbers = motor_pin_numbers;
-    this->motors = new Servo[MOTOR_COUNT];
+    this->motors = motors;
+    this->motors = new BaseDroneMotor[MOTOR_COUNT];
   }
   virtual void setup() {};
   virtual void run() {};
@@ -167,24 +168,7 @@ public:
   }
   EepromPidRepository eeprom_pid_repository;
   Gyro gyro;
-  Servo* motors;
-  void setupMotors()
-  {
-    Serial.println("SETTING UP MOTORS...");
-
-    for(int i = 0; i < MOTOR_COUNT; i++) {
-      if(motor_pin_numbers[i] <= 0) continue;
-
-      pinMode(motor_pin_numbers[i], OUTPUT);
-
-      motors[i].attach(motor_pin_numbers[i]);
-      motors[i].writeMicroseconds(THROTTLE_MINIMUM);
-    }
-
-    delay(1000);
-
-    Serial.println("MOTORS SETUP!");
-  }
+  BaseDroneMotor* motors;
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
     pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle, yaw_compass_mode);
@@ -192,10 +176,18 @@ public:
   void stopMotors()
   {
     for(int i = 0; i < MOTOR_COUNT; i++) {
-      if(motor_pin_numbers[i] <= 0) continue;
-
-      motors[i].writeMicroseconds(THROTTLE_MINIMUM);
+      motors[i].setSpeed(0);
     }
+  }
+  void setupMotors()
+  {
+    Serial.println("SETTING UP MOTORS...");
+
+    stopMotors();
+
+    delay(1000);
+
+    Serial.println("MOTORS SETUP!");
   }
   bool updateGyro()
   {
@@ -277,7 +269,6 @@ private:
   float yaw_desired_angle_set_timestamp = 0;
   float desired_pitch_angle_set_timestamp = 0;
   float desired_roll_angle_set_timestamp = 0;
-  uint8_t* motor_pin_numbers;
   bool is_motors_enabled = false;
   unsigned long last_pid_persist_timestamp_milliseconds = 0;
 };
