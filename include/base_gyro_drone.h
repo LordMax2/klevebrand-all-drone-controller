@@ -30,7 +30,7 @@ public:
   /*
    * Create a drone
    */
-  BaseGyroDrone() : pid(0, 0, 0, 0, 0, 0, 0, 0, 0);
+  BaseGyroDrone() : pid(0, 0, 0, 0, 0, 0, 0, 0, 0) {};
   virtual void setup() {};
   virtual void run() {};
   virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw) {};
@@ -166,7 +166,6 @@ public:
   }
   EepromPidRepository eeprom_pid_repository;
   Gyro gyro;
-  BaseDroneMotor* motors;
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
     pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle, yaw_compass_mode);
