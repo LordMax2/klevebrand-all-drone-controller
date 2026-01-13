@@ -174,7 +174,7 @@ public:
     pid.saveRollError(gyro_roll, roll_desired_angle);
     pid.saveYawError(gyro_yaw, yaw_desired_angle, yaw_compass_mode);
   }
-  void delayToKeepFeedbackLoopHz(long start_micros_timestamp)
+  long delayToKeepFeedbackLoopHz(long start_micros_timestamp)
   {
     long current_micros_timestamp = micros();
 
@@ -185,7 +185,11 @@ public:
     if (microseconds_left_for_loop > 0 && microseconds_left_for_loop < microseconds_feedback_loop_should_take)
     {
       delayMicroseconds(microseconds_left_for_loop);
+
+      return microseconds_left_for_loop;
     }
+
+    return 0;
   }
   void setFlightMode(FlightMode flight_mode)
   {
