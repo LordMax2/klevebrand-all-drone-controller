@@ -184,8 +184,6 @@ public:
 
     if (microseconds_left_for_loop > 0 && microseconds_left_for_loop < microseconds_feedback_loop_should_take)
     {
-      delayMicroseconds(microseconds_left_for_loop);
-
       return microseconds_left_for_loop;
     }
 
