@@ -112,7 +112,7 @@ public:
     }
     else
     {
-      setPidConstants(1.25, 0.01, 25, 1.25, 0.01, 25, 0.5, 0.005, 2);
+      setPidConstants(0.125, 0.001, 2.5, 0.125, 0.001, 0.25, 0.05, 0.0005, 0.2);
     }
 
     setYawCompassMode(true);
@@ -145,7 +145,7 @@ public:
     }
     else
     {
-      setPidConstants(0.4, 0.02, 6, 0.4, 0.02, 6, 0.4, 0.02, 6);
+      setPidConstants(0.04, 0.002, 0.6, 0.04, 0.002, 0.6, 0.04, 0.002, 0.6);
     }
 
     setYawCompassMode(false);
