@@ -9,19 +9,7 @@
 #include "flight_mode.h"
 #include "eeprom_pid_repository.h"
 
-#define TRANSMITION_TIMEOUT_DEFINITION_MILLISECONDS 500
-
 #define SERIAL_BAUD_RATE 115200
-
-#define FEEDBACK_LOOP_HZ 200
-
-#define PID_PERSIST_INTERVAL_MILLISECONDS 10000
-
-#define THROTTLE_MINIMUM 1000
-
-#define PID_MAX 400
-
-#define MOTOR_COUNT 16
 
 template <class SomeGyroPidType>
 class BaseGyroDrone
@@ -29,13 +17,19 @@ class BaseGyroDrone
 public:
   /*
    * Create a drone
+   * Default parameters that work are: 500, 200, 10000
    */
-  BaseGyroDrone() : pid(0, 0, 0, 0, 0, 0, 0, 0, 0) {};
+  BaseGyroDrone(float transmittion_timeout_definition_milliseconds, int feedback_loop_hz, int pid_persist_interval_milliseconds) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
+  {
+    this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
+    this->_feedback_loop_hz = feedback_loop_hz;
+    this->_pid_persist_interval_milliseconds = pid_persist_interval_milliseconds;
+  };
   virtual void setup() {};
   virtual void run() {};
   virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw) {};
-  virtual void stopMotors();
-  virtual void setupMotors();
+  virtual void stopMotors() {};
+  virtual void setupMotors() {};
   SomeGyroPidType pid;
 
   void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd)
@@ -60,31 +54,31 @@ public:
   }
   bool hasLostConnection()
   {
-    bool transmitter_lost_connection = millis() - throttle_set_timestamp >= TRANSMITION_TIMEOUT_DEFINITION_MILLISECONDS;
+    bool transmitter_lost_connection = millis() - _throttle_set_timestamp >= _transmition_timeout_definition_milliseconds;
 
-    bool gyro_lost_connection = millis() - gyro.timestamp_milliseconds() >= TRANSMITION_TIMEOUT_DEFINITION_MILLISECONDS;
+    bool gyro_lost_connection = millis() - gyro.timestamp_milliseconds() >= _transmition_timeout_definition_milliseconds;
 
     return transmitter_lost_connection || gyro_lost_connection;
   }
   void setThrottle(float value)
   {
     throttle = value;
-    throttle_set_timestamp = millis();
+    _throttle_set_timestamp = millis();
   }
   void setDesiredYawAngle(float value)
   {
     yaw_desired_angle = value;
-    yaw_desired_angle_set_timestamp = millis();
+    _yaw_desired_angle_set_timestamp = millis();
   }
   void setDesiredPitchAngle(float value)
   {
     pitch_desired_angle = value;
-    desired_pitch_angle_set_timestamp = millis();
+    _desired_pitch_angle_set_timestamp = millis();
   }
   void setDesiredRollAngle(float value)
   {
     roll_desired_angle = value;
-    desired_roll_angle_set_timestamp = millis();
+    _desired_roll_angle_set_timestamp = millis();
   }
   void setFlightModeAutoLevel()
   {
@@ -154,15 +148,15 @@ public:
   }
   void enableMotors()
   {
-    is_motors_enabled = true;
+    _is_motors_enabled = true;
   }
   void disableMotors()
   {
-    is_motors_enabled = false;
+    _is_motors_enabled = false;
   }
   FlightMode getFlightMode()
   {
-    return flight_mode;
+    return _flight_mode;
   }
   EepromPidRepository eeprom_pid_repository;
   Gyro gyro;
@@ -184,7 +178,7 @@ public:
   {
     long current_micros_timestamp = micros();
 
-    long microseconds_feedback_loop_should_take = 1000000 / FEEDBACK_LOOP_HZ;
+    long microseconds_feedback_loop_should_take = 1000000 / _feedback_loop_hz;
 
     long microseconds_left_for_loop = microseconds_feedback_loop_should_take - (current_micros_timestamp - start_micros_timestamp);
 
@@ -195,11 +189,11 @@ public:
   }
   void setFlightMode(FlightMode flight_mode)
   {
-    BaseGyroDrone::flight_mode = flight_mode;
+    BaseGyroDrone::_flight_mode = flight_mode;
   }
   bool isMotorsEnabled()
   {
-    return is_motors_enabled;
+    return _is_motors_enabled;
   }
   void runPidOptimizer()
   {
@@ -214,7 +208,7 @@ public:
   }
   void persistPidConstants()
   {
-    if (millis() - last_pid_persist_timestamp_milliseconds >= PID_PERSIST_INTERVAL_MILLISECONDS)
+    if (millis() - _last_pid_persist_timestamp_milliseconds >= _pid_persist_interval_milliseconds)
     {
       int address = 128;
 
@@ -235,7 +229,7 @@ public:
 
       eeprom_pid_repository.save(pid_constants, address);
 
-      last_pid_persist_timestamp_milliseconds = millis();
+      _last_pid_persist_timestamp_milliseconds = millis();
     }
   };
   float throttle = 0;
@@ -245,13 +239,16 @@ public:
   bool yaw_compass_mode = false;
 
 private:
-  FlightMode flight_mode;
-  float throttle_set_timestamp = 0;
-  float yaw_desired_angle_set_timestamp = 0;
-  float desired_pitch_angle_set_timestamp = 0;
-  float desired_roll_angle_set_timestamp = 0;
-  bool is_motors_enabled = false;
-  unsigned long last_pid_persist_timestamp_milliseconds = 0;
+  FlightMode _flight_mode;
+  float _throttle_set_timestamp = 0;
+  float _yaw_desired_angle_set_timestamp = 0;
+  float _desired_pitch_angle_set_timestamp = 0;
+  float _desired_roll_angle_set_timestamp = 0;
+  bool _is_motors_enabled = false;
+  unsigned long _last_pid_persist_timestamp_milliseconds = 0;
+  int _transmition_timeout_definition_milliseconds;
+  int _feedback_loop_hz;
+  int _pid_persist_interval_milliseconds;
 };
 
 #endif // BASE_FOUR_MOTOR_DRONE_H
