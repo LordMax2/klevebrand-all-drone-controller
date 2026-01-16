@@ -40,6 +40,18 @@ public:
   {
     gyro.printYawPitchRoll();
   }
+  float yaw() 
+  {
+    return gyro.yaw();
+  }
+  float pitch() 
+  {
+    return gyro.pitch();
+  }
+  float roll() 
+  {
+    return gyro.roll();
+  }
   void printPid()
   {
     pid.printPid(gyro.roll(), roll_desired_angle, gyro.pitch(), pitch_desired_angle, gyro.yaw(), yaw_desired_angle, yaw_compass_mode);
