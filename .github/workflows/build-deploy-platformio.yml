@@ -27,5 +27,5 @@ jobs:
         run: pio account login -u ${{ secrets.PLATFORM_IO_USERNAME }} -p ${{ secrets.PLATFORM_IO_TOKEN }}
       
       - name: Publish PlatformIO package
-        run: pio pkg publish --no-interactive
+        run: pio pkg publish --no-interactive --owner lordmax2
       
