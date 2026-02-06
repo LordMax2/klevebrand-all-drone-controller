@@ -1,8 +1,8 @@
-#include "gyro.h"
+#include "bno08x_drone_gyro.h"
 
-bool Gyro::setReportModeEuler()
+bool Bno08xDroneGyro::setReportModeEuler()
 {
-  bool result = bno08x.enableReport(SH2_ARVR_STABILIZED_RV, 4000);
+  bool result = gyro.enableReport(SH2_ARVR_STABILIZED_RV, 4000);
 
   if (!result)
   {
@@ -12,9 +12,9 @@ bool Gyro::setReportModeEuler()
   return result;
 }
 
-bool Gyro::setReportModeAcro()
+bool Bno08xDroneGyro::setReportModeAcro()
 {
-  bool result = bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, 2000);
+  bool result = gyro.enableReport(SH2_GYROSCOPE_CALIBRATED, 2000);
 
   if (!result)
   {
@@ -24,10 +24,10 @@ bool Gyro::setReportModeAcro()
   return result;
 }
 
-void Gyro::setup()
+void Bno08xDroneGyro::setup()
 {
   Serial.println("SETTING UP GYROSCOPE.");
-  if (!bno08x.begin_I2C())
+  if (!gyro.begin_I2C())
   {
     Serial.println("FAILED TO CONNECT TO BNO085...");
 
@@ -42,12 +42,12 @@ void Gyro::setup()
   delay(300);
 }
 
-void Gyro::reset() 
+void Bno08xDroneGyro::reset()
 {
-  bno08x.hardwareReset();
+  gyro.hardwareReset();
 }
 
-void Gyro::printYawPitchRoll()
+void Bno08xDroneGyro::printYawPitchRoll()
 {
   Serial.print(yaw_pitch_roll.yaw);
   Serial.print("\t");
@@ -56,17 +56,17 @@ void Gyro::printYawPitchRoll()
   Serial.println(yaw_pitch_roll.roll);
 }
 
-bool Gyro::reload()
+bool Bno08xDroneGyro::reload()
 {
-  if (bno08x.getSensorEvent(&sensor_value))
+  if (gyro.getSensorEvent(&sensor_value))
   {
     if (sensor_value.sensorId == 40)
     {
       YawPitchRoll_t yaw_pitch_roll = quaternionsToYawPitchRoll(&sensor_value.un.arvrStabilizedRV, true);
 
-      Gyro::yaw_pitch_roll.yaw = yaw_pitch_roll.yaw;
-      Gyro::yaw_pitch_roll.pitch = yaw_pitch_roll.pitch;
-      Gyro::yaw_pitch_roll.roll = yaw_pitch_roll.roll;
+      Bno08xDroneGyro::yaw_pitch_roll.yaw = yaw_pitch_roll.yaw;
+      Bno08xDroneGyro::yaw_pitch_roll.pitch = yaw_pitch_roll.pitch;
+      Bno08xDroneGyro::yaw_pitch_roll.roll = yaw_pitch_roll.roll;
     }
 
     if (sensor_value.sensorId == 2)
@@ -75,12 +75,12 @@ bool Gyro::reload()
       float gyro_pitch = sensor_value.un.gyroscope.y;
       float gyro_yaw = sensor_value.un.gyroscope.z;
 
-      Gyro::yaw_pitch_roll.yaw = gyro_yaw * RAD_TO_DEG;
-      Gyro::yaw_pitch_roll.pitch = gyro_pitch * RAD_TO_DEG;
-      Gyro::yaw_pitch_roll.roll = gyro_roll * RAD_TO_DEG;
+      Bno08xDroneGyro::yaw_pitch_roll.yaw = gyro_yaw * RAD_TO_DEG;
+      Bno08xDroneGyro::yaw_pitch_roll.pitch = gyro_pitch * RAD_TO_DEG;
+      Bno08xDroneGyro::yaw_pitch_roll.roll = gyro_roll * RAD_TO_DEG;
     }
 
-    Gyro::yaw_pitch_roll.timestamp_milliseconds = millis();
+    Bno08xDroneGyro::yaw_pitch_roll.timestamp_milliseconds = millis();
 
     return true;
   }
@@ -88,12 +88,12 @@ bool Gyro::reload()
   return false;
 }
 
-YawPitchRoll_t Gyro::quaternionsToYawPitchRoll(sh2_RotationVectorWAcc_t *rotational_vector, bool to_degrees)
+YawPitchRoll_t Bno08xDroneGyro::quaternionsToYawPitchRoll(sh2_RotationVectorWAcc_t *rotational_vector, bool to_degrees)
 {
   return quaternionsToYawPitchRoll(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, to_degrees);
 }
 
-YawPitchRoll_t Gyro::quaternionsToYawPitchRoll(float qr, float qi, float qj, float qk, bool to_degrees)
+YawPitchRoll_t Bno08xDroneGyro::quaternionsToYawPitchRoll(float qr, float qi, float qj, float qk, bool to_degrees)
 {
   YawPitchRoll_t yaw_pitch_roll;
 

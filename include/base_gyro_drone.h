@@ -3,15 +3,19 @@
 
 #include <Arduino.h>
 #include <Servo.h>
-#include "gyro.h"
 #include "base_drone_motor.h"
 #include "gyro_pid.h"
 #include "flight_mode.h"
 #include "eeprom_pid_repository.h"
+#include "base_drone_gyro.h"
 
 #define SERIAL_BAUD_RATE 115200
 
-template <class SomeGyroPidType>
+/*
+ * The SomeGyroPidType should specify the throttle for each motor depending on the PID.
+ * The SomeDroneGyroType should abstract away the hardware of an IMU and just implement a few interface methods.
+ */
+template <class SomeGyroPidType, class SomeDroneGyroType>
 class BaseGyroDrone
 {
 public:
@@ -40,15 +44,15 @@ public:
   {
     gyro.printYawPitchRoll();
   }
-  float yaw() 
+  float yaw()
   {
     return gyro.yaw();
   }
-  float pitch() 
+  float pitch()
   {
     return gyro.pitch();
   }
-  float roll() 
+  float roll()
   {
     return gyro.roll();
   }
@@ -171,7 +175,7 @@ public:
     return _flight_mode;
   }
   EepromPidRepository eeprom_pid_repository;
-  Gyro gyro;
+  BaseDroneGyro<SomeDroneGyroType> gyro;
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
     pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle, yaw_compass_mode);
