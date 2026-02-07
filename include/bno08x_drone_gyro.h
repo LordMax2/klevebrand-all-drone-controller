@@ -14,10 +14,14 @@ public:
     void setup() override;
     bool reload() override;
     void reset() override;
+    float yaw() override;
+    float pitch() override;
+    float roll() override;
     void printYawPitchRoll() override;
     bool setModeAcro() override;
     bool setModeEuler() override;
     long timestampMilliseconds() override;
+
 
 private:
     Adafruit_BNO08x _gyro;

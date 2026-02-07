@@ -52,6 +52,21 @@ void Bno08xDroneGyro::reset()
   gyro.hardwareReset();
 }
 
+float Bno08xDroneGyro::yaw()
+{
+  return _yaw_pitch_roll.yaw;
+}
+
+float Bno08xDroneGyro::pitch()
+{
+  return _yaw_pitch_roll.pitch;
+}
+
+float Bno08xDroneGyro::roll()
+{
+  return _yaw_pitch_roll.roll;
+}
+
 void Bno08xDroneGyro::printYawPitchRoll()
 {
   Serial.print(_yaw_pitch_roll.yaw);
