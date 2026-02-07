@@ -77,7 +77,7 @@ public:
   {
     bool transmitter_lost_connection = millis() - _throttle_set_timestamp >= _transmition_timeout_definition_milliseconds;
 
-    bool gyro_lost_connection = millis() - gyro.timestamp_milliseconds() >= _transmition_timeout_definition_milliseconds;
+    bool gyro_lost_connection = millis() - gyro.timestampMilliseconds() >= _transmition_timeout_definition_milliseconds;
 
     return transmitter_lost_connection || gyro_lost_connection;
   }

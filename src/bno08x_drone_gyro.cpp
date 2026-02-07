@@ -1,5 +1,10 @@
 #include "bno08x_drone_gyro.h"
 
+long Bno08xDroneGyro::timestampMilliseconds()
+{
+  return yaw_pitch_roll.timestamp_milliseconds;
+}
+
 bool Bno08xDroneGyro::setModeEuler()
 {
   bool result = gyro.enableReport(SH2_ARVR_STABILIZED_RV, 4000);

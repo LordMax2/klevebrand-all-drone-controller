@@ -14,6 +14,7 @@ class BaseDroneGyro {
     virtual void printYawPitchRoll();
     virtual bool setModeAcro();
     virtual bool setModeEuler();
+    virtual long timestampMilliseconds();
 
     GyroInterface& gyro;
 };

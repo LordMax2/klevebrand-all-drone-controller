@@ -17,6 +17,7 @@ public:
     void printYawPitchRoll() override;
     bool setModeAcro() override;
     bool setModeEuler() override;
+    long timestampMilliseconds() override;
 
 private:
     sh2_SensorValue_t sensor_value;
