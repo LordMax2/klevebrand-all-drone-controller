@@ -27,10 +27,8 @@ public:
       float transmittion_timeout_definition_milliseconds,
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
-      SomeGyroPidType &gyro_pid_type,
       SomeDroneGyroType &gyro) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0),
                                  gyro(gyro),
-                                 pid(gyro_pid_type)
   {
     this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
