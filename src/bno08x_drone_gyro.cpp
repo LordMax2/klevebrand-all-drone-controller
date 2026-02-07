@@ -2,7 +2,7 @@
 
 long Bno08xDroneGyro::timestampMilliseconds()
 {
-  return yaw_pitch_roll.timestamp_milliseconds;
+  return _yaw_pitch_roll.timestamp_milliseconds;
 }
 
 bool Bno08xDroneGyro::setModeEuler()
@@ -54,38 +54,38 @@ void Bno08xDroneGyro::reset()
 
 void Bno08xDroneGyro::printYawPitchRoll()
 {
-  Serial.print(yaw_pitch_roll.yaw);
+  Serial.print(_yaw_pitch_roll.yaw);
   Serial.print("\t");
-  Serial.print(yaw_pitch_roll.pitch);
+  Serial.print(_yaw_pitch_roll.pitch);
   Serial.print("\t");
-  Serial.println(yaw_pitch_roll.roll);
+  Serial.println(_yaw_pitch_roll.roll);
 }
 
 bool Bno08xDroneGyro::reload()
 {
-  if (gyro.getSensorEvent(&sensor_value))
+  if (gyro.getSensorEvent(&_sensor_value))
   {
-    if (sensor_value.sensorId == 40)
+    if (_sensor_value.sensorId == 40)
     {
-      YawPitchRoll_t yaw_pitch_roll = quaternionsToYawPitchRoll(&sensor_value.un.arvrStabilizedRV, true);
+      YawPitchRoll_t yaw_pitch_roll = quaternionsToYawPitchRoll(&_sensor_value.un.arvrStabilizedRV, true);
 
-      Bno08xDroneGyro::yaw_pitch_roll.yaw = yaw_pitch_roll.yaw;
-      Bno08xDroneGyro::yaw_pitch_roll.pitch = yaw_pitch_roll.pitch;
-      Bno08xDroneGyro::yaw_pitch_roll.roll = yaw_pitch_roll.roll;
+      Bno08xDroneGyro::_yaw_pitch_roll.yaw = yaw_pitch_roll.yaw;
+      Bno08xDroneGyro::_yaw_pitch_roll.pitch = yaw_pitch_roll.pitch;
+      Bno08xDroneGyro::_yaw_pitch_roll.roll = yaw_pitch_roll.roll;
     }
 
-    if (sensor_value.sensorId == 2)
+    if (_sensor_value.sensorId == 2)
     {
-      float gyro_roll = sensor_value.un.gyroscope.x;
-      float gyro_pitch = sensor_value.un.gyroscope.y;
-      float gyro_yaw = sensor_value.un.gyroscope.z;
+      float gyro_roll = _sensor_value.un.gyroscope.x;
+      float gyro_pitch = _sensor_value.un.gyroscope.y;
+      float gyro_yaw = _sensor_value.un.gyroscope.z;
 
-      Bno08xDroneGyro::yaw_pitch_roll.yaw = gyro_yaw * RAD_TO_DEG;
-      Bno08xDroneGyro::yaw_pitch_roll.pitch = gyro_pitch * RAD_TO_DEG;
-      Bno08xDroneGyro::yaw_pitch_roll.roll = gyro_roll * RAD_TO_DEG;
+      Bno08xDroneGyro::_yaw_pitch_roll.yaw = gyro_yaw * RAD_TO_DEG;
+      Bno08xDroneGyro::_yaw_pitch_roll.pitch = gyro_pitch * RAD_TO_DEG;
+      Bno08xDroneGyro::_yaw_pitch_roll.roll = gyro_roll * RAD_TO_DEG;
     }
 
-    Bno08xDroneGyro::yaw_pitch_roll.timestamp_milliseconds = millis();
+    Bno08xDroneGyro::_yaw_pitch_roll.timestamp_milliseconds = millis();
 
     return true;
   }
