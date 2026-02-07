@@ -28,7 +28,7 @@ public:
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
       SomeDroneGyroType &gyro) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0),
-                                 gyro(gyro),
+                                 gyro(gyro)
   {
     this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
