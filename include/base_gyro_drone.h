@@ -113,7 +113,7 @@ public:
 
     delay(1000);
 
-    gyro.setReportModeEuler();
+    gyro.setModeEuler();
 
     PidConstants pid_constants = eeprom_pid_repository.get(256);
 
@@ -146,7 +146,7 @@ public:
 
     delay(1000);
 
-    gyro.setReportModeAcro();
+    gyro.setModeAcro();
 
     PidConstants pid_constants = eeprom_pid_repository.get(128);
 
