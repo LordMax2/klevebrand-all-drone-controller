@@ -23,7 +23,14 @@ public:
    * Create a drone
    * Default parameters that work are: 500, 200, 10000
    */
-  BaseGyroDrone(float transmittion_timeout_definition_milliseconds, int feedback_loop_hz, int pid_persist_interval_milliseconds) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
+  BaseGyroDrone(
+      float transmittion_timeout_definition_milliseconds,
+      int feedback_loop_hz,
+      int pid_persist_interval_milliseconds,
+      SomeGyroPidType &gyro_pid_type,
+      SomeDroneGyroType &gyro) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0),
+                                 gyro(gyro),
+                                 pid(gyro_pid_type)
   {
     this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
