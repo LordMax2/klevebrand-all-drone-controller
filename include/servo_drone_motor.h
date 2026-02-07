@@ -8,20 +8,20 @@
 class ServoDroneMotor : public BaseDroneMotor<Servo>
 {
 public:
-    ServoDroneMotor(Servo &motor) : BaseDroneMotor<Servo>(motor) {}
+    ServoDroneMotor() : BaseDroneMotor<Servo>() {}
 
-    void setSpeed(float percentage)
+    void setup(int pin)
     {
-        int microseconds = map(percentage, 0, 100, 1000, 2000);
-        motor.writeMicroseconds(microseconds);
+        motor.attach(pin);
     }
 
-    static ServoDroneMotor getServoDroneMotor(int pin)
+    void setSpeed(float percentage) override
     {
-        Servo servo;
-        servo.attach(pin);
+        int microseconds = map(percentage, 0, 100, 1000, 2000);
 
-        return ServoDroneMotor(servo);
+        microseconds = constrain(microseconds, 1000, 2000);
+
+        motor.writeMicroseconds(microseconds);
     }
 };
 
