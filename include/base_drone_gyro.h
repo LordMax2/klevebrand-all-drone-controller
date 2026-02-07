@@ -12,6 +12,8 @@ class BaseDroneGyro {
     virtual float pitch();
     virtual float roll();
     virtual void printYawPitchRoll();
+    virtual bool setModeAcro();
+    virtual bool setModeEuler();
 
     GyroInterface& gyro;
 };

@@ -15,8 +15,8 @@ public:
     bool reload() override;
     void reset() override;
     void printYawPitchRoll() override;
-    bool setReportModeAcro();
-    bool setReportModeEuler();
+    bool setModeAcro() override;
+    bool setModeEuler() override;
 
 private:
     sh2_SensorValue_t sensor_value;

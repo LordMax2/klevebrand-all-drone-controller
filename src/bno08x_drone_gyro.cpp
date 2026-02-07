@@ -1,6 +1,6 @@
 #include "bno08x_drone_gyro.h"
 
-bool Bno08xDroneGyro::setReportModeEuler()
+bool Bno08xDroneGyro::setModeEuler()
 {
   bool result = gyro.enableReport(SH2_ARVR_STABILIZED_RV, 4000);
 
@@ -12,7 +12,7 @@ bool Bno08xDroneGyro::setReportModeEuler()
   return result;
 }
 
-bool Bno08xDroneGyro::setReportModeAcro()
+bool Bno08xDroneGyro::setModeAcro()
 {
   bool result = gyro.enableReport(SH2_GYROSCOPE_CALIBRATED, 2000);
 
