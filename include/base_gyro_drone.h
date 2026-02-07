@@ -269,9 +269,9 @@ private:
   float _desired_roll_angle_set_timestamp = 0;
   bool _is_motors_enabled = false;
   unsigned long _last_pid_persist_timestamp_milliseconds = 0;
-  int _transmition_timeout_definition_milliseconds;
+  unsigned long _transmition_timeout_definition_milliseconds;
   int _feedback_loop_hz;
-  int _pid_persist_interval_milliseconds;
+  unsigned long _pid_persist_interval_milliseconds;
 };
 
 #endif // BASE_FOUR_MOTOR_DRONE_H
