@@ -10,7 +10,7 @@
 class Bno08xDroneGyro : public BaseDroneGyro<Adafruit_BNO08x>
 {
 public:
-    Bno08xDroneGyro(int reset_pin) : _gyro(-1), BaseDroneGyro<Adafruit_BNO08x>(_gyro) {};
+    Bno08xDroneGyro(int reset_pin) : BaseDroneGyro<Adafruit_BNO08x>(_gyro), _gyro(reset_pin) {};
     void setup() override;
     bool reload() override;
     void reset() override;
