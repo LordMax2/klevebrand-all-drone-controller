@@ -27,12 +27,12 @@ public:
       float transmittion_timeout_definition_milliseconds,
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
-      SomeDroneGyroType &gyro) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0),
-                                 gyro(gyro)
+      SomeDroneGyroType *gyro) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
   {
     this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
     this->_pid_persist_interval_milliseconds = pid_persist_interval_milliseconds;
+    this->gyro = gyro;
   };
   virtual void setup() {};
   virtual void run() {};
@@ -47,23 +47,23 @@ public:
   };
   void printGyro()
   {
-    gyro.printYawPitchRoll();
+    gyro->printYawPitchRoll();
   }
   float yaw()
   {
-    return gyro.yaw();
+    return gyro->yaw();
   }
   float pitch()
   {
-    return gyro.pitch();
+    return gyro->pitch();
   }
   float roll()
   {
-    return gyro.roll();
+    return gyro->roll();
   }
   void printPid()
   {
-    pid.printPid(gyro.roll(), roll_desired_angle, gyro.pitch(), pitch_desired_angle, gyro.yaw(), yaw_desired_angle, yaw_compass_mode);
+    pid.printPid(gyro->roll(), roll_desired_angle, gyro->pitch(), pitch_desired_angle, gyro->yaw(), yaw_desired_angle, yaw_compass_mode);
   }
   void printPidConstants()
   {
@@ -77,7 +77,7 @@ public:
   {
     bool transmitter_lost_connection = millis() - _throttle_set_timestamp >= _transmition_timeout_definition_milliseconds;
 
-    bool gyro_lost_connection = millis() - gyro.timestampMilliseconds() >= _transmition_timeout_definition_milliseconds;
+    bool gyro_lost_connection = millis() - gyro->timestampMilliseconds() >= _transmition_timeout_definition_milliseconds;
 
     return transmitter_lost_connection || gyro_lost_connection;
   }
@@ -109,11 +109,11 @@ public:
 
     setFlightMode(auto_level);
 
-    gyro.reset();
+    gyro->reset();
 
     delay(1000);
 
-    gyro.setModeEuler();
+    gyro->setModeEuler();
 
     PidConstants pid_constants = eeprom_pid_repository.get(256);
 
@@ -142,11 +142,11 @@ public:
 
     setFlightMode(acro);
 
-    gyro.reset();
+    gyro->reset();
 
     delay(1000);
 
-    gyro.setModeAcro();
+    gyro->setModeAcro();
 
     PidConstants pid_constants = eeprom_pid_repository.get(128);
 
@@ -180,14 +180,14 @@ public:
     return _flight_mode;
   }
   EepromPidRepository eeprom_pid_repository;
-  BaseDroneGyro<SomeDroneGyroType> gyro;
+  SomeDroneGyroType *gyro;
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
     pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle, yaw_compass_mode);
   }
   bool updateGyro()
   {
-    return gyro.reload();
+    return gyro->reload();
   }
   void savePidErrors(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
@@ -220,9 +220,9 @@ public:
   }
   void runPidOptimizer()
   {
-    pid.runRollOptimizer(gyro.roll(), roll_desired_angle);
-    pid.runPitchOptimizer(gyro.pitch(), pitch_desired_angle);
-    pid.runYawOptimizer(gyro.yaw(), yaw_desired_angle, yaw_compass_mode);
+    pid.runRollOptimizer(gyro->roll(), roll_desired_angle);
+    pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle);
+    pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle, yaw_compass_mode);
   }
 
   void setYawCompassMode(bool yaw_compass_mode)
