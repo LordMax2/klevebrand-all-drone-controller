@@ -5,6 +5,9 @@
 
 class PidYawCompass : public Pid
 {
+public:
+    PidYawCompass(float kp, float ki, float kd, float pid_max) : Pid(kp, ki, kd, pid_max) {};
+
     float error(float current, float desired) override
     {
         auto error = fmod((current + 180), 360) - fmod((desired + 180), 360);

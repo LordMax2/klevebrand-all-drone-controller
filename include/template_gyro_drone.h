@@ -63,7 +63,7 @@ public:
   }
   void printPid()
   {
-    pid.printPid(gyro->roll(), roll_desired_angle, gyro->pitch(), pitch_desired_angle, gyro->yaw(), yaw_desired_angle, yaw_compass_mode);
+    pid.printPid(gyro->roll(), roll_desired_angle, gyro->pitch(), pitch_desired_angle, gyro->yaw(), yaw_desired_angle);
   }
   void printPidConstants()
   {
@@ -183,7 +183,7 @@ public:
   SomeDroneGyroType *gyro;
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
-    pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle, yaw_compass_mode);
+    pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle);
   }
   bool updateGyro()
   {
@@ -193,7 +193,7 @@ public:
   {
     pid.savePitchError(gyro_pitch, pitch_desired_angle);
     pid.saveRollError(gyro_roll, roll_desired_angle);
-    pid.saveYawError(gyro_yaw, yaw_desired_angle, yaw_compass_mode);
+    pid.saveYawError(gyro_yaw, yaw_desired_angle);
   }
   long delayToKeepFeedbackLoopHz(long start_micros_timestamp)
   {
@@ -222,12 +222,12 @@ public:
   {
     pid.runRollOptimizer(gyro->roll(), roll_desired_angle);
     pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle);
-    pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle, yaw_compass_mode);
+    pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle);
   }
 
   void setYawCompassMode(bool yaw_compass_mode)
   {
-    this->yaw_compass_mode = yaw_compass_mode;
+    pid.setYawCompassMode(yaw_compass_mode);
   }
   void persistPidConstants()
   {
@@ -259,7 +259,6 @@ public:
   float yaw_desired_angle = 0;
   float pitch_desired_angle = 0;
   float roll_desired_angle = 0;
-  bool yaw_compass_mode = false;
 
 private:
   FlightMode_t _flight_mode;

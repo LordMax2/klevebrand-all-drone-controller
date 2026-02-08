@@ -52,6 +52,18 @@ public:
     float rollPid(float gyro_roll, float roll_desired_angle);
     float pitchPid(float gyro_pitch, float pitch_desired_angle);
 
+    void setYawCompassMode(bool compass_mode)
+    {
+        if (compass_mode)
+        {
+            pid_yaw = PidYawCompass(0, 0, 0, pid_max);
+        }
+        else
+        {
+            pid_yaw = Pid(0, 0, 0, pid_max);
+        }
+    }
+
 private:
     float pid_max;
 
@@ -62,8 +74,6 @@ private:
     PidOptimizer pid_roll_optimizer;
     PidOptimizer pid_pitch_optimizer;
     PidOptimizer pid_yaw_optimizer;
-
-    bool yaw_compass_mode;
 };
 
 #endif // GYRO_PID_H
