@@ -2,9 +2,9 @@
 #define BASE_DRONE_MOTOR_H
 
 template<class MotorInterface>
-class BaseDroneMotor {
+class TemplateDroneMotor {
 public:
-    BaseDroneMotor() {};
+    TemplateDroneMotor() {};
     virtual void setSpeed(float percentage) {};
     MotorInterface motor;
 };

@@ -2,10 +2,10 @@
 #define BASE_DRONE_GYRO_H
 
 template <class GyroInterface>
-class BaseDroneGyro
+class TemplateDroneGyro
 {
 public:
-    BaseDroneGyro(GyroInterface &gyro) : gyro(gyro) {};
+    TemplateDroneGyro(GyroInterface &gyro) : gyro(gyro) {};
     virtual void setup() {};
     virtual bool reload() { return false; };
     virtual void reset() {};

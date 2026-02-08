@@ -3,11 +3,11 @@
 
 #include <Arduino.h>
 #include <Servo.h>
-#include "base_drone_motor.h"
+#include "template_drone_motor.h"
 #include "gyro_pid.h"
 #include "flight_mode.h"
 #include "eeprom_pid_repository.h"
-#include "base_drone_gyro.h"
+#include "template_drone_gyro.h"
 
 #define SERIAL_BAUD_RATE 115200
 
@@ -16,14 +16,14 @@
  * The SomeDroneGyroType should abstract away the hardware of an IMU and just implement a few interface methods.
  */
 template <class SomeGyroPidType, class SomeDroneGyroType>
-class BaseGyroDrone
+class TemplateGyroDrone
 {
 public:
   /*
    * Create a drone
    * Default parameters that work are: 500, 200, 10000
    */
-  BaseGyroDrone(
+  TemplateGyroDrone(
       float transmittion_timeout_definition_milliseconds,
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
@@ -115,7 +115,7 @@ public:
 
     gyro->setModeEuler();
 
-    PidConstants pid_constants = eeprom_pid_repository.get(256);
+    PidConstants_t pid_constants = eeprom_pid_repository.get(256);
 
     if (pid_constants.isValid())
     {
@@ -148,7 +148,7 @@ public:
 
     gyro->setModeAcro();
 
-    PidConstants pid_constants = eeprom_pid_repository.get(128);
+    PidConstants_t pid_constants = eeprom_pid_repository.get(128);
 
     if (pid_constants.isValid())
     {
@@ -175,7 +175,7 @@ public:
   {
     _is_motors_enabled = false;
   }
-  FlightMode getFlightMode()
+  FlightMode_t getFlightMode()
   {
     return _flight_mode;
   }
@@ -210,9 +210,9 @@ public:
 
     return 0;
   }
-  void setFlightMode(FlightMode flight_mode)
+  void setFlightMode(FlightMode_t flight_mode)
   {
-    BaseGyroDrone::_flight_mode = flight_mode;
+    TemplateGyroDrone::_flight_mode = flight_mode;
   }
   bool isMotorsEnabled()
   {
@@ -245,7 +245,7 @@ public:
         break;
       }
 
-      PidConstants pid_constants = PidConstants(
+      PidConstants_t pid_constants = PidConstants_t(
           pid.getYawKp(), pid.getYawKi(), pid.getYawKd(),
           pid.getPitchKp(), pid.getPitchKi(), pid.getPitchKd(),
           pid.getRollKp(), pid.getRollKi(), pid.getRollKd());
@@ -262,7 +262,7 @@ public:
   bool yaw_compass_mode = false;
 
 private:
-  FlightMode _flight_mode;
+  FlightMode_t _flight_mode;
   float _throttle_set_timestamp = 0;
   float _yaw_desired_angle_set_timestamp = 0;
   float _desired_pitch_angle_set_timestamp = 0;

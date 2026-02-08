@@ -1,7 +1,7 @@
 #ifndef FLIGHT_MODE_H
 #define FLIGHT_MODE_H
 
-enum FlightMode
+enum FlightMode_t
 {
     auto_level = 1,
     acro = 2

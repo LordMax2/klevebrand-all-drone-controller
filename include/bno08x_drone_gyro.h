@@ -4,13 +4,13 @@
 #include "Arduino.h"
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO08x.h>
-#include "base_drone_gyro.h"
+#include "template_drone_gyro.h"
 #include "yaw_pitch_roll.h"
 
-class Bno08xDroneGyro : public BaseDroneGyro<Adafruit_BNO08x>
+class Bno08xDroneGyro : public TemplateDroneGyro<Adafruit_BNO08x>
 {
 public:
-    Bno08xDroneGyro(int reset_pin) : BaseDroneGyro<Adafruit_BNO08x>(_gyro), _gyro(reset_pin) {};
+    Bno08xDroneGyro(int reset_pin) : TemplateDroneGyro<Adafruit_BNO08x>(_gyro), _gyro(reset_pin) {};
     void setup() override;
     bool reload() override;
     void reset() override;
