@@ -27,7 +27,7 @@ public:
       float transmittion_timeout_definition_milliseconds,
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
-      SomeDroneGyroType *gyro) : pid(0, 0, 0, 0, 0, 0, 0, 0, 0)
+      SomeDroneGyroType *gyro) : pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0)
   {
     this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
@@ -41,9 +41,9 @@ public:
   virtual void setupMotors() {};
   SomeGyroPidType pid;
 
-  void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd)
+  void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd)
   {
-    pid = SomeGyroPidType(yaw_kp, yaw_ki, yaw_kd, pitch_kp, pitch_ki, pitch_kd, roll_kp, roll_ki, roll_kd);
+    pid = SomeGyroPidType(yaw_kp, yaw_ki, yaw_kd, yaw_compass_mode, pitch_kp, pitch_ki, pitch_kd, roll_kp, roll_ki, roll_kd);
   };
   void printGyro()
   {
@@ -119,7 +119,7 @@ public:
 
     if (pid_constants.isValid())
     {
-      setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd,
+      setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, true,
                       pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
                       pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
 
@@ -127,10 +127,8 @@ public:
     }
     else
     {
-      setPidConstants(0.125, 0.001, 2.5, 0.125, 0.001, 0.25, 0.05, 0.0005, 0.2);
+      setPidConstants(0.125, 0.001, 2.5, true, 0.125, 0.001, 0.25, 0.05, 0.0005, 0.2);
     }
-
-    setYawCompassMode(true);
 
     Serial.println("FLIGHT MODE AUTOLEVEL");
   }
@@ -152,7 +150,7 @@ public:
 
     if (pid_constants.isValid())
     {
-      setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd,
+      setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, false,
                       pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
                       pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
 
@@ -160,10 +158,8 @@ public:
     }
     else
     {
-      setPidConstants(0.04, 0.002, 0.6, 0.04, 0.002, 0.6, 0.04, 0.002, 0.6);
+      setPidConstants(0.04, 0.002, 0.6, false, 0.04, 0.002, 0.6, 0.04, 0.002, 0.6);
     }
-
-    setYawCompassMode(false);
 
     Serial.println("FLIGHT MODE ACRO");
   }
