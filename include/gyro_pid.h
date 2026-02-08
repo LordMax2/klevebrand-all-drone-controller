@@ -10,16 +10,23 @@ class GyroPid
 {
 public:
     GyroPid(
-        float yaw_kp, float yaw_ki, float yaw_kd,
+        float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode,
         float pitch_kp, float pitch_ki, float pitch_kd,
         float roll_kp, float roll_ki, float roll_kd,
         float pid_max) : pid_max(pid_max),
                          pid_yaw(yaw_kp, yaw_ki, yaw_kd, pid_max),
                          pid_pitch(pitch_kp, pitch_ki, pitch_kd, pid_max),
-                         pid_roll(roll_kp, roll_ki, roll_kd, pid_max),
-                         pid_roll_optimizer(roll_kp, roll_ki, roll_kd),
-                         pid_pitch_optimizer(pitch_kp, pitch_ki, pitch_kd),
-                         pid_yaw_optimizer(yaw_kp, yaw_ki, yaw_kd) {};
+                         pid_roll(roll_kp, roll_ki, roll_kd, pid_max)
+    {
+        if (yaw_compass_mode)
+        {
+            pid_yaw = PidYawCompass(yaw_kp, yaw_ki, yaw_kd, pid_max);
+        }
+        else
+        {
+            pid_yaw = Pid(yaw_kp, yaw_ki, yaw_kd, pid_max);
+        }
+    };
 
     void reset();
 
@@ -70,10 +77,6 @@ private:
     Pid pid_yaw;
     Pid pid_pitch;
     Pid pid_roll;
-
-    PidOptimizer pid_roll_optimizer;
-    PidOptimizer pid_pitch_optimizer;
-    PidOptimizer pid_yaw_optimizer;
 };
 
 #endif // GYRO_PID_H
