@@ -10,6 +10,11 @@ public:
 
     float error(float current, float desired) override
     {
+        return absoluteCompassError(current, desired);
+    }
+
+    static float absoluteCompassError(float current, float desired)
+    {
         auto error = fmod((current + 180), 360) - fmod((desired + 180), 360);
         float absolute_error = min(abs(error), 360 - abs(error));
 
