@@ -15,7 +15,7 @@
  * The SomeGyroPidType should specify the throttle for each motor depending on the PID.
  * The SomeDroneGyroType should abstract away the hardware of an IMU and just implement a few interface methods.
  */
-template <class SomeGyroPidType, class SomeDroneGyroType>
+template <class SomeGyroPidType, class SomeDroneGyroType, class SomePidRepository>
 class TemplateGyroDrone
 {
 public:
@@ -115,7 +115,7 @@ public:
 
     gyro->setModeEuler();
 
-    PidConstants_t pid_constants = eeprom_pid_repository.get(256);
+    PidConstants_t pid_constants = pid_repository->get(256);
 
     if (pid_constants.isValid())
     {
@@ -146,7 +146,7 @@ public:
 
     gyro->setModeAcro();
 
-    PidConstants_t pid_constants = eeprom_pid_repository.get(128);
+    PidConstants_t pid_constants = pid_repository->get(128);
 
     if (pid_constants.isValid())
     {
@@ -175,7 +175,7 @@ public:
   {
     return _flight_mode;
   }
-  EepromPidRepository eeprom_pid_repository;
+  SomePidRepository* pid_repository;
   SomeDroneGyroType *gyro;
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
   {
@@ -246,7 +246,7 @@ public:
           pid.getPitchKp(), pid.getPitchKi(), pid.getPitchKd(),
           pid.getRollKp(), pid.getRollKi(), pid.getRollKd());
 
-      eeprom_pid_repository.save(pid_constants, address);
+      pid_repository->save(address, pid_constants);
 
       _last_pid_persist_timestamp_milliseconds = millis();
     }
