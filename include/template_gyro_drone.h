@@ -26,12 +26,14 @@ public:
       float transmittion_timeout_definition_milliseconds,
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
-      SomeDroneGyroType *gyro) : pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0)
+      SomeDroneGyroType *gyro,
+      SomePidRepository *pid_repository) : pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0)
   {
     this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
     this->_pid_persist_interval_milliseconds = pid_persist_interval_milliseconds;
     this->gyro = gyro;
+    this->pid_repository = pid_repository;
   };
   virtual void setup() {};
   virtual void run() {};
