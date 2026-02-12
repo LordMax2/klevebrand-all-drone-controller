@@ -2,12 +2,11 @@
 #define BASE_FOUR_MOTOR_DRONE_H
 
 #include <Arduino.h>
-#include <Servo.h>
 #include "template_drone_motor.h"
+#include "template_drone_gyro.h"
+#include "template_pid_repository.h"
 #include "gyro_pid.h"
 #include "flight_mode.h"
-#include "eeprom_pid_repository.h"
-#include "template_drone_gyro.h"
 
 #define SERIAL_BAUD_RATE 115200
 
