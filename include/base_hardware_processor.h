@@ -1,3 +1,5 @@
+#ifndef BASE_HARDWARE_PROCESSOR_H
+#define BASE_HARDWARE_PROCESSOR_H
 
 class BaseHardwareProcessor
 {
@@ -10,3 +12,5 @@ public:
     virtual void sleepMilliseconds(int milliseconds);
     virtual void print(char* array);
 };
+
+#endif // BASE_HARDWARE_PROCESSOR_H
