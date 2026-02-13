@@ -1,11 +1,10 @@
 #ifndef BASE_DRONE_GYRO_H
 #define BASE_DRONE_GYRO_H
 
-template <class GyroInterface>
-class TemplateDroneGyro
+class BaseDroneGyro
 {
 public:
-    TemplateDroneGyro(GyroInterface &gyro) : gyro(gyro) {};
+    BaseDroneGyro() {};
     virtual void setup() {};
     virtual bool reload() { return false; };
     virtual void reset() {};
@@ -16,8 +15,6 @@ public:
     virtual bool setModeAcro() { return false;};
     virtual bool setModeEuler() { return false;};
     virtual long timestampMilliseconds() { return 0;};
-
-    GyroInterface &gyro;
 };
 
 #endif // BASE_DRONE_GYRO_H
