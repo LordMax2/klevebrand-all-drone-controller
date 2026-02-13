@@ -4,7 +4,7 @@
 #include "base_drone_motor.h"
 #include "base_drone_gyro.h"
 #include "base_pid_repository.h"
-#include "template_hardware_processor.h"
+#include "base_hardware_processor.h"
 #include "gyro_pid.h"
 #include "flight_mode.h"
 
@@ -12,7 +12,7 @@
  * The SomeGyroPidType should specify the throttle for each motor depending on the PID.
  * The SomeDroneGyroType should abstract away the hardware of an IMU and just implement a few interface methods.
  */
-template <class SomeHardwareProcessor, class SomeGyroPidType>
+template <class SomeGyroPidType>
 class TemplateGyroDrone
 {
 public:
@@ -24,7 +24,7 @@ public:
       float transmittion_timeout_definition_milliseconds,
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
-      SomeHardwareProcessor *processor,
+      BaseHardwareProcessor *processor,
       BaseDroneGyro *gyro,
       BasePidRepository *pid_repository) : pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0)
   {
@@ -37,7 +37,7 @@ public:
   };
 
   SomeGyroPidType pid;
-  SomeHardwareProcessor *processor;
+  BaseHardwareProcessor *processor;
   BasePidRepository* pid_repository;
   BaseDroneGyro *gyro;
 
