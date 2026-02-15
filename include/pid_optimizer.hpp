@@ -10,17 +10,13 @@
 #ifndef PID_OPTIMIZER_H
 #define PID_OPTIMIZER_H
 
+#include "pid_optimizer_state.hpp"
 #include <math.h>
+#include <stdlib.h>
 
 #define TRIAL_DURATION_MILLISECONDS 200 
 
 using namespace std;
-
-enum PidOptimizerState {
-    IDLE,
-    MEASURING,
-    DECIDING
-};
 
 class PidOptimizer {
 public:
@@ -52,6 +48,10 @@ private:
     long score();
     void evaluateTrial();
     float coolingFactor(long timestamp_milliseconds);
+
+    float fconstrain(float input, float min_value, float max_value);
+
+    long randomLimited(long min_value, long max_value);
 };
 
 #endif // PID_OPTIMIZER_H

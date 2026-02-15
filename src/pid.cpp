@@ -49,10 +49,15 @@ float Pid::pidD(float current, float desired)
 
 float Pid::pid(float current, float desired)
 {
-    return constrain(pidP(current, desired) + pid_i + pidD(current, desired), -pid_max, pid_max);
+    return fconstrain(pidP(current, desired) + pid_i + pidD(current, desired), -pid_max, pid_max);
 }
 
 void Pid::updateIntegral(float current, float desired)
 {
-    pid_i = constrain(pid_i + (getKi() * error(current, desired)), -pid_max, pid_max);
+    pid_i = fconstrain(pid_i + (getKi() * error(current, desired)), -pid_max, pid_max);
+}
+
+float Pid::fconstrain(float input, float min_value, float max_value)
+{
+    return input < min_value ? min_value : (input > max_value ? max_value : input);
 }

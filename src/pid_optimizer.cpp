@@ -65,18 +65,33 @@ void PidOptimizer::startTrial(long timestamp_milliseconds)
     current_ki = best_ki;
     current_kd = best_kd;
 
-    current_kp += random(-5, 5) / 10000.0f;
-    current_ki += random(-3, 3) / 100000.0f;
-    current_kd += random(-10, 10) / 10000.0f;
+    current_kp += randomLimited(-5, 5) / 10000.0f;
+    current_ki += randomLimited(-3, 3) / 100000.0f;
+    current_kd += randomLimited(-10, 10) / 10000.0f;
 
-    current_kp = constrain(current_kp, 0.1f, 1.0f);
-    current_ki = constrain(current_ki, 0.0001f, 0.05f);
-    current_kd = constrain(current_kd, 0.1f, 20.0f);
+    current_kp = fconstrain(current_kp, 0.1f, 1.0f);
+    current_ki = fconstrain(current_ki, 0.0001f, 0.05f);
+    current_kd = fconstrain(current_kd, 0.1f, 20.0f);
 
     error_sum_squared = 0;
     error_measurement_count = 0;
     trial_start_time = timestamp_milliseconds;
     state = MEASURING;
+}
+
+long PidOptimizer::randomLimited(long min_value, long max_value)
+{
+    if (min_value >= max_value)
+    {
+        return min_value;
+    }
+    long diff = max_value - min_value;
+
+    if (max_value == 0)
+    {
+        return 0;
+    }
+    return (random() % diff) + min_value;
 }
 
 long PidOptimizer::score()
@@ -113,5 +128,10 @@ float PidOptimizer::coolingFactor(long timestamp_milliseconds)
     unsigned long time_elapsed = timestamp_milliseconds;
     float cooling_duration = 600000;
 
-    return 1.0 - constrain((float)time_elapsed / cooling_duration, 0.0, 1.0);
+    return 1.0 - fconstrain((float)time_elapsed / cooling_duration, 0.0, 1.0);
+}
+
+float PidOptimizer::fconstrain(float input, float min_value, float max_value)
+{
+    return input < min_value ? min_value : (input > max_value ? max_value : input);
 }

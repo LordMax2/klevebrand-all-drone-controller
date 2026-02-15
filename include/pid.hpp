@@ -44,6 +44,8 @@ public:
     float _kp;
     float _ki;
     float _kd;
+
+    float fconstrain(float input, float min_value, float max_value);
 };
 
 #endif // THROTTLE_PID_H
