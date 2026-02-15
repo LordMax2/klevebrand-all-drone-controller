@@ -24,16 +24,16 @@ PidOptimizer::PidOptimizer(float initial_kp, float initial_ki, float initial_kd)
     state = IDLE;
 }
 
-void PidOptimizer::run(float current_error)
+void PidOptimizer::run(float current_error, long timestamp_milliseconds)
 {
     switch (state)
     {
     case IDLE:
-        startTrial();
+        startTrial(timestamp_milliseconds);
         break;
 
     case MEASURING:
-        if (millis() - trial_start_time < TRIAL_DURATION_MILLISECONDS)
+        if (timestamp_milliseconds - trial_start_time < TRIAL_DURATION_MILLISECONDS)
         {
             error_sum_squared += pow(current_error, 2);
             error_measurement_count++;
@@ -43,7 +43,7 @@ void PidOptimizer::run(float current_error)
             // If we dont get enough readings, restart the trial
             if (error_measurement_count < ((TRIAL_DURATION_MILLISECONDS / 1000) * 200) * 0.9) // TODO: Replace hardcoded 200 with the Flight Controller hz frequency, and the acceptance percentage deviation.
             {
-                startTrial();
+                startTrial(timestamp_milliseconds);
 
                 return;
             }
@@ -59,7 +59,7 @@ void PidOptimizer::run(float current_error)
     }
 }
 
-void PidOptimizer::startTrial()
+void PidOptimizer::startTrial(long timestamp_milliseconds)
 {
     current_kp = best_kp;
     current_ki = best_ki;
@@ -75,7 +75,7 @@ void PidOptimizer::startTrial()
 
     error_sum_squared = 0;
     error_measurement_count = 0;
-    trial_start_time = millis();
+    trial_start_time = timestamp_milliseconds;
     state = MEASURING;
 }
 
@@ -108,9 +108,9 @@ void PidOptimizer::evaluateTrial()
     previous_score = current_score;
 }
 
-float PidOptimizer::coolingFactor()
+float PidOptimizer::coolingFactor(long timestamp_milliseconds)
 {
-    unsigned long time_elapsed = millis();
+    unsigned long time_elapsed = timestamp_milliseconds;
     float cooling_duration = 600000;
 
     return 1.0 - constrain((float)time_elapsed / cooling_duration, 0.0, 1.0);

@@ -15,19 +15,19 @@ void GyroPid::updateIntegral(float gyro_roll, float roll_desired_angle, float gy
   pid_roll.updateIntegral(gyro_roll, roll_desired_angle);
 }
 
-void GyroPid::runYawOptimizer(float gyro_yaw, float yaw_desired_angle)
+void GyroPid::runYawOptimizer(float gyro_yaw, float yaw_desired_angle, long timestamp_milliseconds)
 {
-  pid_yaw.runOptimizer(gyro_yaw, yaw_desired_angle); 
+  pid_yaw.runOptimizer(gyro_yaw, yaw_desired_angle, timestamp_milliseconds); 
 }
 
-void GyroPid::runPitchOptimizer(float gyro_pitch, float pitch_desired_angle)
+void GyroPid::runPitchOptimizer(float gyro_pitch, float pitch_desired_angle, long timestamp_milliseconds)
 {
-  pid_pitch.runOptimizer(gyro_pitch, pitch_desired_angle);
+  pid_pitch.runOptimizer(gyro_pitch, pitch_desired_angle, timestamp_milliseconds);
 }
 
-void GyroPid::runRollOptimizer(float gyro_roll, float roll_desired_angle)
+void GyroPid::runRollOptimizer(float gyro_roll, float roll_desired_angle, long timestamp_milliseconds)
 {
-  pid_roll.runOptimizer(gyro_roll, roll_desired_angle);
+  pid_roll.runOptimizer(gyro_roll, roll_desired_angle, timestamp_milliseconds);
 }
 
 void GyroPid::saveYawError(float gyro_yaw, float yaw_desired_angle)
@@ -43,15 +43,6 @@ void GyroPid::savePitchError(float gyro_pitch, float pitch_desired_angle)
 void GyroPid::saveRollError(float gyro_roll, float roll_desired_angle)
 {
   pid_roll.saveError(gyro_roll, roll_desired_angle);
-}
-
-void GyroPid::printPid(float gyro_roll, float roll_desired_angle, float gyro_pitch, float pitch_desired_angle, float gyro_yaw, float yaw_desired_angle)
-{
-  Serial.print(pid_yaw.pid(gyro_roll, roll_desired_angle)); 
-  Serial.print(",");
-  Serial.print(pid_pitch.pid(gyro_pitch, pitch_desired_angle));
-  Serial.print(",");
-  Serial.println(pid_roll.pid(gyro_roll, roll_desired_angle));
 }
 
 float GyroPid::getYawKp()
@@ -97,15 +88,6 @@ float GyroPid::getRollKi()
 float GyroPid::getRollKd()
 {
   return pid_roll.getKd();
-}
-
-void GyroPid::printConstants()
-{
-  Serial.print(getRollKp());
-  Serial.print(",");
-  Serial.print(getRollKi());
-  Serial.print(",");
-  Serial.println(getRollKd());
 }
 
 float GyroPid::rollPid(float gyro_roll, float roll_desired_angle)

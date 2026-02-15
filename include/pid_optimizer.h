@@ -10,9 +10,9 @@
 #ifndef PID_OPTIMIZER_H
 #define PID_OPTIMIZER_H
 
-#include <Arduino.h>
-
 #define TRIAL_DURATION_MILLISECONDS 200 
+
+using namespace std;
 
 enum PidOptimizerState {
     IDLE,
@@ -24,7 +24,7 @@ class PidOptimizer {
 public:
     PidOptimizer(float default_kp, float default_ki, float default_kd);
 
-    void run(float current_error);
+    void run(float current_error, long timestamp_milliseconds);
 
     float getKp() { return current_kp; }
     float getKi() { return current_ki; }
@@ -46,10 +46,10 @@ private:
     float error_sum_squared;
     int error_measurement_count;
 
-    void startTrial();
+    void startTrial(long timestamp_milliseconds);
     long score();
     void evaluateTrial();
-    float coolingFactor();
+    float coolingFactor(long timestamp_milliseconds);
 };
 
 #endif // PID_OPTIMIZER_H

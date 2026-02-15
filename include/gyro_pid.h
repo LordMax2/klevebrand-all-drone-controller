@@ -1,10 +1,11 @@
 #ifndef GYRO_PID_H
 #define GYRO_PID_H
 
-#include <Arduino.h>
 #include "pid_optimizer.h"
 #include "pid.h"
 #include "pid_yaw_compass.h"
+
+using namespace std;
 
 class GyroPid
 {
@@ -32,9 +33,6 @@ public:
 
     void updateIntegral(float gyro_roll, float roll_desired_angle, float gyro_pitch, float pitch_desired_angle, float gyro_yaw, float yaw_desired_angle);
 
-    void printPid(float gyro_roll, float roll_desired_angle, float gyro_pitch, float pitch_desired_angle, float gyro_yaw, float yaw_desired_angle);
-    void printConstants();
-
     float getRollKp();
     float getRollKi();
     float getRollKd();
@@ -47,9 +45,9 @@ public:
     float getYawKi();
     float getYawKd();
 
-    void runRollOptimizer(float gyro_roll, float roll_desired_angle);
-    void runPitchOptimizer(float gyro_pitch, float pitch_desired_angle);
-    void runYawOptimizer(float gyro_yaw, float yaw_desired_angle);
+    void runRollOptimizer(float gyro_roll, float roll_desired_angle, long timestamp_milliseconds);
+    void runPitchOptimizer(float gyro_pitch, float pitch_desired_angle, long timestamp_millisecondse);
+    void runYawOptimizer(float gyro_yaw, float yaw_desired_angle, long timestamp_millisecondse);
 
     void savePitchError(float gyro_pitch, float pitch_desired_angle);
     void saveRollError(float gyro_roll, float roll_desired_angle);

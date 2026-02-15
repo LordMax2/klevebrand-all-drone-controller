@@ -1,9 +1,4 @@
-#include "Arduino.h"
-
-void setup() {
-
-}
-
-void loop() {
-
+int main()
+{
+    return 0;
 }

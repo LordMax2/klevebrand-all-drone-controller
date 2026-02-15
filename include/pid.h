@@ -1,8 +1,9 @@
 #ifndef THROTTLE_PID_H
 #define THROTTLE_PID_H
 
-#include <Arduino.h>
 #include "pid_optimizer.h"
+
+using namespace std;
 
 class Pid
 {
@@ -19,14 +20,11 @@ public:
 
     void updateIntegral(float current, float desired);
 
-    void printPid(float current, float desired);
-    void printConstants();
-
     float getKp();
     float getKi();
     float getKd();
 
-    void runOptimizer(float current, float desired);
+    void runOptimizer(float current, float desired, long timestamp_milliseconds);
 
     void saveError(float current, float desired);
 
