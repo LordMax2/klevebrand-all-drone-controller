@@ -7,7 +7,7 @@
  *
  */
 
-#include "pid_optimizer.h"
+#include "pid_optimizer.hpp"
 
 PidOptimizer::PidOptimizer(float initial_kp, float initial_ki, float initial_kd)
 {

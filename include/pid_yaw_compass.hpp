@@ -1,7 +1,7 @@
 #ifndef PID_YAW_COMPASS_H
 #define PID_YAW_COMPASS_H
 
-#include "pid.h"
+#include "pid.hpp"
 
 class PidYawCompass : public Pid
 {
@@ -16,7 +16,7 @@ public:
     static float absoluteCompassError(float current, float desired)
     {
         auto error = fmod((current + 180), 360) - fmod((desired + 180), 360);
-        float absolute_error = min(abs(error), 360 - abs(error));
+        float absolute_error = fmin(fabs(error), 360 - fabs(error));
 
         if (error < 0)
         {

@@ -1,7 +1,7 @@
 #ifndef TEMPLATE_PID_REPOSITORY_H
 #define TEMPLATE_PID_REPOSITORY_H
 
-#include "pid_constants.h"
+#include "pid_constants.hpp"
 
 class BasePidRepository
 {

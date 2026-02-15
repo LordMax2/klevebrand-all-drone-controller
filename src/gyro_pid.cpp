@@ -1,4 +1,4 @@
-#include "gyro_pid.h"
+#include "gyro_pid.hpp"
 
 void GyroPid::reset()
 {

@@ -10,6 +10,8 @@
 #ifndef PID_OPTIMIZER_H
 #define PID_OPTIMIZER_H
 
+#include <math.h>
+
 #define TRIAL_DURATION_MILLISECONDS 200 
 
 using namespace std;

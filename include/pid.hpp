@@ -1,7 +1,8 @@
 #ifndef THROTTLE_PID_H
 #define THROTTLE_PID_H
 
-#include "pid_optimizer.h"
+#include "pid_optimizer.hpp"
+#include <math.h>
 
 using namespace std;
 

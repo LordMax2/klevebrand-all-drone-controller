@@ -5,7 +5,7 @@
 #include "base_drone_gyro.h"
 #include "base_pid_repository.h"
 #include "base_hardware_processor.h"
-#include "gyro_pid.h"
+#include "gyro_pid.hpp"
 #include "flight_mode.h"
 
 /*

@@ -1,9 +1,9 @@
 #ifndef GYRO_PID_H
 #define GYRO_PID_H
 
-#include "pid_optimizer.h"
-#include "pid.h"
-#include "pid_yaw_compass.h"
+#include "pid_optimizer.hpp"
+#include "pid.hpp"
+#include "pid_yaw_compass.hpp"
 
 using namespace std;
 
