@@ -133,8 +133,6 @@ public:
       setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, true,
                       pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
                       pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
-
-      pid_constants.print();
     }
     else
     {
@@ -164,8 +162,6 @@ public:
       setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, false,
                       pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
                       pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
-
-      pid_constants.print();
     }
     else
     {

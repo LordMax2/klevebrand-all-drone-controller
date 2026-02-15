@@ -91,7 +91,7 @@ long PidOptimizer::randomLimited(long min_value, long max_value)
     {
         return 0;
     }
-    return (random() % diff) + min_value;
+    return (rand() % diff) + min_value;
 }
 
 long PidOptimizer::score()
