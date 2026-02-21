@@ -88,9 +88,7 @@ public:
   {
     bool transmitter_lost_connection = processor->millisecondsTimestamp() - _throttle_set_timestamp >= _transmition_timeout_definition_milliseconds;
 
-    bool gyro_lost_connection = processor->millisecondsTimestamp() - gyro->timestampMilliseconds() >= _transmition_timeout_definition_milliseconds;
-
-    return transmitter_lost_connection || gyro_lost_connection;
+    return transmitter_lost_connection;
   }
   void setThrottle(float value)
   {
@@ -133,8 +131,6 @@ public:
       setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, true,
                       pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
                       pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
-
-      pid_constants.print();
     }
     else
     {
@@ -164,8 +160,6 @@ public:
       setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, false,
                       pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
                       pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
-
-      pid_constants.print();
     }
     else
     {
@@ -223,11 +217,11 @@ public:
   {
     return _is_motors_enabled;
   }
-  void runPidOptimizer()
+  void runPidOptimizer(long timestamp_milliseconds)
   {
-    pid.runRollOptimizer(gyro->roll(), roll_desired_angle);
-    pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle);
-    pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle);
+    pid.runRollOptimizer(gyro->roll(), roll_desired_angle, timestamp_milliseconds);
+    pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle, timestamp_milliseconds);
+    //pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle, timestamp_milliseconds);
   }
 
   void setYawCompassMode(bool yaw_compass_mode)
