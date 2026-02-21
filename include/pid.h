@@ -1,8 +1,8 @@
 #ifndef THROTTLE_PID_H
 #define THROTTLE_PID_H
 
-#include <Arduino.h>
-#include "pid_optimizer.h"
+#include "pid_optimizer_simulated_annealing.h"
+#include <math.h>
 
 class Pid
 {
@@ -18,22 +18,20 @@ public:
     void reset();
 
     void updateIntegral(float current, float desired);
-
-    void printPid(float current, float desired);
-    void printConstants();
+    void resetIntegral();
 
     float getKp();
     float getKi();
     float getKd();
 
-    void runOptimizer(float current, float desired);
+    void runOptimizer(float current, float desired, long timestamp_milliseconds);
 
     void saveError(float current, float desired);
 
     float pid(float current, float desired);
 
     float pid_max;
-    PidOptimizer pid_optimizer;
+    PidOptimizerSimulatedAnnealing pid_optimizer;
 
     virtual float error(float current, float desired);
     float previous_error = 0;
@@ -45,6 +43,8 @@ public:
     float _kp;
     float _ki;
     float _kd;
+
+    float fconstrain(float input, float min_value, float max_value);
 };
 
 #endif // THROTTLE_PID_H

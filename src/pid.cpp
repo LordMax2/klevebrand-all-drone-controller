@@ -2,17 +2,13 @@
 
 void Pid::reset()
 {
-    pid_optimizer = PidOptimizer(_kp, _ki, _kd);
+    pid_optimizer = PidOptimizerSimulatedAnnealing(_kp, _ki, _kd);
 }
 
-void Pid::printConstants()
+void Pid::resetIntegral()
 {
-    Serial.print("Throttle  PID Constants - Kp: ");
-    Serial.print(_kp);
-    Serial.print(", Ki: ");
-    Serial.print(_ki);
-    Serial.print(", Kd: ");
-    Serial.println(_kd);
+    pid_i = 0;
+    previous_error = 0;
 }
 
 float Pid::getKp()
@@ -30,11 +26,11 @@ float Pid::getKd()
     return pid_optimizer.getKd();
 }
 
-void Pid::runOptimizer(float current, float desired)
+void Pid::runOptimizer(float current, float desired, long timstamp_milliseconds)
 {
     float current_error = error(current, desired);
 
-    pid_optimizer.run(current_error);
+    pid_optimizer.run(current_error, timstamp_milliseconds);
 }
 
 float Pid::error(float current, float desired)
@@ -59,16 +55,15 @@ float Pid::pidD(float current, float desired)
 
 float Pid::pid(float current, float desired)
 {
-    return constrain(pidP(current, desired) + pid_i + pidD(current, desired), -pid_max, pid_max);
-}
-
-void Pid::printPid(float current_, float desired)
-{
-    Serial.print("Throttle  PID: ");
-    Serial.println(pid(current_, desired));
+    return fconstrain(pidP(current, desired) + pid_i + pidD(current, desired), -pid_max, pid_max);
 }
 
 void Pid::updateIntegral(float current, float desired)
 {
-    pid_i = constrain(pid_i + (getKi() * error(current, desired)), -pid_max, pid_max);
+    pid_i = fconstrain(pid_i + (getKi() * error(current, desired)), -pid_max, pid_max);
+}
+
+float Pid::fconstrain(float input, float min_value, float max_value)
+{
+    return input < min_value ? min_value : (input > max_value ? max_value : input);
 }
