@@ -13,17 +13,16 @@ public:
         float pitch_kp, float pitch_ki, float pitch_kd,
         float roll_kp, float roll_ki, float roll_kd,
         float pid_max) : pid_max(pid_max),
-                         pid_yaw(yaw_kp, yaw_ki, yaw_kd, pid_max),
                          pid_pitch(pitch_kp, pitch_ki, pitch_kd, pid_max),
                          pid_roll(roll_kp, roll_ki, roll_kd, pid_max)
     {
         if (yaw_compass_mode)
         {
-            pid_yaw = PidYawCompass(yaw_kp, yaw_ki, yaw_kd, pid_max);
+            pid_yaw = new PidYawCompass(yaw_kp, yaw_ki, yaw_kd, pid_max);
         }
         else
         {
-            pid_yaw = Pid(yaw_kp, yaw_ki, yaw_kd, pid_max);
+            pid_yaw = new Pid(yaw_kp, yaw_ki, yaw_kd, pid_max);
         }
     };
 
@@ -60,18 +59,18 @@ public:
     {
         if (compass_mode)
         {
-            pid_yaw = PidYawCompass(0, 0, 0, pid_max);
+            pid_yaw = new PidYawCompass(0, 0, 0, pid_max);
         }
         else
         {
-            pid_yaw = Pid(0, 0, 0, pid_max);
+            pid_yaw = new Pid(0, 0, 0, pid_max);
         }
     }
 
 private:
     float pid_max;
 
-    Pid pid_yaw;
+    Pid* pid_yaw;
     Pid pid_pitch;
     Pid pid_roll;
 };

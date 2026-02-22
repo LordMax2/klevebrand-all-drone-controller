@@ -137,7 +137,7 @@ public:
       setPidConstants(0.125, 0.001, 2.5, true, 0.125, 0.001, 0.25, 0.05, 0.0005, 0.2);
     }
 
-    processor->print("FLIGHT MODE AUTOLEVEL");
+    processor->print("FLIGHT MODE AUTOLEVEL\n");
   }
   void setFlightModeAcro()
   {
@@ -166,7 +166,7 @@ public:
       setPidConstants(0.04, 0.002, 0.6, false, 0.04, 0.002, 0.6, 0.04, 0.002, 0.6);
     }
 
-    processor->print("FLIGHT MODE ACRO");
+    processor->print("FLIGHT MODE ACRO\n");
   }
   void enableMotors()
   {
