@@ -16,16 +16,11 @@ public:
 
     static float absoluteCompassError(float current, float desired)
     {
-        auto error = fmod((current + 180), 360) - fmod((desired + 180), 360);
-        float absolute_error = fmin(fabs(error), 360 - fabs(error));
+        float raw_error = current - desired;
 
-        if (error < 0)
-        {
-            return -1 * absolute_error;
-        }
-
-        return absolute_error;
+        return fmod(raw_error + 540.0f, 360.0f) - 180.0f;
     }
+
 };
 
 #endif // PID_YAW_COMPASS
