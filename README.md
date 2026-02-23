@@ -1,29 +1,33 @@
-# Klevebrand all drone controller
+# Klevebrand All-Drone Controller
 
-An open-source C++ drone controller for all types of drones, designed with a the vision: **it doesnt need to be harder than it needs to be**. Optimized for AVR microcontrollers like the ATmega2560, this project provides a lightweight yet powerful foundation for any drone.
+Open-source C++ drone controller library for **all kinds of drones** — that is controlled via a gyroscope/IMU.  
+Built around one simple idea: **it doesn't need to be harder than it needs to be**.
 
-Its standout feature is a **self-calibrating PID system** using Black Box optimization, which makes the integration process with the quadcopter much easier!  
+Fully cross-platform: runs on basically any microcontroller and also natively on Windows for simulation & testing.
+
+The project gives you a lightweight but powerful foundation for any drone.  
+Its biggest strength is the **self-calibrating PID system** powered by black-box optimization — it makes integrating stable control (whether altitude, attitude, depth, rate loops… or pretty much any other PID use-case) dramatically easier.
 
 ## Features
 
-*  **High-performance C++ code:** Written in clean, simple, easy to understand, modern C++.
-*  **Optimized for AVR Microcontrollers:** Specifically designed for the ATmega2560, but works with any AVR controller with sufficient RAM.
-*  **Precise Motion Tracking:** Integrates the high-quality **BNO085** 9-DOF IMU (gyroscope, accelerometer and magnetometer).
-*  **Self-Calibrating PID Stabilization:** **Black Box optimization** with **Simulated Annealing** that automatically tune PID values, eliminating the need for manual calibration for different drones/motors/batteries. And as a special caveat, it gets better the more you fly.
-*  **Radio Support:** Compatible with standard PWM receivers and 4G/LTE modems for long-range control.
+- **High-performance C++ code** — clean, simple, easy to read, modern C++
+- **Cross-platform** — works on microcontrollers of all kinds + native Windows support for simulation and testing
+- **Abstract sensor layer** — the core library focuses purely on the drone control logic and PID math. We include a ready-to-use implementation for the **BNO085** gyroscope, but swapping in any other sensor is intentionally kept very simple.
+- **Self-Calibrating PID Stabilization** — uses **black-box optimization** + **Simulated Annealing** to automatically tune PID gains  
+  → no more manual tweaking for different frames, motors, batteries or propellers  
+  → and the longer you fly, the better it gets
 
-## Artificial inteligence for the PID calibration
+## Artificial Intelligence for PID Calibration
 
-Tuning the PID controller for a drone to get a stable and reliable flight is a pretty time consuming, difficult and challenging task. This project offers a solution that automates the process, making it far simpler and more efficient and better.
+Tuning a drone’s PID controller to achieve stable, reliable flight is time-consuming, difficult, and often frustrating.
 
-Using a Simulated Annealing algorithm, the drone controller can autonomously run tests and intelligently adjust its PID parameters. This "Black Box" tuning method finds a near-optimal PID configuration with minimal manual input, ensuring a stable and responsive flight.
+This project removes most of that pain.
 
-Furthermore, this optimization runs continuously during flight, adapting to environmental changes like wind, rain, or motor defects. It constantly seeks the ideal configuration to keep the drone stable and maneuverable in real time.
+Using a **Simulated Annealing** algorithm, the controller autonomously performs small test movements and intelligently adjusts its own PID parameters. This black-box approach discovers a near-optimal tuning with almost no manual work — giving you stable and crisp response much faster.
 
-And the real caveat, is that it adapts to the most stable configuration, based on your flight style.
+The optimization keeps running **in the background during normal flight**, therefore it quietly adapts to changing conditions — wind, rain, temperature, aging motors, different battery voltage, propeller wear — whatever. 
+Which then technically, over time, converges toward the tuning that feels **best for your personal flying style**.
 
 ## License
 
-This project is licensed under the MIT `LICENSE`. 
-
-
+MIT License — see the `LICENSE` file.
