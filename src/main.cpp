@@ -1,4 +1,14 @@
 #include "Arduino.h"
+#include "base_drone_gyro.h"
+#include "base_drone_motor.h"
+#include "base_hardware_processor.h"
+#include "base_pid_repository.h"
+#include "gyro_pid.h"
+#include "pid_optimizer_simulated_annealing.h"
+#include "pid_yaw_compass.h"
+#include "template_gyro_drone.h"
+#include "flight_mode.h"
+#include "pid_constants.h"
 
 void setup() {
 
