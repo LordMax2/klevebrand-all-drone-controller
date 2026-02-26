@@ -1,1 +1,0 @@
-#include "template_gyro_drone.h"
