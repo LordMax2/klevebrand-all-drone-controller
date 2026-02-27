@@ -44,33 +44,44 @@ public:
   virtual void stopMotors();
   virtual void setupMotors();
 
-  void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd);
-  void printGyro();
+  bool updateGyro();
   float yaw();
   float pitch();
   float roll();
+  void printGyro();
+
   void printPid();
   void printPidConstants();
   void resetPid();
+  void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw);
+  void savePidErrors(float gyro_roll, float gyro_pitch, float gyro_yaw);
+  void runPidOptimizer(long timestamp_milliseconds);
+
+  /*
+   * Yaw compass mode means that the yaw PID will be able to translate the gyroscope yaw angle to a compass angle, because they differ a bit, IMU output is usually -180 to +180, which makes things a bit math:ey.
+   * Use this only when you use something like auto-level mode, and not in racing angle-rate mote. 
+   */
+  void setYawCompassMode(bool yaw_compass_mode);
+  void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd);
+  void persistPidConstants();
+
   bool hasLostConnection();
+
   void setThrottle(float value);
   void setDesiredYawAngle(float value);
   void setDesiredPitchAngle(float value);
   void setDesiredRollAngle(float value);
   void setFlightModeAutoLevel();
   void setFlightModeAcro();
+
   void enableMotors();
   void disableMotors();
-  FlightMode_t getFlightMode();
-  void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw);
-  bool updateGyro();
-  void savePidErrors(float gyro_roll, float gyro_pitch, float gyro_yaw);
-  long delayToKeepFeedbackLoopHz(long start_micros_timestamp);
-  void setFlightMode(FlightMode_t flight_mode);
   bool isMotorsEnabled();
-  void runPidOptimizer(long timestamp_milliseconds);
-  void setYawCompassMode(bool yaw_compass_mode);
-  void persistPidConstants();
+
+  FlightMode_t getFlightMode();
+  void setFlightMode(FlightMode_t flight_mode);
+
+  long delayToKeepFeedbackLoopHz(long start_micros_timestamp);
 
 private:
   FlightMode_t _flight_mode;
