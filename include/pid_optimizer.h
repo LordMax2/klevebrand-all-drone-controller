@@ -19,6 +19,12 @@
 using namespace std;
 
 class PidOptimizer {
+private:
+    float best_kp;
+    float best_ki;
+    float best_kd;
+    long best_score = 1e10;
+
 public:
     PidOptimizer(float default_kp, float default_ki, float default_kd);
 
@@ -28,15 +34,20 @@ public:
     float getKi() { return current_ki; }
     float getKd() { return current_kd; }
 
+    virtual float getBestKp() { return best_kp; }
+    virtual float getBestKi() { return best_ki; }
+    virtual float getBestKd() { return best_kd; }
+
+    virtual void setBestKp(float kp) { best_kp = kp; }
+    virtual void setBestKi(float ki) { best_ki = ki; }
+    virtual void setBestKd(float kd) { best_kd = kd; }
+
     float current_kp;
     float current_ki;
     float current_kd;
-
-    float best_kp;
-    float best_ki;
-    float best_kd;
     
-    float previous_score;
+    virtual void setBestScore(long score) { best_score = score; };
+    virtual long getBestScore() { return best_score; };
 
     PidOptimizerState state;
     unsigned long trial_start_time;

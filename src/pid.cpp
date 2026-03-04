@@ -2,7 +2,7 @@
 
 void Pid::reset()
 {
-    pid_optimizer = PidOptimizerSimulatedAnnealing(_kp, _ki, _kd);
+    pid_optimizer = PidOptimizer(_kp, _ki, _kd);
 }
 
 void Pid::resetIntegral()

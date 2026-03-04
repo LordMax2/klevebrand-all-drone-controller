@@ -15,31 +15,26 @@ PidOptimizer::PidOptimizer(float initial_kp, float initial_ki, float initial_kd)
     current_ki = initial_ki;
     current_kd = initial_kd;
 
-    best_kp = initial_kp;
-    best_ki = initial_ki;
-    best_kd = initial_kd;
-
-    previous_score = 1e10;
+    setBestKp(initial_kp);
+    setBestKi(initial_ki);
+    setBestKd(initial_kd);
 
     state = IDLE;
 }
 
 void PidOptimizer::run(float current_error, long timestamp_milliseconds)
 {
-    switch (state)
-    {
+    switch (state) {
     case IDLE:
         startTrial(timestamp_milliseconds);
         break;
 
     case MEASURING:
-        if (timestamp_milliseconds - trial_start_time < TRIAL_DURATION_MILLISECONDS)
-        {
-            error_sum_squared += pow(current_error, 2);
+        if (timestamp_milliseconds - trial_start_time < TRIAL_DURATION_MILLISECONDS) {
+            error_sum_squared += pow(fabs(current_error), 2);
             error_measurement_count++;
         }
-        else
-        {
+        else {
             // If we dont get enough readings, restart the trial
             if (error_measurement_count < ((TRIAL_DURATION_MILLISECONDS / 1000) * 200) * 0.9) // TODO: Replace hardcoded 200 with the Flight Controller hz frequency, and the acceptance percentage deviation.
             {
@@ -61,17 +56,17 @@ void PidOptimizer::run(float current_error, long timestamp_milliseconds)
 
 void PidOptimizer::startTrial(long timestamp_milliseconds)
 {
-    current_kp = best_kp;
-    current_ki = best_ki;
-    current_kd = best_kd;
+    current_kp = getBestKp();
+    current_ki = getBestKi();
+    current_kd = getBestKd();
 
     current_kp += randomLimited(-5, 5) / 10.0f;
-    current_ki += randomLimited(-3, 3) / 1000.0f;
+    current_ki += randomLimited(-3, 3) / 10000.0f;
     current_kd += randomLimited(-10, 10) / 1.0f;
 
-    current_kp = fconstrain(current_kp, 0.1f, 1.0f);
-    current_ki = fconstrain(current_ki, 0.0001f, 0.005f);
-    current_kd = fconstrain(current_kd, 0.1f, 20.0f);
+    current_kp = fconstrain(current_kp, 0.1f, 10.0f);
+    current_ki = fconstrain(current_ki, 0.00001f, 0.005f);
+    current_kd = fconstrain(current_kd, 0.1f, 100.0f);
 
     error_sum_squared = 0;
     error_measurement_count = 0;
@@ -81,14 +76,12 @@ void PidOptimizer::startTrial(long timestamp_milliseconds)
 
 long PidOptimizer::randomLimited(long min_value, long max_value)
 {
-    if (min_value >= max_value)
-    {
+    if (min_value >= max_value) {
         return min_value;
     }
     long diff = max_value - min_value;
 
-    if (max_value == 0)
-    {
+    if (max_value == 0) {
         return 0;
     }
     return (rand() % diff) + min_value;
@@ -106,21 +99,32 @@ void PidOptimizer::evaluateTrial()
 {
     long current_score = score();
 
-    float factor = 0.9f;
+    if (current_score == 0)
+        return;
 
-    // If current score is "worse" than the previous score, reverse the direction of the values
-    if (current_score > previous_score)
-    {
-        current_kp = (current_kp - best_kp) * -1 + best_kp;
-        current_ki = (current_ki - best_ki) * -1 + best_ki;
-        current_kd = (current_kd - best_kd) * -1 + best_kd;
+    if (current_score < getBestScore()) {
+        setBestScore(current_score);
+
+        setBestKp(current_kp);
+        setBestKi(current_ki);
+        setBestKd(current_kd);
     }
+    else {
+        float temperature = 0.1f; // Diable temprature, dangerous for real flight, cost new propellers hehe
 
-    best_kp = best_kp * factor + current_kp * (1.0f - factor);
-    best_ki = best_ki * factor + current_ki * (1.0f - factor);
-    best_kd = best_kd * factor + current_kd * (1.0f - factor);
+        if (temperature == 0.0f)
+            return;
 
-    previous_score = current_score;
+        float acceptance_probability = exp(-(current_score - getBestScore()) / temperature);
+
+        if (randomLimited(0.0, 1000.0) / 1000.0 < acceptance_probability) {
+            setBestScore(current_score);
+
+            setBestKp(current_kp);
+            setBestKi(current_ki);
+            setBestKd(current_kd);
+        }
+    }
 }
 
 float PidOptimizer::coolingFactor(long timestamp_milliseconds)

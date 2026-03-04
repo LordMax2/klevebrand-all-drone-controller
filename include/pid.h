@@ -1,7 +1,7 @@
 #ifndef THROTTLE_PID_H
 #define THROTTLE_PID_H
 
-#include "pid_optimizer_simulated_annealing.h"
+#include "pid_optimizer.h"
 #include <math.h>
 
 class Pid
@@ -31,7 +31,7 @@ public:
     float pid(float current, float desired);
 
     float pid_max;
-    PidOptimizerSimulatedAnnealing pid_optimizer;
+    PidOptimizer pid_optimizer;
 
     virtual float error(float current, float desired);
     float previous_error = 0;
