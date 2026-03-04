@@ -14,8 +14,7 @@ public:
         float roll_kp, float roll_ki, float roll_kd,
         float pid_max) : _pid_max(pid_max),
                          _pid_pitch(pitch_kp, pitch_ki, pitch_kd, pid_max),
-                         _pid_roll(roll_kp, roll_ki, roll_kd, pid_max),
-                         _pid_optimizer_roll_pitch(pitch_kp, pitch_ki, pitch_kd)
+                         _pid_roll(roll_kp, roll_ki, roll_kd, pid_max)
     {
         if (yaw_compass_mode)
         {
@@ -74,8 +73,6 @@ private:
     Pid* _pid_yaw;
     Pid _pid_pitch;
     Pid _pid_roll;
-
-    PidOptimizer _pid_optimizer_roll_pitch;
 };
 
 #endif // GYRO_PID_H

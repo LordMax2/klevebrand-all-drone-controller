@@ -22,12 +22,12 @@ void GyroPid::runYawOptimizer(float gyro_yaw, float yaw_desired_angle, long time
 
 void GyroPid::runPitchOptimizer(float gyro_pitch, float pitch_desired_angle, long timestamp_milliseconds)
 {
-  _pid_optimizer_roll_pitch.run(_pid_pitch.error(gyro_pitch, pitch_desired_angle), timestamp_milliseconds);
+  _pid_pitch.runOptimizer(gyro_pitch, pitch_desired_angle, timestamp_milliseconds);
 }
 
 void GyroPid::runRollOptimizer(float gyro_roll, float roll_desired_angle, long timestamp_milliseconds)
 {
-  _pid_optimizer_roll_pitch.run(_pid_roll.error(gyro_roll, roll_desired_angle), timestamp_milliseconds);
+  _pid_roll.runOptimizer(gyro_roll, roll_desired_angle, timestamp_milliseconds);
 }
 
 void GyroPid::saveYawError(float gyro_yaw, float yaw_desired_angle)
@@ -62,32 +62,32 @@ float GyroPid::getYawKd()
 
 float GyroPid::getPitchKp()
 {
-  return _pid_optimizer_roll_pitch.getKp();
+  return _pid_pitch.getKp();
 }
 
 float GyroPid::getPitchKi()
 {
-  return _pid_optimizer_roll_pitch.getKi();
+  return _pid_pitch.getKi();
 }
 
 float GyroPid::getPitchKd()
 {
-  return _pid_optimizer_roll_pitch.getKd();
+  return _pid_pitch.getKd();
 }
 
 float GyroPid::getRollKp()
 {
-  return _pid_optimizer_roll_pitch.getKp();
+  return _pid_roll.getKp();
 }
 
 float GyroPid::getRollKi()
 {
-  return _pid_optimizer_roll_pitch.getKi();
+  return _pid_roll.getKi();
 }
 
 float GyroPid::getRollKd()
 {
-  return _pid_optimizer_roll_pitch.getKd();
+  return _pid_roll.getKd();
 }
 
 float GyroPid::rollPid(float gyro_roll, float roll_desired_angle)

@@ -249,7 +249,25 @@ void TemplateGyroDrone<SomeGyroPidType>::runPidOptimizer(long timestamp_millisec
 {
     pid.runRollOptimizer(gyro->roll(), roll_desired_angle, timestamp_milliseconds);
     pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle, timestamp_milliseconds);
-    // pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle, timestamp_milliseconds);
+    pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle, timestamp_milliseconds);
+}
+
+template <class SomeGyroPidType>
+void TemplateGyroDrone<SomeGyroPidType>::runYawPidOptimizer(long timestamp_milliseconds)
+{
+    pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle, timestamp_milliseconds);
+}
+
+template <class SomeGyroPidType>
+void TemplateGyroDrone<SomeGyroPidType>::runPitchPidOptimizer(long timestamp_milliseconds)
+{
+    pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle, timestamp_milliseconds);
+}
+
+template <class SomeGyroPidType>
+void TemplateGyroDrone<SomeGyroPidType>::runRollPidOptimizer(long timestamp_milliseconds)
+{
+    pid.runRollOptimizer(gyro->roll(), roll_desired_angle, timestamp_milliseconds);
 }
 
 template <class SomeGyroPidType>

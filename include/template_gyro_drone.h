@@ -56,6 +56,9 @@ public:
   void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw);
   void savePidErrors(float gyro_roll, float gyro_pitch, float gyro_yaw);
   void runPidOptimizer(long timestamp_milliseconds);
+  void runYawPidOptimizer(long timestamp_milliseconds);
+  void runPitchPidOptimizer(long timestamp_milliseconds);
+  void runRollPidOptimizer(long timestamp_milliseconds);
 
   /*
    * Yaw compass mode means that the yaw PID will be able to translate the gyroscope yaw angle to a compass angle, because they differ a bit, IMU output is usually -180 to +180, which makes things a bit math:ey.
