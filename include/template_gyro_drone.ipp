@@ -7,60 +7,17 @@ TemplateGyroDrone<SomeGyroPidType>::TemplateGyroDrone(
     int pid_persist_interval_milliseconds,
     BaseHardwareProcessor *processor,
     BaseDroneGyro *gyro,
-    BasePidRepository *pid_repository) : pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0)
+    BasePidRepository *pid_repository) : BaseDrone(transmittion_timeout_definition_milliseconds, feedback_loop_hz, processor, gyro), pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0)
 {
-    this->_transmition_timeout_definition_milliseconds = transmittion_timeout_definition_milliseconds;
-    this->_feedback_loop_hz = feedback_loop_hz;
     this->_pid_persist_interval_milliseconds = pid_persist_interval_milliseconds;
-    this->processor = processor;
-    this->gyro = gyro;
     this->pid_repository = pid_repository;
 };
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setup() {};
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::run() {};
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw) {};
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::stopMotors() {};
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setupMotors() {};
 
 template <class SomeGyroPidType>
 void TemplateGyroDrone<SomeGyroPidType>::setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd)
 {
     pid = SomeGyroPidType(yaw_kp, yaw_ki, yaw_kd, yaw_compass_mode, pitch_kp, pitch_ki, pitch_kd, roll_kp, roll_ki, roll_kd);
 };
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::printGyro()
-{
-    gyro->printYawPitchRoll();
-}
-
-template <class SomeGyroPidType>
-float TemplateGyroDrone<SomeGyroPidType>::yaw()
-{
-    return gyro->yaw();
-}
-
-template <class SomeGyroPidType>
-float TemplateGyroDrone<SomeGyroPidType>::pitch()
-{
-    return gyro->pitch();
-}
-
-template <class SomeGyroPidType>
-float TemplateGyroDrone<SomeGyroPidType>::roll()
-{
-    return gyro->roll();
-}
 
 template <class SomeGyroPidType>
 void TemplateGyroDrone<SomeGyroPidType>::printPid()
@@ -78,42 +35,6 @@ template <class SomeGyroPidType>
 void TemplateGyroDrone<SomeGyroPidType>::resetPid()
 {
     pid.reset();
-}
-
-template <class SomeGyroPidType>
-bool TemplateGyroDrone<SomeGyroPidType>::hasLostConnection()
-{
-    bool transmitter_lost_connection = processor->millisecondsTimestamp() - _throttle_set_timestamp >= _transmition_timeout_definition_milliseconds;
-
-    return transmitter_lost_connection;
-}
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setThrottle(float value)
-{
-    throttle = value;
-    _throttle_set_timestamp = processor->millisecondsTimestamp();
-}
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setDesiredYawAngle(float value)
-{
-    yaw_desired_angle = value;
-    _yaw_desired_angle_set_timestamp = processor->millisecondsTimestamp();
-}
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setDesiredPitchAngle(float value)
-{
-    pitch_desired_angle = value;
-    _desired_pitch_angle_set_timestamp = processor->millisecondsTimestamp();
-}
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setDesiredRollAngle(float value)
-{
-    roll_desired_angle = value;
-    _desired_roll_angle_set_timestamp = processor->millisecondsTimestamp();
 }
 
 template <class SomeGyroPidType>
@@ -179,32 +100,9 @@ void TemplateGyroDrone<SomeGyroPidType>::setFlightModeAcro()
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::enableMotors()
-{
-    _is_motors_enabled = true;
-}
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::disableMotors()
-{
-    _is_motors_enabled = false;
-}
-
-template <class SomeGyroPidType>
-FlightMode_t TemplateGyroDrone<SomeGyroPidType>::getFlightMode()
-{
-    return _flight_mode;
-}
-
-template <class SomeGyroPidType>
 void TemplateGyroDrone<SomeGyroPidType>::calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
 {
     pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle);
-}
-template <class SomeGyroPidType>
-bool TemplateGyroDrone<SomeGyroPidType>::updateGyro()
-{
-    return gyro->reload();
 }
 
 template <class SomeGyroPidType>
@@ -213,35 +111,6 @@ void TemplateGyroDrone<SomeGyroPidType>::savePidErrors(float gyro_roll, float gy
     pid.savePitchError(gyro_pitch, pitch_desired_angle);
     pid.saveRollError(gyro_roll, roll_desired_angle);
     pid.saveYawError(gyro_yaw, yaw_desired_angle);
-}
-
-template <class SomeGyroPidType>
-long TemplateGyroDrone<SomeGyroPidType>::delayToKeepFeedbackLoopHz(long start_micros_timestamp)
-{
-    long current_micros_timestamp = processor->microsecondsTimestamp();
-
-    long microseconds_feedback_loop_should_take = 1000000 / _feedback_loop_hz;
-
-    long microseconds_left_for_loop = microseconds_feedback_loop_should_take - (current_micros_timestamp - start_micros_timestamp);
-
-    if (microseconds_left_for_loop > 0 && microseconds_left_for_loop < microseconds_feedback_loop_should_take)
-    {
-        return microseconds_left_for_loop;
-    }
-
-    return 0;
-}
-
-template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setFlightMode(FlightMode_t flight_mode)
-{
-    _flight_mode = flight_mode;
-}
-
-template <class SomeGyroPidType>
-bool TemplateGyroDrone<SomeGyroPidType>::isMotorsEnabled()
-{
-    return _is_motors_enabled;
 }
 
 template <class SomeGyroPidType>
