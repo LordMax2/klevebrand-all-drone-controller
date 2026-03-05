@@ -1,9 +1,17 @@
 name: PlatformIO upload package
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
 
 jobs:
   build-and-publish:
+    if: github.event_name == 'push' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
