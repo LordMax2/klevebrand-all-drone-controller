@@ -14,14 +14,14 @@
  * The SomeDroneGyroType should abstract away the hardware of an IMU and just implement a few interface methods.
  */
 template <class SomeGyroPidType>
-class TemplateGyroDrone : public BaseDrone
+class TemplateDrone : public BaseDrone
 {
 public:
   /*
    * Create a drone
    * Default parameters that work are: 500, 200, 10000
    */
-  TemplateGyroDrone(
+  TemplateDrone(
       float transmittion_timeout_definition_milliseconds,
       int feedback_loop_hz,
       int pid_persist_interval_milliseconds,
@@ -58,6 +58,6 @@ private:
   unsigned long _pid_persist_interval_milliseconds;
 };
 
-#include "template_gyro_drone.ipp"
+#include "template_drone.ipp"
 
 #endif // BASE_FOUR_MOTOR_DRONE_H

@@ -1,7 +1,7 @@
-#include "template_gyro_drone.h"
+#include "template_drone.h"
 
 template <class SomeGyroPidType>
-TemplateGyroDrone<SomeGyroPidType>::TemplateGyroDrone(
+TemplateDrone<SomeGyroPidType>::TemplateDrone(
     float transmittion_timeout_definition_milliseconds,
     int feedback_loop_hz,
     int pid_persist_interval_milliseconds,
@@ -14,31 +14,31 @@ TemplateGyroDrone<SomeGyroPidType>::TemplateGyroDrone(
 };
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd)
+void TemplateDrone<SomeGyroPidType>::setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd)
 {
     pid = SomeGyroPidType(yaw_kp, yaw_ki, yaw_kd, yaw_compass_mode, pitch_kp, pitch_ki, pitch_kd, roll_kp, roll_ki, roll_kd);
 };
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::printPid()
+void TemplateDrone<SomeGyroPidType>::printPid()
 {
     pid.printPid(gyro->roll(), roll_desired_angle, gyro->pitch(), pitch_desired_angle, gyro->yaw(), yaw_desired_angle);
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::printPidConstants()
+void TemplateDrone<SomeGyroPidType>::printPidConstants()
 {
     pid.printConstants();
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::resetPid()
+void TemplateDrone<SomeGyroPidType>::resetPid()
 {
     pid.reset();
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setFlightModeAutoLevel()
+void TemplateDrone<SomeGyroPidType>::setFlightModeAutoLevel()
 {
     // Temprorary return early util I have connected the IMU's reset pin
     if (getFlightMode() == auto_level)
@@ -69,7 +69,7 @@ void TemplateGyroDrone<SomeGyroPidType>::setFlightModeAutoLevel()
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setFlightModeAcro()
+void TemplateDrone<SomeGyroPidType>::setFlightModeAcro()
 {
     // Temprorary return early util I have connected the IMU's reset pin
     if (getFlightMode() == acro)
@@ -100,13 +100,13 @@ void TemplateGyroDrone<SomeGyroPidType>::setFlightModeAcro()
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
+void TemplateDrone<SomeGyroPidType>::calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw)
 {
     pid.updateIntegral(gyro_roll, roll_desired_angle, gyro_pitch, pitch_desired_angle, gyro_yaw, yaw_desired_angle);
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::savePidErrors(float gyro_roll, float gyro_pitch, float gyro_yaw)
+void TemplateDrone<SomeGyroPidType>::savePidErrors(float gyro_roll, float gyro_pitch, float gyro_yaw)
 {
     pid.savePitchError(gyro_pitch, pitch_desired_angle);
     pid.saveRollError(gyro_roll, roll_desired_angle);
@@ -114,7 +114,7 @@ void TemplateGyroDrone<SomeGyroPidType>::savePidErrors(float gyro_roll, float gy
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::runPidOptimizer(long timestamp_milliseconds)
+void TemplateDrone<SomeGyroPidType>::runPidOptimizer(long timestamp_milliseconds)
 {
     pid.runRollOptimizer(gyro->roll(), roll_desired_angle, timestamp_milliseconds);
     pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle, timestamp_milliseconds);
@@ -122,31 +122,31 @@ void TemplateGyroDrone<SomeGyroPidType>::runPidOptimizer(long timestamp_millisec
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::runYawPidOptimizer(long timestamp_milliseconds)
+void TemplateDrone<SomeGyroPidType>::runYawPidOptimizer(long timestamp_milliseconds)
 {
     pid.runYawOptimizer(gyro->yaw(), yaw_desired_angle, timestamp_milliseconds);
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::runPitchPidOptimizer(long timestamp_milliseconds)
+void TemplateDrone<SomeGyroPidType>::runPitchPidOptimizer(long timestamp_milliseconds)
 {
     pid.runPitchOptimizer(gyro->pitch(), pitch_desired_angle, timestamp_milliseconds);
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::runRollPidOptimizer(long timestamp_milliseconds)
+void TemplateDrone<SomeGyroPidType>::runRollPidOptimizer(long timestamp_milliseconds)
 {
     pid.runRollOptimizer(gyro->roll(), roll_desired_angle, timestamp_milliseconds);
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::setYawCompassMode(bool yaw_compass_mode)
+void TemplateDrone<SomeGyroPidType>::setYawCompassMode(bool yaw_compass_mode)
 {
     pid.setYawCompassMode(yaw_compass_mode);
 }
 
 template <class SomeGyroPidType>
-void TemplateGyroDrone<SomeGyroPidType>::persistPidConstants()
+void TemplateDrone<SomeGyroPidType>::persistPidConstants()
 {
     if (processor->millisecondsTimestamp() - _last_pid_persist_timestamp_milliseconds >= _pid_persist_interval_milliseconds)
     {

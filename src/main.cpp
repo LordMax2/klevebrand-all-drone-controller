@@ -5,7 +5,7 @@
 #include "base_pid_repository.h"
 #include "gyro_pid.h"
 #include "pid_yaw_compass.h"
-#include "template_gyro_drone.h"
+#include "template_drone.h"
 #include "flight_mode.h"
 #include "pid_constants.h"
 
