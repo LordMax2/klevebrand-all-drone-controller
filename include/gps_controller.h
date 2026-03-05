@@ -8,9 +8,9 @@ class GpsController
 private:
 
 public:
-  GpsController();
+  GpsController() {};
 
-  void goTo(BaseDrone* drone, float latitude, float longitude, float altitude);
+  void goTo(BaseDrone* drone, float latitude, float longitude, float altitude) {};
 };
 
 #endif
