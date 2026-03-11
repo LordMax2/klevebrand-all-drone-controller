@@ -1,7 +1,5 @@
 #include "base_hardware_processor.h"
 
-BaseHardwareProcessor::BaseHardwareProcessor() {}
-
 void BaseHardwareProcessor::setup() {};
 
 unsigned long BaseHardwareProcessor::microsecondsTimestamp() { return 0; };

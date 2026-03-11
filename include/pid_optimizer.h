@@ -14,9 +14,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define TRIAL_DURATION_MILLISECONDS 3000 
-
-using namespace std;
+#define TRIAL_DURATION_MILLISECONDS 3000
 
 class PidOptimizer {
 private:
@@ -28,11 +26,13 @@ private:
 public:
     PidOptimizer(float default_kp, float default_ki, float default_kd);
 
+    virtual ~PidOptimizer() = default;
+
     void run(float current_error, long timestamp_milliseconds);
 
-    float getKp() { return current_kp; }
-    float getKi() { return current_ki; }
-    float getKd() { return current_kd; }
+    float getKp() const { return current_kp; }
+    float getKi() const { return current_ki; }
+    float getKd() const { return current_kd; }
 
     virtual float getBestKp() { return best_kp; }
     virtual float getBestKi() { return best_ki; }
@@ -45,7 +45,7 @@ public:
     float current_kp;
     float current_ki;
     float current_kd;
-    
+
     virtual void setBestScore(long score) { best_score = score; };
     virtual long getBestScore() { return best_score; };
 
@@ -55,13 +55,16 @@ public:
     int error_measurement_count;
 
     void startTrial(long timestamp_milliseconds);
-    long score();
+
+    long score() const;
+
     virtual void evaluateTrial();
-    float coolingFactor(long timestamp_milliseconds);
 
-    float fconstrain(float input, float min_value, float max_value);
+    static float coolingFactor(long timestamp_milliseconds);
 
-    long randomLimited(long min_value, long max_value);
+    static float fconstrain(float input, float min_value, float max_value);
+
+    static long randomLimited(long min_value, long max_value);
 };
 
 #endif // PID_OPTIMIZER_H

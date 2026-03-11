@@ -8,65 +8,80 @@
 #include "gyro_pid.h"
 #include "flight_mode.h"
 
-class BaseDrone
-{
+class BaseDrone {
 public:
-  /*
-   * Create a drone
-   * Default parameters that work are: 500, 200, 10000
-   */
-  BaseDrone(
-      float transmittion_timeout_definition_milliseconds,
-      int feedback_loop_hz,
-      BaseHardwareProcessor *processor,
-      BaseDroneGyro *gyro);
+    /*
+     * Create a drone
+     * Default parameters that work are: 500, 200, 10000
+     */
+    BaseDrone(
+        long transmission_timeout_definition_milliseconds,
+        int feedback_loop_hz,
+        BaseHardwareProcessor *processor,
+        BaseDroneGyro *gyro);
 
-  BaseHardwareProcessor *processor;
-  BaseDroneGyro *gyro;
+    virtual ~BaseDrone() = default;
 
-  float throttle = 0;
-  float yaw_desired_angle = 0;
-  float pitch_desired_angle = 0;
-  float roll_desired_angle = 0;
+    BaseHardwareProcessor *processor;
+    BaseDroneGyro *gyro;
 
-  virtual void setup();
-  virtual void run();
-  virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw);
-  virtual void stopMotors();
-  virtual void setupMotors();
+    float throttle = 0;
+    float yaw_desired_angle = 0;
+    float pitch_desired_angle = 0;
+    float roll_desired_angle = 0;
 
-  bool updateGyro();
-  float yaw();
-  float pitch();
-  float roll();
-  void printGyro();
+    virtual void setup();
 
-  bool hasLostConnection();
+    virtual void run();
 
-  void setThrottle(float value);
-  void setDesiredYawAngle(float value);
-  void setDesiredPitchAngle(float value);
-  void setDesiredRollAngle(float value);
+    virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw);
 
-  void enableMotors();
-  void disableMotors();
-  bool isMotorsEnabled();
+    virtual void stopMotors();
 
-  FlightMode_t getFlightMode();
-  void setFlightMode(FlightMode_t flight_mode);
+    virtual void setupMotors();
 
-  long delayToKeepFeedbackLoopHz(long start_micros_timestamp);
+    bool updateGyro() const;
+
+    float yaw() const;
+
+    float pitch() const;
+
+    float roll() const;
+
+    void printGyro() const;
+
+    bool hasLostConnection() const;
+
+    void setThrottle(float value);
+
+    void setDesiredYawAngle(float value);
+
+    void setDesiredPitchAngle(float value);
+
+    void setDesiredRollAngle(float value);
+
+    void enableMotors();
+
+    void disableMotors();
+
+    bool isMotorsEnabled() const;
+
+    FlightMode_t getFlightMode() const;
+
+    void setFlightMode(FlightMode_t flight_mode);
+
+    unsigned long delayToKeepFeedbackLoopHz(long start_micros_timestamp) const;
 
 private:
-  FlightMode_t _flight_mode;
-  float _throttle_set_timestamp = 0;
-  float _yaw_desired_angle_set_timestamp = 0;
-  float _desired_pitch_angle_set_timestamp = 0;
-  float _desired_roll_angle_set_timestamp = 0;
-  bool _is_motors_enabled = false;
-  unsigned long _last_pid_persist_timestamp_milliseconds = 0;
-  unsigned long _transmition_timeout_definition_milliseconds;
-  int _feedback_loop_hz;
+    FlightMode_t _flight_mode;
+    unsigned long _throttle_set_timestamp = 0;
+    unsigned long _yaw_desired_angle_set_timestamp = 0;
+    unsigned long _desired_pitch_angle_set_timestamp = 0;
+    unsigned long _desired_roll_angle_set_timestamp = 0;
+    bool _is_motors_enabled = false;
+    unsigned long _last_pid_persist_timestamp_milliseconds = 0;
+    unsigned long _transmission_timeout_definition_milliseconds;
+    int _feedback_loop_hz;
 };
 
 #endif

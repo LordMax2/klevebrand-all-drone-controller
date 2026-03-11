@@ -7,16 +7,14 @@
 
 typedef void (*ControlAction)(BaseDrone *drone);
 
-class AutopilotController
-{
+class AutopilotController {
 private:
     ControlAction _control_actions[CONTROL_ACTION_COUNT];
-    BaseDrone *_drone;
 
 public:
     AutopilotController();
 
-    void run(BaseDrone *drone);
+    void run(BaseDrone *drone) const;
 };
 
 #endif

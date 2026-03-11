@@ -3,13 +3,20 @@
 
 #include "pid_constants.h"
 
-class BasePidRepository
-{
+class BasePidRepository {
 public:
+    BasePidRepository() = default;
+
+    virtual ~BasePidRepository() = default;
+
     virtual PidConstants_t get();
+
     virtual PidConstants_t get(int key);
+
     virtual void setup();
+
     virtual void save(PidConstants_t &pid_constants);
+
     virtual void save(int key, PidConstants_t &pid_constants);
 };
 

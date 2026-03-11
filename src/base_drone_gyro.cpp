@@ -1,7 +1,5 @@
 #include "base_drone_gyro.h"
 
-BaseDroneGyro::BaseDroneGyro() {}
-
 void BaseDroneGyro::setup() {}
 
 bool BaseDroneGyro::reload() { return false; }

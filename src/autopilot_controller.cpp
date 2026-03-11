@@ -1,6 +1,6 @@
 #include "autopilot_controller.h"
 
-AutopilotController::AutopilotController()
+AutopilotController::AutopilotController() : _control_actions{}
 {
     _control_actions[0] = [](BaseDrone *drone) { /* Do nothing */ };
     _control_actions[1] = [](BaseDrone *drone)
@@ -37,6 +37,6 @@ AutopilotController::AutopilotController()
     };
 }
 
-void AutopilotController::run(BaseDrone *drone)
-{
+void AutopilotController::run(BaseDrone *drone) const {
+    _control_actions[0](drone);
 }

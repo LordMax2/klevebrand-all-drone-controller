@@ -4,8 +4,7 @@
 #include "pid.h"
 #include "math.h"
 
-class PidYawCompass : public Pid
-{
+class PidYawCompass : public Pid {
 public:
     PidYawCompass(float kp, float ki, float kd, float pid_max);
 

@@ -1,19 +1,30 @@
 #ifndef BASE_DRONE_GYRO_H
 #define BASE_DRONE_GYRO_H
 
-class BaseDroneGyro
-{
+class BaseDroneGyro {
 public:
-    BaseDroneGyro();
+    BaseDroneGyro() = default;
+
+    virtual ~BaseDroneGyro() = default;
+
     virtual void setup();
+
     virtual bool reload();
+
     virtual void reset();
+
     virtual float yaw();
+
     virtual float pitch();
+
     virtual float roll();
+
     virtual void printYawPitchRoll();
+
     virtual bool setModeAcro();
+
     virtual bool setModeEuler();
+
     virtual long timestampMilliseconds();
 };
 
