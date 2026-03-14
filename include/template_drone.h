@@ -8,6 +8,7 @@
 #include "gyro_pid.h"
 #include "flight_mode.h"
 #include "base_drone.h"
+#include "base_drone_position.h"
 
 /*
  * The SomeGyroPidType should specify the throttle for each motor depending on the PID.
@@ -26,7 +27,8 @@ public:
         int pid_persist_interval_milliseconds,
         BaseHardwareProcessor *processor,
         BaseDroneGyro *gyro,
-        BasePidRepository *pid_repository);
+        BasePidRepository *pid_repository,
+        BaseDronePosition *position);
 
     SomeGyroPidType pid;
     BasePidRepository *pid_repository;

@@ -4,14 +4,44 @@ BaseDrone::BaseDrone(
     const long transmission_timeout_definition_milliseconds,
     const int feedback_loop_hz,
     BaseHardwareProcessor *processor,
-    BaseDroneGyro *gyro) 
+    BaseDroneGyro *gyro,
+    BaseDronePosition *position)
 {
     this->_transmission_timeout_definition_milliseconds = transmission_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
     this->processor = processor;
     this->gyro = gyro;
     this->_flight_mode = none;
+    this->position = position;
 };
+
+float BaseDrone::getThrottle() const {
+    return _throttle;
+}
+
+float BaseDrone::getDesiredYawAngle() const {
+    return _yaw_desired_angle;
+}
+
+float BaseDrone::getDesiredPitchAngle() const {
+    return _pitch_desired_angle;
+}
+
+float BaseDrone::getDesiredRollAngle() const {
+    return _roll_desired_angle;
+}
+
+float BaseDrone::getAltitude() const {
+    return position->getAltitude();
+}
+
+float BaseDrone::getLatitude() const {
+    return position->getLatitude();
+}
+
+float BaseDrone::getLongitude() const {
+    return position->getLongitude();
+}
 
 void BaseDrone::setup() {};
 
@@ -28,17 +58,17 @@ void BaseDrone::printGyro() const
     gyro->printYawPitchRoll();
 }
 
-float BaseDrone::yaw() const
+float BaseDrone::getYaw() const
 {
     return gyro->yaw();
 }
 
-float BaseDrone::pitch() const
+float BaseDrone::getPitch() const
 {
     return gyro->pitch();
 }
 
-float BaseDrone::roll() const
+float BaseDrone::getRoll() const
 {
     return gyro->roll();
 }
@@ -52,25 +82,25 @@ bool BaseDrone::hasLostConnection() const
 
 void BaseDrone::setThrottle(float value)
 {
-    throttle = value;
+    _throttle = value;
     _throttle_set_timestamp = processor->millisecondsTimestamp();
 }
 
 void BaseDrone::setDesiredYawAngle(float value)
 {
-    yaw_desired_angle = value;
+    _yaw_desired_angle = value;
     _yaw_desired_angle_set_timestamp = processor->millisecondsTimestamp();
 }
 
 void BaseDrone::setDesiredPitchAngle(float value)
 {
-    pitch_desired_angle = value;
+    _pitch_desired_angle = value;
     _desired_pitch_angle_set_timestamp = processor->millisecondsTimestamp();
 }
 
 void BaseDrone::setDesiredRollAngle(float value)
 {
-    roll_desired_angle = value;
+    _roll_desired_angle = value;
     _desired_roll_angle_set_timestamp = processor->millisecondsTimestamp();
 }
 

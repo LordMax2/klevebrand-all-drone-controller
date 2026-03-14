@@ -3,6 +3,7 @@
 
 #include "base_drone_motor.h"
 #include "base_drone_gyro.h"
+#include "base_drone_position.h"
 #include "base_pid_repository.h"
 #include "base_hardware_processor.h"
 #include "gyro_pid.h"
@@ -18,17 +19,28 @@ public:
         long transmission_timeout_definition_milliseconds,
         int feedback_loop_hz,
         BaseHardwareProcessor *processor,
-        BaseDroneGyro *gyro);
+        BaseDroneGyro *gyro,
+        BaseDronePosition *position);
 
     virtual ~BaseDrone() = default;
 
     BaseHardwareProcessor *processor;
     BaseDroneGyro *gyro;
+    BaseDronePosition *position;
 
-    float throttle = 0;
-    float yaw_desired_angle = 0;
-    float pitch_desired_angle = 0;
-    float roll_desired_angle = 0;
+    float getThrottle() const;
+
+    float getDesiredYawAngle() const;
+
+    float getDesiredPitchAngle() const;
+
+    float getDesiredRollAngle() const;
+
+    float getAltitude() const;
+
+    float getLongitude() const;
+
+    float getLatitude() const;
 
     virtual void setup();
 
@@ -42,11 +54,11 @@ public:
 
     bool updateGyro() const;
 
-    float yaw() const;
+    float getYaw() const;
 
-    float pitch() const;
+    float getPitch() const;
 
-    float roll() const;
+    float getRoll() const;
 
     void printGyro() const;
 
@@ -73,6 +85,10 @@ public:
     unsigned long delayToKeepFeedbackLoopHz(long start_micros_timestamp) const;
 
 private:
+    float _throttle = 0;
+    float _yaw_desired_angle = 0;
+    float _pitch_desired_angle = 0;
+    float _roll_desired_angle = 0;
     FlightMode_t _flight_mode;
     unsigned long _throttle_set_timestamp = 0;
     unsigned long _yaw_desired_angle_set_timestamp = 0;
