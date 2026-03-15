@@ -20,8 +20,6 @@ add_library(klevebrand_all_drone_controller_core STATIC
     src/pid_yaw_compass.cpp
 )
 
-add_library(Klevebrand::Core ALIAS klevebrand_all_drone_controller_core)
-
 target_include_directories(klevebrand_all_drone_controller_core
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
