@@ -19,6 +19,12 @@ public:
 
     virtual float roll();
 
+    virtual float accelerationX();
+
+    virtual float accelerationY();
+
+    virtual float accelerationZ();
+
     virtual void printYawPitchRoll();
 
     virtual bool setModeAcro();

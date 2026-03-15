@@ -60,6 +60,12 @@ public:
 
     float getRoll() const;
 
+    float getAccelerationX() const;
+
+    float getAccelerationY() const;
+
+    float getAccelerationZ() const;
+
     void printGyro() const;
 
     bool hasLostConnection() const;
