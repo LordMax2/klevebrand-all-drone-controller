@@ -15,7 +15,7 @@ public:
 
     virtual void sleepMilliseconds(int milliseconds);
 
-    virtual void print(char *array);
+    virtual void print(const char *array);
 };
 
 #endif // BASE_HARDWARE_PROCESSOR_H

@@ -8,4 +8,4 @@ unsigned long BaseHardwareProcessor::millisecondsTimestamp() { return 0; };
 
 void BaseHardwareProcessor::sleepMilliseconds(int milliseconds) {};
 
-void BaseHardwareProcessor::print(char *array) {};
+void BaseHardwareProcessor::print(const char *array) {};
