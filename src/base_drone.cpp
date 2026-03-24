@@ -45,7 +45,8 @@ float BaseDrone::getLongitude() const {
 void BaseDrone::setup() {
 };
 
-void BaseDrone::run() {
+bool BaseDrone::run() {
+    return false;
 };
 
 void BaseDrone::runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw) {

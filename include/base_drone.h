@@ -44,7 +44,7 @@ public:
 
     virtual void setup();
 
-    virtual void run();
+    virtual bool run();
 
     virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw);
 

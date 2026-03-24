@@ -13,7 +13,6 @@ add_library(klevebrand_all_drone_controller_core STATIC
     src/base_drone_position.cpp
     src/base_hardware_processor.cpp
     src/base_pid_repository.cpp
-    src/flight_controller_proxy.cpp
     src/gyro_pid.cpp
     src/pid.cpp
     src/pid_optimizer.cpp
