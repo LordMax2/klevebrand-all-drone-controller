@@ -39,7 +39,7 @@ public:
 
     void resetPid();
 
-    void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw);
+    void calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw, float delta_time_seconds = 1.0f);
 
     void savePidErrors(float gyro_roll, float gyro_pitch, float gyro_yaw);
 

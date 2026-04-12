@@ -24,7 +24,7 @@ public:
     void reset();
 
     void updateIntegral(float gyro_roll, float roll_desired_angle, float gyro_pitch, float pitch_desired_angle,
-                        float gyro_yaw, float yaw_desired_angle);
+                        float gyro_yaw, float yaw_desired_angle, float delta_time_seconds = 1.0f);
 
     void resetIntegral();
 
@@ -58,11 +58,11 @@ public:
 
     void saveYawError(float gyro_yaw, float yaw_desired_angle) const;
 
-    float yawPid(float gyro_yaw, float yaw_desired_angle) const;
+    float yawPid(float gyro_yaw, float yaw_desired_angle, float delta_time_seconds = 1.0f) const;
 
-    float rollPid(float gyro_roll, float roll_desired_angle);
+    float rollPid(float gyro_roll, float roll_desired_angle, float delta_time_seconds = 1.0f);
 
-    float pitchPid(float gyro_pitch, float pitch_desired_angle);
+    float pitchPid(float gyro_pitch, float pitch_desired_angle, float delta_time_seconds = 1.0f);
 
     void setYawCompassMode(bool compass_mode) {
         if (compass_mode) {

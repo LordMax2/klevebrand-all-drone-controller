@@ -39,16 +39,24 @@ float Pid::pidP(const float current, const float desired) {
     return pid_optimizer.getKp() * error(current, desired);
 }
 
-float Pid::pidD(const float current, const float desired) {
-    return pid_optimizer.getKd() * (error(current, desired) - previous_error);
+float Pid::pidD(const float current, const float desired, const float delta_time_seconds) {
+    if (delta_time_seconds <= 0.0f) {
+        return 0.0f;
+    }
+
+    return pid_optimizer.getKd() * ((error(current, desired) - previous_error) / delta_time_seconds);
 }
 
-float Pid::pid(const float current, const float desired) {
-    return fconstrain(pidP(current, desired) + pid_i + pidD(current, desired), -pid_max, pid_max);
+float Pid::pid(const float current, const float desired, const float delta_time_seconds) {
+    return fconstrain(pidP(current, desired) + pid_i + pidD(current, desired, delta_time_seconds), -pid_max, pid_max);
 }
 
-void Pid::updateIntegral(const float current, const float desired) {
-    pid_i = fconstrain(pid_i + (getKi() * error(current, desired)), -pid_max, pid_max);
+void Pid::updateIntegral(const float current, const float desired, const float delta_time_seconds) {
+    if (delta_time_seconds <= 0.0f) {
+        return;
+    }
+
+    pid_i = fconstrain(pid_i + (getKi() * error(current, desired) * delta_time_seconds), -pid_max, pid_max);
 }
 
 float Pid::fconstrain(const float input, const float min_value, const float max_value) {

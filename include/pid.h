@@ -16,7 +16,7 @@ public:
 
     void reset();
 
-    void updateIntegral(float current, float desired);
+    void updateIntegral(float current, float desired, float delta_time_seconds = 1.0f);
 
     void resetIntegral();
 
@@ -30,7 +30,7 @@ public:
 
     void saveError(float current, float desired);
 
-    float pid(float current, float desired);
+    float pid(float current, float desired, float delta_time_seconds = 1.0f);
 
     float pid_max;
     PidOptimizer pid_optimizer;
@@ -43,7 +43,7 @@ public:
 
     float pid_i = 0;
 
-    float pidD(float current, float desired);
+    float pidD(float current, float desired, float delta_time_seconds = 1.0f);
 
     float _kp;
     float _ki;

@@ -7,11 +7,11 @@ void GyroPid::reset() {
 }
 
 void GyroPid::updateIntegral(const float gyro_roll, const float roll_desired_angle, const float gyro_pitch,
-                             const float pitch_desired_angle, const float gyro_yaw, const float yaw_desired_angle) {
-    // Since we always run this at the same frequency, we don't need the time between the measurements
-    _pid_yaw->updateIntegral(gyro_yaw, yaw_desired_angle);
-    _pid_pitch.updateIntegral(gyro_pitch, pitch_desired_angle);
-    _pid_roll.updateIntegral(gyro_roll, roll_desired_angle);
+                             const float pitch_desired_angle, const float gyro_yaw, const float yaw_desired_angle,
+                             const float delta_time_seconds) {
+    _pid_yaw->updateIntegral(gyro_yaw, yaw_desired_angle, delta_time_seconds);
+    _pid_pitch.updateIntegral(gyro_pitch, pitch_desired_angle, delta_time_seconds);
+    _pid_roll.updateIntegral(gyro_roll, roll_desired_angle, delta_time_seconds);
 }
 
 void GyroPid::runYawOptimizer(const float gyro_yaw, const float yaw_desired_angle,
@@ -77,16 +77,16 @@ float GyroPid::getRollKd() const {
     return _pid_roll.getKd();
 }
 
-float GyroPid::rollPid(float gyro_roll, float roll_desired_angle) {
-    return _pid_roll.pid(gyro_roll, roll_desired_angle);
+float GyroPid::rollPid(float gyro_roll, float roll_desired_angle, const float delta_time_seconds) {
+    return _pid_roll.pid(gyro_roll, roll_desired_angle, delta_time_seconds);
 }
 
-float GyroPid::pitchPid(float gyro_pitch, float pitch_desired_angle) {
-    return _pid_pitch.pid(gyro_pitch, pitch_desired_angle);
+float GyroPid::pitchPid(float gyro_pitch, float pitch_desired_angle, const float delta_time_seconds) {
+    return _pid_pitch.pid(gyro_pitch, pitch_desired_angle, delta_time_seconds);
 }
 
-float GyroPid::yawPid(float gyro_yaw, float yaw_desired_angle) const {
-    return _pid_yaw->pid(gyro_yaw, yaw_desired_angle);
+float GyroPid::yawPid(float gyro_yaw, float yaw_desired_angle, const float delta_time_seconds) const {
+    return _pid_yaw->pid(gyro_yaw, yaw_desired_angle, delta_time_seconds);
 }
 
 void GyroPid::resetIntegral() {

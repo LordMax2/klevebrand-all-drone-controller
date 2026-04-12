@@ -92,8 +92,13 @@ void TemplateDrone<SomeGyroPidType>::setFlightModeAcro() {
 }
 
 template<class SomeGyroPidType>
-void TemplateDrone<SomeGyroPidType>::calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw) {
-    pid.updateIntegral(gyro_roll, getDesiredRollAngle(), gyro_pitch, getDesiredPitchAngle(), gyro_yaw, getDesiredYawAngle());
+void TemplateDrone<SomeGyroPidType>::calculatePidIntegral(float gyro_roll, float gyro_pitch, float gyro_yaw,
+                                                          float delta_time_seconds) {
+    pid.updateIntegral(
+        gyro_roll, getDesiredRollAngle(),
+        gyro_pitch, getDesiredPitchAngle(),
+        gyro_yaw, getDesiredYawAngle(),
+        delta_time_seconds);
 }
 
 template<class SomeGyroPidType>
