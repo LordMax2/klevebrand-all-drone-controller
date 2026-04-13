@@ -1,12 +1,12 @@
 #ifndef BASE_FOUR_MOTOR_DRONE_H
 #define BASE_FOUR_MOTOR_DRONE_H
 
-#include "base_drone_motor.h"
 #include "base_drone_gyro.h"
 #include "base_pid_repository.h"
 #include "base_hardware_processor.h"
-#include "gyro_pid.h"
 #include "flight_mode.h"
+#include "flight_mode_acro.h"
+#include "flight_mode_auto_level.h"
 #include "base_drone.h"
 #include "base_drone_position.h"
 
@@ -67,6 +67,8 @@ public:
     void setFlightModeAcro();
 
 private:
+    void activateFlightMode(const FlightMode &flight_mode);
+
     unsigned long _last_pid_persist_timestamp_milliseconds = 0;
     unsigned long _pid_persist_interval_milliseconds;
 };

@@ -38,57 +38,37 @@ void TemplateDrone<SomeGyroPidType>::resetPid() {
 }
 
 template<class SomeGyroPidType>
-void TemplateDrone<SomeGyroPidType>::setFlightModeAutoLevel() {
-    // Temporary return early util I have connected the IMU's reset pin
-    if (getFlightMode() == auto_level)
+void TemplateDrone<SomeGyroPidType>::activateFlightMode(const FlightMode &flight_mode) {
+    if (getFlightMode().type() == flight_mode.type()) {
         return;
-
-    setFlightMode(auto_level);
-
-    gyro->reset();
-
-    processor->sleepMilliseconds(1000);
-
-    gyro->setModeEuler();
-
-    PidConstants_t pid_constants = pid_repository->get(256);
-
-    if (pid_constants.isValid()) {
-        setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, true,
-                        pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
-                        pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
-    } else {
-        setPidConstants(0.125, 0.001, 2.5, true, 0.125, 0.001, 0.25, 0.05, 0.0005, 0.2);
     }
 
-    processor->print("FLIGHT MODE AUTOLEVEL\n");
+    setFlightMode(flight_mode);
+    flight_mode.activate(gyro, processor);
+
+    PidConstants_t pid_constants = pid_repository->get(flight_mode.pidConstantsStorageKey());
+
+    if (!pid_constants.isValid()) {
+        pid_constants = flight_mode.pidConstants();
+    }
+
+    setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, flight_mode.yawCompassMode(),
+                    pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
+                    pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
+
+    processor->print("FLIGHT MODE ");
+    processor->print(flight_mode.name());
+    processor->print("\n");
+}
+
+template<class SomeGyroPidType>
+void TemplateDrone<SomeGyroPidType>::setFlightModeAutoLevel() {
+    activateFlightMode(flightModeAutoLevel());
 }
 
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::setFlightModeAcro() {
-    // Temporary return early util I have connected the IMU's reset pin
-    if (getFlightMode() == acro)
-        return;
-
-    setFlightMode(acro);
-
-    gyro->reset();
-
-    processor->sleepMilliseconds(1000);
-
-    gyro->setModeAcro();
-
-    const PidConstants_t pid_constants = pid_repository->get(128);
-
-    if (pid_constants.isValid()) {
-        setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, false,
-                        pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
-                        pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
-    } else {
-        setPidConstants(0.04, 0.002, 0.6, false, 0.04, 0.002, 0.6, 0.04, 0.002, 0.6);
-    }
-
-    processor->print("FLIGHT MODE ACRO\n");
+    activateFlightMode(flightModeAcro());
 }
 
 template<class SomeGyroPidType>
@@ -139,24 +119,14 @@ template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::persistPidConstants() {
     if (processor->millisecondsTimestamp() - _last_pid_persist_timestamp_milliseconds >=
         _pid_persist_interval_milliseconds) {
-        int address = 128;
-
-        switch (getFlightMode()) {
-            case acro:
-                address = 128;
-                break;
-            case auto_level:
-                address = 256;
-                break;
-            default: ;
-        }
+        const FlightMode &flight_mode = getFlightMode();
 
         auto pid_constants = PidConstants_t(
             pid.getYawKp(), pid.getYawKi(), pid.getYawKd(),
             pid.getPitchKp(), pid.getPitchKi(), pid.getPitchKd(),
             pid.getRollKp(), pid.getRollKi(), pid.getRollKd());
 
-        pid_repository->save(address, pid_constants);
+        pid_repository->save(flight_mode.pidConstantsStorageKey(), pid_constants);
 
         _last_pid_persist_timestamp_milliseconds = processor->millisecondsTimestamp();
     }
