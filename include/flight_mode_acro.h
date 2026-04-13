@@ -3,7 +3,7 @@
 
 #include "flight_mode.h"
 
-class FlightModeAcro final : public FlightMode {
+class FlightModeAcro : public FlightMode {
 public:
     FlightMode_t type() const override {
         return acro;

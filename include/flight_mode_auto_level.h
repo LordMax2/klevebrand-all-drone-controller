@@ -3,7 +3,7 @@
 
 #include "flight_mode.h"
 
-class FlightModeAutoLevel final : public FlightMode {
+class FlightModeAutoLevel : public FlightMode {
 public:
     FlightMode_t type() const override {
         return auto_level;
