@@ -59,9 +59,10 @@ void PidOptimizer::startTrial(long timestamp_milliseconds) {
     current_ki = getBestKi();
     current_kd = getBestKd();
 
-    current_kp += randomLimited(-5, 5) / 10000.0f;
-    current_ki += randomLimited(-3, 3) / 100000.0f;
-    current_kd += randomLimited(-10, 10) / 10000.0f;
+    float noise = 0.1f;
+    current_kp += step_p + (randomLimited(-5, 5) / 10000.0f) * noise;
+    current_ki += step_i + (randomLimited(-3, 3) / 100000.0f) * noise;
+    current_kd += step_d + (randomLimited(-10, 10) / 10000.0f) * noise;
 
     current_kp = fconstrain(current_kp, 0.1f, 10.0f);
     current_ki = fconstrain(current_ki, 0.0001f, 0.05f);
@@ -94,19 +95,28 @@ long PidOptimizer::score() const {
 
 void PidOptimizer::evaluateTrial() {
     const long current_score = score();
-    constexpr float factor = 0.9f;
 
-    if (current_score > getPreviousScore()) {
-        current_kp = (current_kp - getBestKp()) * -1.0f + getBestKp();
-        current_ki = (current_ki - getBestKi()) * -1.0f + getBestKi();
-        current_kd = (current_kd - getBestKd()) * -1.0f + getBestKd();
+    const float diff_p = current_kp - getBestKp();
+    const float diff_i = current_ki - getBestKi();
+    const float diff_d = current_kd - getBestKd();
+
+    if (current_score < getPreviousScore()) {
+        constexpr float factor = 0.95f;
+
+        step_p = (1.0f - learning_rate) * step_p + learning_rate * diff_p;
+        step_i = (1.0f - learning_rate) * step_i + learning_rate * diff_i;
+        step_d = (1.0f - learning_rate) * step_d + learning_rate * diff_d;
+
+        setBestKp(getBestKp() * factor + current_kp * (1.0f - factor));
+        setBestKi(getBestKi() * factor + current_ki * (1.0f - factor));
+        setBestKd(getBestKd() * factor + current_kd * (1.0f - factor));
+
+        setPreviousScore(current_score);
+    } else {
+        step_p *= -0.5f;
+        step_i *= -0.5f;
+        step_d *= -0.5f;
     }
-
-    setBestKp(getBestKp() * factor + current_kp * (1.0f - factor));
-    setBestKi(getBestKi() * factor + current_ki * (1.0f - factor));
-    setBestKd(getBestKd() * factor + current_kd * (1.0f - factor));
-
-    setPreviousScore(current_score);
 }
 
 float PidOptimizer::coolingFactor(const long timestamp_milliseconds) {

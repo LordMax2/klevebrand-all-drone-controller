@@ -30,6 +30,12 @@ public:
 
     void run(float current_error, long timestamp_milliseconds);
 
+    float step_p = 0.001f;
+    float step_i = 0.0001f;
+    float step_d = 0.001f;
+
+    float learning_rate = 0.1f;
+
     float getKp() const { return current_kp; }
     float getKi() const { return current_ki; }
     float getKd() const { return current_kd; }
