@@ -14,7 +14,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define TRIAL_DURATION_MILLISECONDS 3000
+#define TRIAL_DURATION_MILLISECONDS 1000
 
 class PidOptimizer {
 private:
