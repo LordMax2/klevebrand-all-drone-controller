@@ -18,6 +18,7 @@ PidOptimizer::PidOptimizer(const float default_kp, const float default_ki, const
     PidOptimizer::setBestKp(default_kp);
     PidOptimizer::setBestKi(default_ki);
     PidOptimizer::setBestKd(default_kd);
+    PidOptimizer::setPreviousScore(1e10);
 
     state = IDLE;
 }
@@ -58,13 +59,13 @@ void PidOptimizer::startTrial(long timestamp_milliseconds) {
     current_ki = getBestKi();
     current_kd = getBestKd();
 
-    current_kp += randomLimited(-5, 5) / 10.0f;
-    current_ki += randomLimited(-3, 3) / 10000.0f;
-    current_kd += randomLimited(-10, 10) / 1.0f;
+    current_kp += randomLimited(-5, 5) / 10000.0f;
+    current_ki += randomLimited(-3, 3) / 100000.0f;
+    current_kd += randomLimited(-10, 10) / 10000.0f;
 
     current_kp = fconstrain(current_kp, 0.1f, 10.0f);
-    current_ki = fconstrain(current_ki, 0.00001f, 0.005f);
-    current_kd = fconstrain(current_kd, 0.1f, 100.0f);
+    current_ki = fconstrain(current_ki, 0.0001f, 0.05f);
+    current_kd = fconstrain(current_kd, 0.1f, 20.0f);
 
     error_sum_squared = 0;
     error_measurement_count = 0;
@@ -93,32 +94,19 @@ long PidOptimizer::score() const {
 
 void PidOptimizer::evaluateTrial() {
     const long current_score = score();
+    constexpr float factor = 0.9f;
 
-    if (current_score == 0)
-        return;
-
-    if (current_score < getBestScore()) {
-        setBestScore(current_score);
-
-        setBestKp(current_kp);
-        setBestKi(current_ki);
-        setBestKd(current_kd);
-    } else {
-        constexpr float temperature = 0.1f; // Diable temperature, dangerous for real flight, cost new propellers hehe
-
-        if (temperature == 0.0f)
-            return;
-
-        float acceptance_probability = exp(-(current_score - getBestScore()) / temperature);
-
-        if (randomLimited(0.0, 1000.0) / 1000.0 < acceptance_probability) {
-            setBestScore(current_score);
-
-            setBestKp(current_kp);
-            setBestKi(current_ki);
-            setBestKd(current_kd);
-        }
+    if (current_score > getPreviousScore()) {
+        current_kp = (current_kp - getBestKp()) * -1.0f + getBestKp();
+        current_ki = (current_ki - getBestKi()) * -1.0f + getBestKi();
+        current_kd = (current_kd - getBestKd()) * -1.0f + getBestKd();
     }
+
+    setBestKp(getBestKp() * factor + current_kp * (1.0f - factor));
+    setBestKi(getBestKi() * factor + current_ki * (1.0f - factor));
+    setBestKd(getBestKd() * factor + current_kd * (1.0f - factor));
+
+    setPreviousScore(current_score);
 }
 
 float PidOptimizer::coolingFactor(const long timestamp_milliseconds) {
