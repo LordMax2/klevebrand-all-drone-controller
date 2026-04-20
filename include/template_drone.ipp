@@ -38,26 +38,30 @@ void TemplateDrone<SomeGyroPidType>::resetPid() {
 }
 
 template<class SomeGyroPidType>
-void TemplateDrone<SomeGyroPidType>::activateFlightMode(FlightMode &flight_mode) {
-    if (getFlightMode().type() == flight_mode.type()) {
+void TemplateDrone<SomeGyroPidType>::activateFlightMode(FlightMode *flight_mode) {
+    if (flight_mode == nullptr) {
+        return;
+    }
+
+    if (getFlightMode()->type() == flight_mode->type()) {
         return;
     }
 
     setFlightMode(flight_mode);
-    flight_mode.activate(gyro, processor);
+    flight_mode->activate(gyro, processor);
 
-    PidConstants_t pid_constants = pid_repository->get(flight_mode.pidConstantsStorageKey());
+    PidConstants_t pid_constants = pid_repository->get(flight_mode->pidConstantsStorageKey());
 
     if (!pid_constants.isValid()) {
-        pid_constants = flight_mode.pidConstants();
+        pid_constants = flight_mode->pidConstants();
     }
 
-    setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, flight_mode.yawCompassMode(),
+    setPidConstants(pid_constants.yaw_kp, pid_constants.yaw_ki, pid_constants.yaw_kd, flight_mode->yawCompassMode(),
                     pid_constants.pitch_kp, pid_constants.pitch_ki, pid_constants.pitch_kd,
                     pid_constants.roll_kp, pid_constants.roll_ki, pid_constants.roll_kd);
 
     processor->print("FLIGHT MODE ");
-    processor->print(flight_mode.name());
+    processor->print(flight_mode->name());
     processor->print("\n");
 }
 
@@ -119,14 +123,14 @@ template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::persistPidConstants() {
     if (processor->millisecondsTimestamp() - _last_pid_persist_timestamp_milliseconds >=
         _pid_persist_interval_milliseconds) {
-        FlightMode &flight_mode = getFlightMode();
+        FlightMode *flight_mode = getFlightMode();
 
         auto pid_constants = PidConstants_t(
             pid.getYawKp(), pid.getYawKi(), pid.getYawKd(),
             pid.getPitchKp(), pid.getPitchKi(), pid.getPitchKd(),
             pid.getRollKp(), pid.getRollKi(), pid.getRollKd());
 
-        pid_repository->save(flight_mode.pidConstantsStorageKey(), pid_constants);
+        pid_repository->save(flight_mode->pidConstantsStorageKey(), pid_constants);
 
         _last_pid_persist_timestamp_milliseconds = processor->millisecondsTimestamp();
     }

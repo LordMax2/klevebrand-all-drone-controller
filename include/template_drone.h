@@ -66,7 +66,7 @@ public:
 
     void setFlightModeAcro();
 
-    void activateFlightMode(FlightMode &flight_mode);
+    void activateFlightMode(FlightMode *flight_mode);
 
 private:
     unsigned long _last_pid_persist_timestamp_milliseconds = 0;

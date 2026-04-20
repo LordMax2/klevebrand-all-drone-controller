@@ -1,4 +1,5 @@
 #include "base_drone.h"
+#include "flight_mode.h"
 
 BaseDrone::BaseDrone(
     const long transmission_timeout_definition_milliseconds,
@@ -11,6 +12,7 @@ BaseDrone::BaseDrone(
     this->processor = processor;
     this->gyro = gyro;
     this->position = position;
+    this->_flight_mode = flightModeNone();
 };
 
 float BaseDrone::getThrottle() const {
@@ -120,8 +122,8 @@ void BaseDrone::disableMotors() {
     _is_motors_enabled = false;
 }
 
-FlightMode &BaseDrone::getFlightMode() {
-    return *_flight_mode;
+FlightMode *BaseDrone::getFlightMode() {
+    return _flight_mode;
 }
 
 bool BaseDrone::updateGyro() const {
@@ -143,8 +145,8 @@ unsigned long BaseDrone::delayToKeepFeedbackLoopHz(long start_micros_timestamp) 
     return 0;
 }
 
-void BaseDrone::setFlightMode(FlightMode &flight_mode) {
-    _flight_mode = &flight_mode;
+void BaseDrone::setFlightMode(FlightMode *flight_mode) {
+    _flight_mode = flight_mode == nullptr ? flightModeNone() : flight_mode;
 }
 
 bool BaseDrone::isMotorsEnabled() const {

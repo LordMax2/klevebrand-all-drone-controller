@@ -34,9 +34,9 @@ public:
     }
 };
 
-inline FlightMode &flightModeAutoLevel() {
+inline FlightMode *flightModeAutoLevel() {
     static FlightModeAutoLevel instance;
-    return instance;
+    return &instance;
 }
 
 #endif

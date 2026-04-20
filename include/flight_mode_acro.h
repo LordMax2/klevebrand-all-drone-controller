@@ -30,9 +30,9 @@ public:
     }
 };
 
-inline FlightMode &flightModeAcro() {
+inline FlightMode *flightModeAcro() {
     static FlightModeAcro instance;
-    return instance;
+    return &instance;
 }
 
 #endif

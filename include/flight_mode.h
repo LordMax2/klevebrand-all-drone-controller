@@ -47,9 +47,9 @@ public:
     }
 };
 
-inline FlightMode &flightModeNone() {
+inline FlightMode *flightModeNone() {
     static FlightMode instance;
-    return instance;
+    return &instance;
 }
 
 #endif // FLIGHT_MODE_H

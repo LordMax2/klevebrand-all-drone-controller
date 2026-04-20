@@ -84,9 +84,9 @@ public:
 
     bool isMotorsEnabled() const;
 
-    FlightMode &getFlightMode();
+    FlightMode *getFlightMode();
 
-    void setFlightMode(FlightMode &flight_mode);
+    void setFlightMode(FlightMode *flight_mode);
 
     unsigned long delayToKeepFeedbackLoopHz(long start_micros_timestamp) const;
 
@@ -95,7 +95,7 @@ private:
     float _yaw_desired_angle = 0;
     float _pitch_desired_angle = 0;
     float _roll_desired_angle = 0;
-    FlightMode *_flight_mode = &flightModeNone();
+    FlightMode *_flight_mode = flightModeNone();
     unsigned long _throttle_set_timestamp = 0;
     unsigned long _yaw_desired_angle_set_timestamp = 0;
     unsigned long _desired_pitch_angle_set_timestamp = 0;
