@@ -38,7 +38,7 @@ void TemplateDrone<SomeGyroPidType>::resetPid() {
 }
 
 template<class SomeGyroPidType>
-void TemplateDrone<SomeGyroPidType>::activateFlightMode(const FlightMode &flight_mode) {
+void TemplateDrone<SomeGyroPidType>::activateFlightMode(FlightMode &flight_mode) {
     if (getFlightMode().type() == flight_mode.type()) {
         return;
     }
@@ -119,7 +119,7 @@ template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::persistPidConstants() {
     if (processor->millisecondsTimestamp() - _last_pid_persist_timestamp_milliseconds >=
         _pid_persist_interval_milliseconds) {
-        const FlightMode &flight_mode = getFlightMode();
+        FlightMode &flight_mode = getFlightMode();
 
         auto pid_constants = PidConstants_t(
             pid.getYawKp(), pid.getYawKi(), pid.getYawKd(),

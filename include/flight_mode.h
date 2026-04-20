@@ -47,8 +47,8 @@ public:
     }
 };
 
-inline const FlightMode &flightModeNone() {
-    static const FlightMode instance;
+inline FlightMode &flightModeNone() {
+    static FlightMode instance;
     return instance;
 }
 

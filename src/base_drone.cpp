@@ -10,7 +10,6 @@ BaseDrone::BaseDrone(
     this->_feedback_loop_hz = feedback_loop_hz;
     this->processor = processor;
     this->gyro = gyro;
-    this->_flight_mode = flightModeNone();
     this->position = position;
 };
 
@@ -121,8 +120,8 @@ void BaseDrone::disableMotors() {
     _is_motors_enabled = false;
 }
 
-FlightMode BaseDrone::getFlightMode() const {
-    return _flight_mode;
+FlightMode &BaseDrone::getFlightMode() {
+    return *_flight_mode;
 }
 
 bool BaseDrone::updateGyro() const {
@@ -144,8 +143,8 @@ unsigned long BaseDrone::delayToKeepFeedbackLoopHz(long start_micros_timestamp) 
     return 0;
 }
 
-void BaseDrone::setFlightMode(FlightMode flight_mode) {
-    _flight_mode = flight_mode;
+void BaseDrone::setFlightMode(FlightMode &flight_mode) {
+    _flight_mode = &flight_mode;
 }
 
 bool BaseDrone::isMotorsEnabled() const {

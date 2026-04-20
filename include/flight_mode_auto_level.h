@@ -34,8 +34,8 @@ public:
     }
 };
 
-inline const FlightMode &flightModeAutoLevel() {
-    static const FlightModeAutoLevel instance;
+inline FlightMode &flightModeAutoLevel() {
+    static FlightModeAutoLevel instance;
     return instance;
 }
 

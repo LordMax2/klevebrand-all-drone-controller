@@ -30,8 +30,8 @@ public:
     }
 };
 
-inline const FlightMode &flightModeAcro() {
-    static const FlightModeAcro instance;
+inline FlightMode &flightModeAcro() {
+    static FlightModeAcro instance;
     return instance;
 }
 
