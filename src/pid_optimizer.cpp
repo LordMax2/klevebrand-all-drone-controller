@@ -18,7 +18,7 @@ PidOptimizer::PidOptimizer(const float default_kp, const float default_ki, const
     PidOptimizer::setBestKp(default_kp);
     PidOptimizer::setBestKi(default_ki);
     PidOptimizer::setBestKd(default_kd);
-    PidOptimizer::setPreviousScore(1e10);
+    PidOptimizer::setPreviousScore(LONG_MAX);
 
     state = IDLE;
 }
@@ -88,7 +88,7 @@ long PidOptimizer::randomLimited(const long min_value, const long max_value) {
 
 long PidOptimizer::score() const {
     if (error_measurement_count == 0)
-        return 1e10;
+        return LONG_MAX;
 
     return error_sum_squared / error_measurement_count;
 }

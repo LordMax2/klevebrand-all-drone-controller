@@ -88,28 +88,28 @@ float BaseDrone::getAccelerationZ() const {
 }
 
 bool BaseDrone::hasLostConnection() const {
-    bool transmitter_lost_connection = processor->millisecondsTimestamp() - _throttle_set_timestamp >=
+    const bool transmitter_lost_connection = processor->millisecondsTimestamp() - _throttle_set_timestamp >=
                                        _transmission_timeout_definition_milliseconds;
 
     return transmitter_lost_connection;
 }
 
-void BaseDrone::setThrottle(float value) {
+void BaseDrone::setThrottle(const float value) {
     _throttle = value;
     _throttle_set_timestamp = processor->millisecondsTimestamp();
 }
 
-void BaseDrone::setDesiredYawAngle(float value) {
+void BaseDrone::setDesiredYawAngle(const float value) {
     _yaw_desired_angle = value;
     _yaw_desired_angle_set_timestamp = processor->millisecondsTimestamp();
 }
 
-void BaseDrone::setDesiredPitchAngle(float value) {
+void BaseDrone::setDesiredPitchAngle(const float value) {
     _pitch_desired_angle = value;
     _desired_pitch_angle_set_timestamp = processor->millisecondsTimestamp();
 }
 
-void BaseDrone::setDesiredRollAngle(float value) {
+void BaseDrone::setDesiredRollAngle(const float value) {
     _roll_desired_angle = value;
     _desired_roll_angle_set_timestamp = processor->millisecondsTimestamp();
 }
@@ -122,7 +122,8 @@ void BaseDrone::disableMotors() {
     _is_motors_enabled = false;
 }
 
-FlightMode *BaseDrone::getFlightMode() {
+FlightMode *BaseDrone::getFlightMode() const
+{
     return _flight_mode;
 }
 
@@ -131,15 +132,16 @@ bool BaseDrone::updateGyro() const {
 }
 
 unsigned long BaseDrone::delayToKeepFeedbackLoopHz(long start_micros_timestamp) const {
-    unsigned long current_micros_timestamp = processor->microsecondsTimestamp();
+    const unsigned long current_micros_timestamp = processor->microsecondsTimestamp();
+    const long microseconds_feedback_loop_should_take = 1000000 / _feedback_loop_hz;
+    const unsigned long expected_loop_duration_micros = static_cast<unsigned long>(
+        microseconds_feedback_loop_should_take
+    );
+    const unsigned long elapsed_micros =
+        current_micros_timestamp - static_cast<unsigned long>(start_micros_timestamp);
 
-    long microseconds_feedback_loop_should_take = 1000000 / _feedback_loop_hz;
-
-    unsigned long microseconds_left_for_loop = microseconds_feedback_loop_should_take - (
-                                                   current_micros_timestamp - start_micros_timestamp);
-
-    if (microseconds_left_for_loop > 0 && microseconds_left_for_loop < microseconds_feedback_loop_should_take) {
-        return microseconds_left_for_loop;
+    if (elapsed_micros < expected_loop_duration_micros) {
+        return expected_loop_duration_micros - elapsed_micros;
     }
 
     return 0;
@@ -151,4 +153,24 @@ void BaseDrone::setFlightMode(FlightMode *flight_mode) {
 
 bool BaseDrone::isMotorsEnabled() const {
     return _is_motors_enabled;
+}
+
+unsigned long BaseDrone::timestampMilliseconds() const
+{
+    return processor->microsecondsTimestamp();
+}
+
+unsigned long BaseDrone::timestampMicroseconds() const
+{
+    return processor->microsecondsTimestamp();
+}
+
+FlightMode_t BaseDrone::getFlightModeType() const
+{
+    if (_flight_mode == nullptr)
+    {
+        return none;
+    }
+
+    return _flight_mode->type();
 }

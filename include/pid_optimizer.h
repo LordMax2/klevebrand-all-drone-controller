@@ -11,6 +11,7 @@
 #define PID_OPTIMIZER_H
 
 #include "pid_optimizer_state.h"
+#include <limits.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -21,7 +22,7 @@ private:
     float best_kp;
     float best_ki;
     float best_kd;
-    long previous_score = 1e10;
+    long previous_score = LONG_MAX;
 
 public:
     PidOptimizer(float default_kp, float default_ki, float default_kd);

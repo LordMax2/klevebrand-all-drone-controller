@@ -84,11 +84,17 @@ public:
 
     bool isMotorsEnabled() const;
 
-    FlightMode *getFlightMode();
+    FlightMode *getFlightMode() const;
 
     void setFlightMode(FlightMode *flight_mode);
 
     unsigned long delayToKeepFeedbackLoopHz(long start_micros_timestamp) const;
+
+    unsigned long timestampMicroseconds() const;
+
+    unsigned long timestampMilliseconds() const;
+
+    FlightMode_t getFlightModeType() const;
 
 private:
     float _throttle = 0;
