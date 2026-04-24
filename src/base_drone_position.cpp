@@ -11,3 +11,9 @@ float BaseDronePosition::getLongitude() {
 float BaseDronePosition::getLatitude() {
     return 0;
 }
+
+float BaseDronePosition::getVelocityX() { return 0.0f; }
+
+float BaseDronePosition::getVelocityY() { return 0.0f; }
+
+float BaseDronePosition::getVelocityZ() { return 0.0f; }

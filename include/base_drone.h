@@ -42,6 +42,12 @@ public:
 
     float getLatitude() const;
 
+    float getVelocityX() const;
+
+    float getVelocityY() const;
+
+    float getVelocityZ() const;
+
     virtual void setup();
 
     virtual bool run();

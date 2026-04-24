@@ -43,6 +43,18 @@ float BaseDrone::getLongitude() const {
     return position->getLongitude();
 }
 
+float BaseDrone::getVelocityX() const {
+    return position->getVelocityX();
+}
+
+float BaseDrone::getVelocityY() const {
+    return position->getVelocityY();
+}
+
+float BaseDrone::getVelocityZ() const {
+    return position->getVelocityZ();
+}
+
 void BaseDrone::setup() {
 };
 
@@ -157,7 +169,7 @@ bool BaseDrone::isMotorsEnabled() const {
 
 unsigned long BaseDrone::timestampMilliseconds() const
 {
-    return processor->microsecondsTimestamp();
+    return processor->millisecondsTimestamp();
 }
 
 unsigned long BaseDrone::timestampMicroseconds() const

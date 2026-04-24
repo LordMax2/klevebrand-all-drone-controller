@@ -12,6 +12,12 @@ public:
     virtual float getLongitude();
 
     virtual float getLatitude();
+
+    virtual float getVelocityX();
+
+    virtual float getVelocityY();
+
+    virtual float getVelocityZ();
 };
 
 #endif
