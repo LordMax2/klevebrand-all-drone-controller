@@ -2,6 +2,8 @@
 
 void Pid::reset() {
     pid_optimizer = PidOptimizer(_kp, _ki, _kd);
+
+    resetIntegral();
 }
 
 void Pid::resetIntegral() {
