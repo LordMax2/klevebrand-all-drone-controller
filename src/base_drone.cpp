@@ -62,7 +62,7 @@ bool BaseDrone::run() {
     return false;
 };
 
-void BaseDrone::runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw) {
+void BaseDrone::runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw, float delta_time_seconds) {
 };
 
 void BaseDrone::stopMotors() {

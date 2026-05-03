@@ -52,7 +52,7 @@ public:
 
     virtual bool run();
 
-    virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw);
+    virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw, float delta_time_seconds);
 
     virtual void stopMotors();
 
@@ -84,9 +84,9 @@ public:
 
     void setDesiredRollAngle(float value);
 
-    void enableMotors();
+    virtual void enableMotors();
 
-    void disableMotors();
+    virtual void disableMotors();
 
     bool isMotorsEnabled() const;
 
