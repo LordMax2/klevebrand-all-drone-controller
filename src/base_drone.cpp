@@ -9,9 +9,11 @@ BaseDrone::BaseDrone(
     BaseDronePosition *position) {
     this->_transmission_timeout_definition_milliseconds = transmission_timeout_definition_milliseconds;
     this->_feedback_loop_hz = feedback_loop_hz;
+
     this->processor = processor;
     this->gyro = gyro;
     this->position = position;
+
     this->_flight_mode = flightModeNone();
 };
 
@@ -134,8 +136,7 @@ void BaseDrone::disableMotors() {
     _is_motors_enabled = false;
 }
 
-BaseFlightMode *BaseDrone::getFlightMode() const
-{
+BaseFlightMode *BaseDrone::getFlightMode() const {
     return _flight_mode;
 }
 
@@ -143,17 +144,17 @@ bool BaseDrone::updateGyro() const {
     return gyro->reload();
 }
 
-unsigned long BaseDrone::delayToKeepFeedbackLoopHz(long start_micros_timestamp) const {
-    const unsigned long current_micros_timestamp = processor->microsecondsTimestamp();
+unsigned long BaseDrone::delayToKeepFeedbackLoopHz(long start_microseconds_timestamp) const {
+    const unsigned long current_microseconds_timestamp = processor->microsecondsTimestamp();
     const long microseconds_feedback_loop_should_take = 1000000 / _feedback_loop_hz;
-    const unsigned long expected_loop_duration_micros = static_cast<unsigned long>(
+    const unsigned long expected_loop_duration_microseconds = static_cast<unsigned long>(
         microseconds_feedback_loop_should_take
     );
-    const unsigned long elapsed_micros =
-        current_micros_timestamp - static_cast<unsigned long>(start_micros_timestamp);
+    const unsigned long elapsed_microseconds =
+        current_microseconds_timestamp - static_cast<unsigned long>(start_microseconds_timestamp);
 
-    if (elapsed_micros < expected_loop_duration_micros) {
-        return expected_loop_duration_micros - elapsed_micros;
+    if (elapsed_microseconds < expected_loop_duration_microseconds) {
+        return expected_loop_duration_microseconds - elapsed_microseconds;
     }
 
     return 0;
@@ -167,22 +168,18 @@ bool BaseDrone::isMotorsEnabled() const {
     return _is_motors_enabled;
 }
 
-unsigned long BaseDrone::timestampMilliseconds() const
-{
+unsigned long BaseDrone::timestampMilliseconds() const {
     return processor->millisecondsTimestamp();
 }
 
-unsigned long BaseDrone::timestampMicroseconds() const
-{
+unsigned long BaseDrone::timestampMicroseconds() const {
     return processor->microsecondsTimestamp();
 }
 
-FlightMode_t BaseDrone::getFlightModeType() const
-{
+FlightMode_t BaseDrone::getFlightModeType() const {
     return _flight_mode->type();
 }
 
-int BaseDrone::getFeedbackLoopHz() const
-{
+int BaseDrone::getFeedbackLoopHz() const {
     return _feedback_loop_hz;
 }

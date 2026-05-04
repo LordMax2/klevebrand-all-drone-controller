@@ -39,15 +39,21 @@ public:
     float learning_rate = 0.1f;
 
     float getKp() const { return current_kp; }
+
     float getKi() const { return current_ki; }
+
     float getKd() const { return current_kd; }
 
     virtual float getBestKp() { return best_kp; }
+
     virtual float getBestKi() { return best_ki; }
+
     virtual float getBestKd() { return best_kd; }
 
     virtual void setBestKp(float kp) { best_kp = kp; }
+
     virtual void setBestKi(float ki) { best_ki = ki; }
+
     virtual void setBestKd(float kd) { best_kd = kd; }
 
     float current_kp;
@@ -55,6 +61,7 @@ public:
     float current_kd;
 
     virtual void setPreviousScore(long score) { previous_score = score; };
+
     virtual long getPreviousScore() { return previous_score; };
 
     PidOptimizerState state;

@@ -91,7 +91,7 @@ public:
 
     void setFlightMode(BaseFlightMode *flight_mode);
 
-    unsigned long delayToKeepFeedbackLoopHz(long start_micros_timestamp) const;
+    unsigned long delayToKeepFeedbackLoopHz(long start_microseconds_timestamp) const;
 
     unsigned long timestampMicroseconds() const;
 

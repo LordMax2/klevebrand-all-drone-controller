@@ -19,9 +19,6 @@ Return an empty container (`std::vector{}`, `std::optional<T>` without a value, 
 ### Prefer immutable classes
 Set all fields in the constructor. Avoid setters. Mark member variables `const` where possible. Immutable objects are easier to reason about, test, and use safely across threads. Exception: plain data structs used as configuration or transfer objects may need setters.
 
-### Avoid void methods
-Methods should return something meaningful — a result, a status, or `*this` for chaining. Void methods hide outcomes and make call sites harder to verify.
-
 ### Decouple models from storage
 Models must be constructable from raw data alone, with no dependency on EEPROM, file I/O, or any other storage. Provide a constructor that takes all required values directly. If a convenience constructor that reads from storage is needed, it must delegate to the data constructor — all real construction flows through the storage-free path. This makes unit-testing trivial. No static `load()` methods.
 
@@ -30,3 +27,28 @@ If multiple state changes must succeed or fail together, ensure they are atomic.
 
 ### Exception and error handling
 Handle errors at the right boundary. Do not silently swallow failures. Provide enough context in error paths to diagnose the problem. On embedded targets where exceptions are disabled, use explicit return codes or `std::optional`/`std::expected` rather than ignoring failure silently.
+
+### Naming conventions
+- **Classes**: PascalCase — e.g. `BaseDrone`, `FlightModeAutoLevel`.
+- **Methods and functions**: camelCase — e.g. `getThrottle()`, `setFlightModeAcro()`.
+- **Variables, parameters, and fields**: snake_case — e.g. `feedback_loop_hz`, `pid_max`.
+- **Private member fields**: snake_case with a `_` prefix — e.g. `_feedback_loop_hz`, `_pid_max`.
+- Never abbreviate unless the abbreviation is universally understood in the domain (e.g. `pid`, `hz`, `kp`, `ki`, `kd`). Write `feedback_loop_hz` not `fb_hz`, `timestamp_milliseconds` not `ts_ms`, `compass_mode` not `cmp_mode`.
+
+### Formatting
+- Always leave one blank line after a closing `}` that ends a function or method body.
+- Inside a function body, separate logically distinct steps with a blank line. Group variable declarations together, then separate from the first operation. For example: declare locals first, blank line, then the computation, blank line, then the return or output. Do not add blank lines within a single logical step.
+
+Example of correct formatting:
+```cpp
+void foo() {
+    const float kp = _pid->getKp();
+    const float ki = _pid->getKi();
+
+    _pid = new Pid(kp, ki, _pid_max);
+}
+
+void bar() {
+    ...
+}
+```
