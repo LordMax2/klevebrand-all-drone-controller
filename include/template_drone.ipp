@@ -38,7 +38,7 @@ void TemplateDrone<SomeGyroPidType>::resetPid() {
 }
 
 template<class SomeGyroPidType>
-void TemplateDrone<SomeGyroPidType>::activateFlightMode(FlightMode *flight_mode) {
+void TemplateDrone<SomeGyroPidType>::activateFlightMode(BaseFlightMode *flight_mode) {
     if (flight_mode == nullptr) {
         return;
     }
@@ -48,7 +48,7 @@ void TemplateDrone<SomeGyroPidType>::activateFlightMode(FlightMode *flight_mode)
     }
 
     setFlightMode(flight_mode);
-    flight_mode->activate(gyro, processor);
+    flight_mode->activate(this, gyro, processor);
 
     PidConstants_t pid_constants = pid_repository->get(flight_mode->pidConstantsStorageKey());
 
@@ -123,7 +123,7 @@ template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::persistPidConstants() {
     if (processor->millisecondsTimestamp() - _last_pid_persist_timestamp_milliseconds >=
         _pid_persist_interval_milliseconds) {
-        FlightMode *flight_mode = getFlightMode();
+        BaseFlightMode *flight_mode = getFlightMode();
 
         auto pid_constants = PidConstants_t(
             pid.getYawKp(), pid.getYawKi(), pid.getYawKd(),

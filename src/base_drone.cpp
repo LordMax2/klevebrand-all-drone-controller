@@ -1,5 +1,5 @@
 #include "base_drone.h"
-#include "flight_mode.h"
+#include "base_flight_mode.h"
 
 BaseDrone::BaseDrone(
     const long transmission_timeout_definition_milliseconds,
@@ -134,7 +134,7 @@ void BaseDrone::disableMotors() {
     _is_motors_enabled = false;
 }
 
-FlightMode *BaseDrone::getFlightMode() const
+BaseFlightMode *BaseDrone::getFlightMode() const
 {
     return _flight_mode;
 }
@@ -159,7 +159,7 @@ unsigned long BaseDrone::delayToKeepFeedbackLoopHz(long start_micros_timestamp) 
     return 0;
 }
 
-void BaseDrone::setFlightMode(FlightMode *flight_mode) {
+void BaseDrone::setFlightMode(BaseFlightMode *flight_mode) {
     _flight_mode = flight_mode == nullptr ? flightModeNone() : flight_mode;
 }
 

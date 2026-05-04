@@ -5,17 +5,19 @@
 #include "base_hardware_processor.h"
 #include "pid_constants.h"
 
+class BaseDrone;
+
 enum FlightMode_t {
     none = 0,
     auto_level = 1,
     acro = 2
 };
 
-class FlightMode {
+class BaseFlightMode {
 public:
-    FlightMode() = default;
+    BaseFlightMode() = default;
 
-    virtual ~FlightMode() = default;
+    virtual ~BaseFlightMode() = default;
 
     virtual FlightMode_t type() const {
         return none;
@@ -37,18 +39,14 @@ public:
         return {};
     }
 
-    virtual void activate(BaseDroneGyro *gyro, BaseHardwareProcessor *processor) const {
-        if (gyro == nullptr || processor == nullptr) {
-            return;
-        }
-
+    virtual void activate(BaseDrone* drone, BaseDroneGyro *gyro, BaseHardwareProcessor *processor) const {
         gyro->reset();
         processor->sleepMilliseconds(1000);
     }
 };
 
-inline FlightMode *flightModeNone() {
-    static FlightMode instance;
+inline BaseFlightMode *flightModeNone() {
+    static BaseFlightMode instance;
     return &instance;
 }
 
