@@ -15,9 +15,9 @@ public:
 
     virtual void setup();
 
-    virtual void save(PidConstants_t &pid_constants);
+    virtual void save(const PidConstants_t &pid_constants);
 
-    virtual void save(int key, PidConstants_t &pid_constants);
+    virtual void save(int key, const PidConstants_t &pid_constants);
 };
 
 #endif // TEMPLATE_PID_REPOSITORY_H
