@@ -9,6 +9,7 @@
 #include "flight_mode_auto_level.h"
 #include "base_drone.h"
 #include "base_drone_position.h"
+#include <new>
 
 /*
  * The SomeGyroPidType should specify the throttle for each motor depending on the PID.
@@ -58,7 +59,7 @@ public:
     void setYawCompassMode(bool yaw_compass_mode);
 
     void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp,
-                         float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd, float pid_max);
+                         float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd);
 
     void persistPidConstants();
 

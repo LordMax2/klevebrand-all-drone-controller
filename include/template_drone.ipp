@@ -17,13 +17,13 @@ TemplateDrone<SomeGyroPidType>::TemplateDrone(
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode,
                                                      float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp,
-                                                     float roll_ki, float roll_kd, float pid_max) {
+                                                     float roll_ki, float roll_kd) {
     pid.~SomeGyroPidType();
     new (&pid) SomeGyroPidType(
         yaw_kp, yaw_ki, yaw_kd, yaw_compass_mode,
         pitch_kp, pitch_ki, pitch_kd,
         roll_kp, roll_ki, roll_kd,
-        pid_max, getFeedbackLoopHz());
+        0, getFeedbackLoopHz());
 };
 
 template<class SomeGyroPidType>
