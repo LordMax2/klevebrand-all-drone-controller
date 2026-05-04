@@ -1,32 +1,32 @@
 #include "pid.h"
 
 void Pid::reset() {
-    pid_optimizer = PidOptimizer(_kp, _ki, _kd);
+    _pid_optimizer = PidOptimizer(_kp, _ki, _kd);
 
     resetIntegral();
 }
 
 void Pid::resetIntegral() {
-    pid_i = 0;
-    previous_error = 0;
+    _pid_i = 0;
+    _previous_error = 0;
 }
 
 float Pid::getKp() const {
-    return pid_optimizer.getKp();
+    return _pid_optimizer.getKp();
 }
 
 float Pid::getKi() const {
-    return pid_optimizer.getKi();
+    return _pid_optimizer.getKi();
 }
 
 float Pid::getKd() const {
-    return pid_optimizer.getKd();
+    return _pid_optimizer.getKd();
 }
 
 void Pid::runOptimizer(const float current, const float desired, const long timestamp_milliseconds) {
     float current_error = error(current, desired);
 
-    pid_optimizer.run(current_error, timestamp_milliseconds);
+    _pid_optimizer.run(current_error, timestamp_milliseconds);
 }
 
 float Pid::error(const float current, const float desired) {
@@ -34,11 +34,11 @@ float Pid::error(const float current, const float desired) {
 }
 
 void Pid::saveError(const float current, const float desired) {
-    previous_error = error(current, desired);
+    _previous_error = error(current, desired);
 }
 
 float Pid::pidP(const float current, const float desired) {
-    return pid_optimizer.getKp() * error(current, desired);
+    return _pid_optimizer.getKp() * error(current, desired);
 }
 
 float Pid::pidD(const float current, const float desired, const float delta_time_seconds) {
@@ -46,11 +46,11 @@ float Pid::pidD(const float current, const float desired, const float delta_time
         return 0.0f;
     }
 
-    return pid_optimizer.getKd() * ((error(current, desired) - previous_error) / delta_time_seconds);
+    return _pid_optimizer.getKd() * ((error(current, desired) - _previous_error) / delta_time_seconds);
 }
 
 float Pid::pid(const float current, const float desired, const float delta_time_seconds) {
-    return fconstrain(pidP(current, desired) + pid_i + pidD(current, desired, delta_time_seconds), -pid_max, pid_max);
+    return fconstrain(pidP(current, desired) + _pid_i + pidD(current, desired, delta_time_seconds), -_pid_max, _pid_max);
 }
 
 void Pid::updateIntegral(const float current, const float desired, const float delta_time_seconds) {
@@ -58,7 +58,7 @@ void Pid::updateIntegral(const float current, const float desired, const float d
         return;
     }
 
-    pid_i = fconstrain(pid_i + (getKi() * error(current, desired) * delta_time_seconds), -pid_max, pid_max);
+    _pid_i = fconstrain(_pid_i + (getKi() * error(current, desired) * delta_time_seconds), -_pid_max, _pid_max);
 }
 
 float Pid::fconstrain(const float input, const float min_value, const float max_value) {

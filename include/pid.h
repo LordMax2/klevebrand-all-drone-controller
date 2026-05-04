@@ -2,12 +2,11 @@
 #define THROTTLE_PID_H
 
 #include "pid_optimizer.h"
-#include <math.h>
 
 class Pid {
 public:
-    Pid(const float kp, const float ki, const float kd, const float pid_max) : pid_max(pid_max),
-                                                       pid_optimizer(kp, ki, kd) {
+    Pid(const float kp, const float ki, const float kd, const float pid_max) : _pid_max(pid_max),
+                                                       _pid_optimizer(kp, ki, kd) {
         _kp = kp;
         _ki = ki;
         _kd = kd;
@@ -32,24 +31,21 @@ public:
 
     float pid(float current, float desired, float delta_time_seconds = 1.0f);
 
-    float pid_max;
-    PidOptimizer pid_optimizer;
-
     virtual float error(float current, float desired);
 
-    float previous_error = 0;
-
     float pidP(float current, float desired);
-
-    float pid_i = 0;
-
     float pidD(float current, float desired, float delta_time_seconds = 1.0f);
 
+    static float fconstrain(float input, float min_value, float max_value);
+
+private:
+    float _pid_max;
+    PidOptimizer _pid_optimizer;
+    float _previous_error = 0;
+    float _pid_i = 0;
     float _kp;
     float _ki;
     float _kd;
-
-    static float fconstrain(float input, float min_value, float max_value);
 };
 
 #endif // THROTTLE_PID_H
