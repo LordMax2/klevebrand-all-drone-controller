@@ -11,13 +11,14 @@ public:
         const float yaw_kp, const float yaw_ki, const float yaw_kd, const bool yaw_compass_mode,
         const float pitch_kp, const float pitch_ki, const float pitch_kd,
         const float roll_kp, const float roll_ki, const float roll_kd,
-        const float pid_max) : _pid_max(pid_max),
-                         _pid_pitch(pitch_kp, pitch_ki, pitch_kd, pid_max),
-                         _pid_roll(roll_kp, roll_ki, roll_kd, pid_max) {
+        const float pid_max, const int feedback_loop_hz) : _pid_max(pid_max),
+                         _feedback_loop_hz(feedback_loop_hz),
+                         _pid_pitch(pitch_kp, pitch_ki, pitch_kd, pid_max, feedback_loop_hz),
+                         _pid_roll(roll_kp, roll_ki, roll_kd, pid_max, feedback_loop_hz) {
         if (yaw_compass_mode) {
-            _pid_yaw = new PidYawCompass(yaw_kp, yaw_ki, yaw_kd, pid_max);
+            _pid_yaw = new PidYawCompass(yaw_kp, yaw_ki, yaw_kd, pid_max, feedback_loop_hz);
         } else {
-            _pid_yaw = new Pid(yaw_kp, yaw_ki, yaw_kd, pid_max);
+            _pid_yaw = new Pid(yaw_kp, yaw_ki, yaw_kd, pid_max, feedback_loop_hz);
         }
     };
 
@@ -77,14 +78,15 @@ public:
         delete _pid_yaw;
 
         if (compass_mode) {
-            _pid_yaw = new PidYawCompass(kp, ki, kd, _pid_max);
+            _pid_yaw = new PidYawCompass(kp, ki, kd, _pid_max, _feedback_loop_hz);
         } else {
-            _pid_yaw = new Pid(kp, ki, kd, _pid_max);
+            _pid_yaw = new Pid(kp, ki, kd, _pid_max, _feedback_loop_hz);
         }
     }
 
 private:
     float _pid_max;
+    int _feedback_loop_hz;
 
     Pid *_pid_yaw;
     Pid _pid_pitch;

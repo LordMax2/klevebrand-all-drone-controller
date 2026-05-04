@@ -5,11 +5,12 @@
 
 class Pid {
 public:
-    Pid(const float kp, const float ki, const float kd, const float pid_max) : _pid_max(pid_max),
-                                                       _pid_optimizer(kp, ki, kd) {
+    Pid(const float kp, const float ki, const float kd, const float pid_max, const int feedback_loop_hz) : _pid_max(pid_max),
+                                                       _pid_optimizer(kp, ki, kd, feedback_loop_hz) {
         _kp = kp;
         _ki = ki;
         _kd = kd;
+        _feedback_loop_hz = feedback_loop_hz;
     };
     virtual ~Pid() = default;
 
@@ -46,6 +47,7 @@ private:
     float _kp;
     float _ki;
     float _kd;
+    int _feedback_loop_hz;
 };
 
 #endif // THROTTLE_PID_H

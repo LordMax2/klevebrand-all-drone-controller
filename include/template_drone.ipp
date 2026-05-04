@@ -9,7 +9,7 @@ TemplateDrone<SomeGyroPidType>::TemplateDrone(
     BaseDroneGyro *gyro,
     BasePidRepository *pid_repository,
     BaseDronePosition *position) : BaseDrone(transmission_timeout_definition_milliseconds, feedback_loop_hz,
-                                                   processor, gyro, position), pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0) {
+                                                   processor, gyro, position), pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0, 0, feedback_loop_hz) {
     this->_pid_persist_interval_milliseconds = pid_persist_interval_milliseconds;
     this->pid_repository = pid_repository;
 };
@@ -19,7 +19,7 @@ void TemplateDrone<SomeGyroPidType>::setPidConstants(float yaw_kp, float yaw_ki,
                                                      float pitch_kp, float pitch_ki, float pitch_kd, float roll_kp,
                                                      float roll_ki, float roll_kd) {
     pid = SomeGyroPidType(yaw_kp, yaw_ki, yaw_kd, yaw_compass_mode, pitch_kp, pitch_ki, pitch_kd, roll_kp, roll_ki,
-                          roll_kd);
+                          roll_kd, 0, getFeedbackLoopHz());
 };
 
 template<class SomeGyroPidType>

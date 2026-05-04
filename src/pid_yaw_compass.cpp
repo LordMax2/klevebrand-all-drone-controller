@@ -1,7 +1,7 @@
 #include "pid_yaw_compass.h"
 
-PidYawCompass::PidYawCompass(const float kp, const float ki, const float kd, const float pid_max) : Pid(
-    kp, ki, kd, pid_max) {
+PidYawCompass::PidYawCompass(const float kp, const float ki, const float kd, const float pid_max, const int feedback_loop_hz) : Pid(
+    kp, ki, kd, pid_max, feedback_loop_hz) {
 };
 
 float PidYawCompass::error(const float current, const float desired) {

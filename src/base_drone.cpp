@@ -181,3 +181,8 @@ FlightMode_t BaseDrone::getFlightModeType() const
 {
     return _flight_mode->type();
 }
+
+int BaseDrone::getFeedbackLoopHz() const
+{
+    return _feedback_loop_hz;
+}

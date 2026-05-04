@@ -99,6 +99,8 @@ public:
 
     FlightMode_t getFlightModeType() const;
 
+    int getFeedbackLoopHz() const;
+
 private:
     float _throttle = 0;
     float _yaw_desired_angle = 0;

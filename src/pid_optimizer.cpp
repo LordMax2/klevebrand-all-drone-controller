@@ -9,8 +9,8 @@
 
 #include "pid_optimizer.h"
 
-PidOptimizer::PidOptimizer(const float default_kp, const float default_ki, const float default_kd) : best_kp(0),
-    best_ki(0), best_kd(0), trial_start_time(0), error_sum_squared(0), error_measurement_count(0) {
+PidOptimizer::PidOptimizer(const float default_kp, const float default_ki, const float default_kd, const int feedback_loop_hz) :  best_kp(0), best_ki(0),
+    best_kd(0), _feedback_loop_hz(feedback_loop_hz), trial_start_time(0), error_sum_squared(0), error_measurement_count(0) {
     current_kp = default_kp;
     current_ki = default_ki;
     current_kd = default_kd;
@@ -35,8 +35,7 @@ void PidOptimizer::run(float current_error, long timestamp_milliseconds) {
                 error_measurement_count++;
             } else {
                 // If we don't get enough readings, restart the trial
-                if (error_measurement_count < ((TRIAL_DURATION_MILLISECONDS / 1000) * 200) * 0.9)
-                // TODO: Replace hardcoded 200 with the Flight Controller hz frequency, and the acceptance percentage deviation.
+                if (error_measurement_count < ((TRIAL_DURATION_MILLISECONDS / 1000) * _feedback_loop_hz) * 0.9)
                 {
                     startTrial(timestamp_milliseconds);
 

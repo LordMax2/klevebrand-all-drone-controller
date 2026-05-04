@@ -1,7 +1,7 @@
 #include "pid.h"
 
 void Pid::reset() {
-    _pid_optimizer = PidOptimizer(_kp, _ki, _kd);
+    _pid_optimizer = PidOptimizer(_kp, _ki, _kd, _feedback_loop_hz);
 
     resetIntegral();
 }

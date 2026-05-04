@@ -6,7 +6,7 @@
 
 class PidYawCompass : public Pid {
 public:
-    PidYawCompass(float kp, float ki, float kd, float pid_max);
+    PidYawCompass(float kp, float ki, float kd, float pid_max, int feedback_loop_hz);
 
     float error(float current, float desired) override;
 

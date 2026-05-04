@@ -23,9 +23,10 @@ private:
     float best_ki;
     float best_kd;
     long previous_score = LONG_MAX;
+    int _feedback_loop_hz;
 
 public:
-    PidOptimizer(float default_kp, float default_ki, float default_kd);
+    PidOptimizer(float default_kp, float default_ki, float default_kd, int feedback_loop_hz);
 
     virtual ~PidOptimizer() = default;
 
