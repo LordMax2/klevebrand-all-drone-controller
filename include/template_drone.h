@@ -58,7 +58,7 @@ public:
     void setYawCompassMode(bool yaw_compass_mode);
 
     void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp,
-                         float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd);
+                         float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd, float pid_max);
 
     void persistPidConstants();
 

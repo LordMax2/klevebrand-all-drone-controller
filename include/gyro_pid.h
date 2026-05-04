@@ -27,6 +27,28 @@ public:
     GyroPid(const GyroPid&) = delete;
     GyroPid& operator=(const GyroPid&) = delete;
 
+    GyroPid(GyroPid&& other) noexcept
+        : _pid_max(other._pid_max),
+          _feedback_loop_hz(other._feedback_loop_hz),
+          _pid_yaw(other._pid_yaw),
+          _pid_pitch(other._pid_pitch),
+          _pid_roll(other._pid_roll) {
+        other._pid_yaw = nullptr;
+    }
+
+    GyroPid& operator=(GyroPid&& other) noexcept {
+        if (this != &other) {
+            delete _pid_yaw;
+            _pid_max = other._pid_max;
+            _feedback_loop_hz = other._feedback_loop_hz;
+            _pid_yaw = other._pid_yaw;
+            _pid_pitch = other._pid_pitch;
+            _pid_roll = other._pid_roll;
+            other._pid_yaw = nullptr;
+        }
+        return *this;
+    }
+
     void reset();
 
     void updateIntegral(float gyro_roll, float roll_desired_angle, float gyro_pitch, float pitch_desired_angle,
