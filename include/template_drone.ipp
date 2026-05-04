@@ -121,8 +121,9 @@ void TemplateDrone<SomeGyroPidType>::setYawCompassMode(bool yaw_compass_mode) {
 
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::persistPidConstants() {
-    if (processor->millisecondsTimestamp() - _last_pid_persist_timestamp_milliseconds >=
-        _pid_persist_interval_milliseconds) {
+    const unsigned long now = processor->millisecondsTimestamp();
+
+    if (now - _last_pid_persist_timestamp_milliseconds >= _pid_persist_interval_milliseconds) {
         BaseFlightMode *flight_mode = getFlightMode();
 
         auto pid_constants = PidConstants_t(
@@ -132,6 +133,6 @@ void TemplateDrone<SomeGyroPidType>::persistPidConstants() {
 
         pid_repository->save(flight_mode->pidConstantsStorageKey(), pid_constants);
 
-        _last_pid_persist_timestamp_milliseconds = processor->millisecondsTimestamp();
+        _last_pid_persist_timestamp_milliseconds = now;
     }
 }
