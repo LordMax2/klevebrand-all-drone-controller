@@ -24,7 +24,7 @@ void TemplateDrone<SomeGyroPidType>::setPidConstants(float yaw_kp, float yaw_ki,
 
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::printPid() {
-    pid.printPid(gyro->roll(), getDesiredRollAngle(), gyro->pitch(), getDesiredPitchAngle(), gyro->yaw(), getDesiredYawAngle());
+    pid.printPid(getRoll(), getDesiredRollAngle(), getPitch(), getDesiredPitchAngle(), getYaw(), getDesiredYawAngle());
 }
 
 template<class SomeGyroPidType>
@@ -43,7 +43,7 @@ void TemplateDrone<SomeGyroPidType>::activateFlightMode(BaseFlightMode *flight_m
         return;
     }
 
-    if (getFlightMode()->type() == flight_mode->type()) {
+    if (getFlightModeType() == flight_mode->type()) {
         return;
     }
 
@@ -94,24 +94,24 @@ void TemplateDrone<SomeGyroPidType>::savePidErrors(float gyro_roll, float gyro_p
 
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::runPidOptimizer(long timestamp_milliseconds) {
-    pid.runRollOptimizer(gyro->roll(), getDesiredRollAngle(), timestamp_milliseconds);
-    pid.runPitchOptimizer(gyro->pitch(), getDesiredPitchAngle(), timestamp_milliseconds);
-    pid.runYawOptimizer(gyro->yaw(), getDesiredYawAngle(), timestamp_milliseconds);
+    pid.runRollOptimizer(getRoll(), getDesiredRollAngle(), timestamp_milliseconds);
+    pid.runPitchOptimizer(getPitch(), getDesiredPitchAngle(), timestamp_milliseconds);
+    pid.runYawOptimizer(getYaw(), getDesiredYawAngle(), timestamp_milliseconds);
 }
 
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::runYawPidOptimizer(long timestamp_milliseconds) {
-    pid.runYawOptimizer(gyro->yaw(), getDesiredYawAngle(), timestamp_milliseconds);
+    pid.runYawOptimizer(getYaw(), getDesiredYawAngle(), timestamp_milliseconds);
 }
 
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::runPitchPidOptimizer(long timestamp_milliseconds) {
-    pid.runPitchOptimizer(gyro->pitch(), getDesiredPitchAngle(), timestamp_milliseconds);
+    pid.runPitchOptimizer(getPitch(), getDesiredPitchAngle(), timestamp_milliseconds);
 }
 
 template<class SomeGyroPidType>
 void TemplateDrone<SomeGyroPidType>::runRollPidOptimizer(long timestamp_milliseconds) {
-    pid.runRollOptimizer(gyro->roll(), getDesiredRollAngle(), timestamp_milliseconds);
+    pid.runRollOptimizer(getRoll(), getDesiredRollAngle(), timestamp_milliseconds);
 }
 
 template<class SomeGyroPidType>
