@@ -21,6 +21,11 @@ public:
         }
     };
 
+    ~GyroPid() { delete _pid_yaw; }
+
+    GyroPid(const GyroPid&) = delete;
+    GyroPid& operator=(const GyroPid&) = delete;
+
     void reset();
 
     void updateIntegral(float gyro_roll, float roll_desired_angle, float gyro_pitch, float pitch_desired_angle,
@@ -65,6 +70,7 @@ public:
     float pitchPid(float gyro_pitch, float pitch_desired_angle, float delta_time_seconds = 1.0f);
 
     void setYawCompassMode(bool compass_mode) {
+        delete _pid_yaw;
         if (compass_mode) {
             _pid_yaw = new PidYawCompass(0, 0, 0, _pid_max);
         } else {
