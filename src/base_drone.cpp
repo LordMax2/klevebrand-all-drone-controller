@@ -179,10 +179,5 @@ unsigned long BaseDrone::timestampMicroseconds() const
 
 FlightMode_t BaseDrone::getFlightModeType() const
 {
-    if (_flight_mode == nullptr)
-    {
-        return none;
-    }
-
     return _flight_mode->type();
 }
