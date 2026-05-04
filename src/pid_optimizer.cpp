@@ -119,13 +119,6 @@ void PidOptimizer::evaluateTrial() {
     }
 }
 
-float PidOptimizer::coolingFactor(const long timestamp_milliseconds) {
-    const unsigned long time_elapsed = timestamp_milliseconds;
-    constexpr float cooling_duration = 600000;
-
-    return 1.0 - fconstrain((float) time_elapsed / cooling_duration, 0.0, 1.0);
-}
-
 float PidOptimizer::fconstrain(const float input, const float min_value, const float max_value) {
     return input < min_value ? min_value : (input > max_value ? max_value : input);
 }

@@ -67,8 +67,6 @@ public:
 
     virtual void evaluateTrial();
 
-    static float coolingFactor(long timestamp_milliseconds);
-
     static float fconstrain(float input, float min_value, float max_value);
 
     static long randomLimited(long min_value, long max_value);
