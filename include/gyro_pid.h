@@ -70,11 +70,16 @@ public:
     float pitchPid(float gyro_pitch, float pitch_desired_angle, float delta_time_seconds = 1.0f);
 
     void setYawCompassMode(bool compass_mode) {
+        const float kp = _pid_yaw->getKp();
+        const float ki = _pid_yaw->getKi();
+        const float kd = _pid_yaw->getKd();
+
         delete _pid_yaw;
+
         if (compass_mode) {
-            _pid_yaw = new PidYawCompass(0, 0, 0, _pid_max);
+            _pid_yaw = new PidYawCompass(kp, ki, kd, _pid_max);
         } else {
-            _pid_yaw = new Pid(0, 0, 0, _pid_max);
+            _pid_yaw = new Pid(kp, ki, kd, _pid_max);
         }
     }
 
