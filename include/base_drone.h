@@ -1,12 +1,9 @@
 #ifndef BASE_DRONE_H
 #define BASE_DRONE_H
 
-#include "base_drone_motor.h"
 #include "base_drone_gyro.h"
 #include "base_drone_position.h"
-#include "base_pid_repository.h"
 #include "base_hardware_processor.h"
-#include "gyro_pid.h"
 #include "base_flight_mode.h"
 
 class BaseDrone {
@@ -113,7 +110,6 @@ private:
     unsigned long _desired_pitch_angle_set_timestamp = 0;
     unsigned long _desired_roll_angle_set_timestamp = 0;
     bool _is_motors_enabled = false;
-    unsigned long _last_pid_persist_timestamp_milliseconds = 0;
     unsigned long _transmission_timeout_definition_milliseconds;
     int _feedback_loop_hz;
 };
