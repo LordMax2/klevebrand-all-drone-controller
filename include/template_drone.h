@@ -61,10 +61,6 @@ public:
 
     void persistPidConstants();
 
-    void setFlightModeAutoLevel();
-
-    void setFlightModeAcro();
-
     void activateControlMode(BaseControlMode *control_mode);
 
 private:
