@@ -128,9 +128,9 @@ void TemplateDrone<SomeGyroPidType>::persistPidConstants() {
     const unsigned long now = processor->millisecondsTimestamp();
 
     if (now - _last_pid_persist_timestamp_milliseconds >= _pid_persist_interval_milliseconds) {
-        BaseFlightMode *flight_mode = getFlightMode();
+        const BaseFlightMode *flight_mode = getFlightMode();
 
-        auto pid_constants = PidConstants_t(
+        const auto pid_constants = PidConstants_t(
             pid.getYawKp(), pid.getYawKi(), pid.getYawKd(),
             pid.getPitchKp(), pid.getPitchKi(), pid.getPitchKd(),
             pid.getRollKp(), pid.getRollKi(), pid.getRollKd());

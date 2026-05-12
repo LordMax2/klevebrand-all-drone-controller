@@ -1,5 +1,5 @@
-#ifndef TEMPLATE_PID_REPOSITORY_H
-#define TEMPLATE_PID_REPOSITORY_H
+#ifndef BASE_PID_REPOSITORY_H
+#define BASE_PID_REPOSITORY_H
 
 #include "pid_constants.h"
 
@@ -20,4 +20,4 @@ public:
     virtual void save(int key, const PidConstants_t &pid_constants);
 };
 
-#endif // TEMPLATE_PID_REPOSITORY_H
+#endif

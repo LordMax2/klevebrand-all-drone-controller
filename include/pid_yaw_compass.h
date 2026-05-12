@@ -13,4 +13,4 @@ public:
     static float absoluteCompassError(float current, float desired);
 };
 
-#endif // PID_YAW_COMPASS
+#endif

@@ -1,11 +1,11 @@
 #include "base_hardware_processor.h"
 
-void BaseHardwareProcessor::setup() {};
+void BaseHardwareProcessor::setup() {}
 
-unsigned long BaseHardwareProcessor::microsecondsTimestamp() { return 0; };
+unsigned long BaseHardwareProcessor::microsecondsTimestamp() { return 0; }
 
-unsigned long BaseHardwareProcessor::millisecondsTimestamp() { return 0; };
+unsigned long BaseHardwareProcessor::millisecondsTimestamp() { return 0; }
 
-void BaseHardwareProcessor::sleepMilliseconds(int milliseconds) {};
+void BaseHardwareProcessor::sleepMilliseconds(int milliseconds) {}
 
-void BaseHardwareProcessor::print(const char *array) {};
+void BaseHardwareProcessor::print(const char *array) {}

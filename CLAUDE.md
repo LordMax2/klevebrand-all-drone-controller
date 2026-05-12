@@ -35,6 +35,9 @@ Handle errors at the right boundary. Do not silently swallow failures. Provide e
 - **Private member fields**: snake_case with a `_` prefix — e.g. `_feedback_loop_hz`, `_pid_max`.
 - Never abbreviate unless the abbreviation is universally understood in the domain (e.g. `pid`, `hz`, `kp`, `ki`, `kd`). Write `feedback_loop_hz` not `fb_hz`, `timestamp_milliseconds` not `ts_ms`, `compass_mode` not `cmp_mode`.
 
+### Include guards
+The include guard macro must match the file name exactly, uppercased with dots replaced by underscores — e.g. `my_header.h` uses `#ifndef MY_HEADER_H`. End header files with a bare `#endif` — no trailing comment. Never write `#endif // HEADER_DEF` or any variant of it.
+
 ### Formatting
 - Always leave one blank line after a closing `}` that ends a function or method body.
 - Inside a function body, separate logically distinct steps with a blank line. Group variable declarations together, then separate from the first operation. For example: declare locals first, blank line, then the computation, blank line, then the return or output. Do not add blank lines within a single logical step.

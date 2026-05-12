@@ -34,4 +34,4 @@ public:
     virtual long timestampMilliseconds();
 };
 
-#endif // BASE_DRONE_GYRO_H
+#endif

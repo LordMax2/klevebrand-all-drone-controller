@@ -10,4 +10,4 @@ public:
     virtual void setSpeed(float percentage);
 };
 
-#endif // BASE_DRONE_MOTOR_H
+#endif

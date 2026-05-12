@@ -1,5 +1,5 @@
-#ifndef BASE_FOUR_MOTOR_DRONE_H
-#define BASE_FOUR_MOTOR_DRONE_H
+#ifndef TEMPLATE_DRONE_H
+#define TEMPLATE_DRONE_H
 
 #include "base_drone_gyro.h"
 #include "base_pid_repository.h"
@@ -76,4 +76,4 @@ private:
 
 #include "template_drone.ipp"
 
-#endif // BASE_FOUR_MOTOR_DRONE_H
+#endif

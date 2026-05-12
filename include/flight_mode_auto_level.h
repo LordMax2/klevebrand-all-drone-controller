@@ -1,5 +1,5 @@
-#ifndef FLIGHT_MODE_AUTO_LEVEL
-#define FLIGHT_MODE_AUTO_LEVEL
+#ifndef FLIGHT_MODE_AUTO_LEVEL_H
+#define FLIGHT_MODE_AUTO_LEVEL_H
 
 #include "base_drone.h"
 #include "base_flight_mode.h"

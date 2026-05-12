@@ -77,15 +77,15 @@ float GyroPid::getRollKd() const {
     return _pid_roll.getKd();
 }
 
-float GyroPid::rollPid(float gyro_roll, float roll_desired_angle, const float delta_time_seconds) {
+float GyroPid::rollPid(const float gyro_roll, const float roll_desired_angle, const float delta_time_seconds) {
     return _pid_roll.pid(gyro_roll, roll_desired_angle, delta_time_seconds);
 }
 
-float GyroPid::pitchPid(float gyro_pitch, float pitch_desired_angle, const float delta_time_seconds) {
+float GyroPid::pitchPid(const float gyro_pitch, const float pitch_desired_angle, const float delta_time_seconds) {
     return _pid_pitch.pid(gyro_pitch, pitch_desired_angle, delta_time_seconds);
 }
 
-float GyroPid::yawPid(float gyro_yaw, float yaw_desired_angle, const float delta_time_seconds) const {
+float GyroPid::yawPid(const float gyro_yaw, const float yaw_desired_angle, const float delta_time_seconds) const {
     return _pid_yaw->pid(gyro_yaw, yaw_desired_angle, delta_time_seconds);
 }
 

@@ -1,5 +1,5 @@
-#ifndef THROTTLE_PID_H
-#define THROTTLE_PID_H
+#ifndef PID_H
+#define PID_H
 
 #include "pid_optimizer.h"
 
@@ -50,4 +50,4 @@ private:
     int _feedback_loop_hz;
 };
 
-#endif // THROTTLE_PID_H
+#endif

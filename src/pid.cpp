@@ -24,7 +24,7 @@ float Pid::getKd() const {
 }
 
 void Pid::runOptimizer(const float current, const float desired, const long timestamp_milliseconds) {
-    float current_error = error(current, desired);
+    const float current_error = error(current, desired);
 
     _pid_optimizer.run(current_error, timestamp_milliseconds);
 }
@@ -62,5 +62,5 @@ void Pid::updateIntegral(const float current, const float desired, const float d
 }
 
 float Pid::fconstrain(const float input, const float min_value, const float max_value) {
-    return input < min_value ? min_value : (input > max_value ? max_value : input);
+    return input < min_value ? min_value : input > max_value ? max_value : input;
 }

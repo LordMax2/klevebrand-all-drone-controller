@@ -144,7 +144,7 @@ bool BaseDrone::updateGyro() const {
     return gyro->reload();
 }
 
-unsigned long BaseDrone::delayToKeepFeedbackLoopHz(long start_microseconds_timestamp) const {
+unsigned long BaseDrone::delayToKeepFeedbackLoopHz(const long start_microseconds_timestamp) const {
     const unsigned long current_microseconds_timestamp = processor->microsecondsTimestamp();
     const long microseconds_feedback_loop_should_take = 1000000 / _feedback_loop_hz;
     const unsigned long expected_loop_duration_microseconds = static_cast<unsigned long>(

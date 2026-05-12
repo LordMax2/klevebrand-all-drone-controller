@@ -18,4 +18,4 @@ public:
     virtual void print(const char *array);
 };
 
-#endif // BASE_HARDWARE_PROCESSOR_H
+#endif

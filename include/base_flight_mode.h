@@ -1,5 +1,5 @@
-#ifndef FLIGHT_MODE_H
-#define FLIGHT_MODE_H
+#ifndef BASE_FLIGHT_MODE_H
+#define BASE_FLIGHT_MODE_H
 
 #include "base_drone_gyro.h"
 #include "base_hardware_processor.h"
@@ -50,4 +50,4 @@ inline BaseFlightMode *flightModeNone() {
     return &instance;
 }
 
-#endif // FLIGHT_MODE_H
+#endif
