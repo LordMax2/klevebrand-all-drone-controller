@@ -4,7 +4,7 @@
 #include "base_drone_gyro.h"
 #include "base_drone_position.h"
 #include "base_hardware_processor.h"
-#include "base_flight_mode.h"
+#include "base_control_mode.h"
 
 class BaseDrone {
 public:
@@ -87,9 +87,9 @@ public:
 
     bool isMotorsEnabled() const;
 
-    BaseFlightMode *getFlightMode() const;
+    BaseControlMode *getControlMode() const;
 
-    void setFlightMode(BaseFlightMode *flight_mode);
+    void setControlMode(BaseControlMode *control_mode);
 
     unsigned long delayToKeepFeedbackLoopHz(long start_microseconds_timestamp) const;
 
@@ -97,7 +97,7 @@ public:
 
     unsigned long timestampMilliseconds() const;
 
-    FlightMode_t getFlightModeType() const;
+    ControlMode_t getControlModeType() const;
 
     int getFeedbackLoopHz() const;
 
@@ -106,7 +106,7 @@ private:
     float _yaw_desired_angle = 0;
     float _pitch_desired_angle = 0;
     float _roll_desired_angle = 0;
-    BaseFlightMode *_flight_mode = flightModeNone();
+    BaseControlMode *_control_mode = controlModeNone();
     unsigned long _throttle_set_timestamp = 0;
     unsigned long _yaw_desired_angle_set_timestamp = 0;
     unsigned long _desired_pitch_angle_set_timestamp = 0;

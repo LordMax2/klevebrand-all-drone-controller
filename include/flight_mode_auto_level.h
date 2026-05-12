@@ -2,12 +2,12 @@
 #define FLIGHT_MODE_AUTO_LEVEL_H
 
 #include "base_drone.h"
-#include "base_flight_mode.h"
+#include "base_control_mode.h"
 
-class FlightModeAutoLevel : public BaseFlightMode
+class FlightModeAutoLevel : public BaseControlMode
 {
 public:
-    FlightMode_t type() const override
+    ControlMode_t type() const override
     {
         return auto_level;
     }
@@ -34,7 +34,7 @@ public:
 
     void activate(BaseDrone* drone, BaseDroneGyro* gyro, BaseHardwareProcessor* processor) const override
     {
-        BaseFlightMode::activate(drone, gyro, processor);
+        BaseControlMode::activate(drone, gyro, processor);
 
         gyro->setModeEuler();
 
@@ -42,7 +42,7 @@ public:
     }
 };
 
-inline BaseFlightMode* flightModeAutoLevel()
+inline BaseControlMode* flightModeAutoLevel()
 {
     static FlightModeAutoLevel instance;
     return &instance;

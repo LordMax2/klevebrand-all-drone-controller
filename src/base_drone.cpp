@@ -1,5 +1,5 @@
 #include "base_drone.h"
-#include "base_flight_mode.h"
+#include "base_control_mode.h"
 
 BaseDrone::BaseDrone(
     const long transmission_timeout_definition_milliseconds,
@@ -14,7 +14,7 @@ BaseDrone::BaseDrone(
     this->gyro = gyro;
     this->position = position;
 
-    this->_flight_mode = flightModeNone();
+    this->_control_mode = controlModeNone();
 };
 
 float BaseDrone::getThrottle() const {
@@ -136,8 +136,8 @@ void BaseDrone::disableMotors() {
     _is_motors_enabled = false;
 }
 
-BaseFlightMode *BaseDrone::getFlightMode() const {
-    return _flight_mode;
+BaseControlMode *BaseDrone::getControlMode() const {
+    return _control_mode;
 }
 
 bool BaseDrone::updateGyro() const {
@@ -160,8 +160,8 @@ unsigned long BaseDrone::delayToKeepFeedbackLoopHz(const long start_microseconds
     return 0;
 }
 
-void BaseDrone::setFlightMode(BaseFlightMode *flight_mode) {
-    _flight_mode = flight_mode == nullptr ? flightModeNone() : flight_mode;
+void BaseDrone::setControlMode(BaseControlMode *control_mode) {
+    _control_mode = control_mode == nullptr ? controlModeNone() : control_mode;
 }
 
 bool BaseDrone::isMotorsEnabled() const {
@@ -176,8 +176,8 @@ unsigned long BaseDrone::timestampMicroseconds() const {
     return processor->microsecondsTimestamp();
 }
 
-FlightMode_t BaseDrone::getFlightModeType() const {
-    return _flight_mode->type();
+ControlMode_t BaseDrone::getControlModeType() const {
+    return _control_mode->type();
 }
 
 int BaseDrone::getFeedbackLoopHz() const {

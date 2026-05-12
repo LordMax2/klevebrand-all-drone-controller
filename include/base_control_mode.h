@@ -1,5 +1,5 @@
-#ifndef BASE_FLIGHT_MODE_H
-#define BASE_FLIGHT_MODE_H
+#ifndef BASE_CONTROL_MODE_H
+#define BASE_CONTROL_MODE_H
 
 #include "base_drone_gyro.h"
 #include "base_hardware_processor.h"
@@ -7,19 +7,19 @@
 
 class BaseDrone;
 
-enum FlightMode_t {
+enum ControlMode_t {
     none = 0,
     auto_level = 1,
     acro = 2
 };
 
-class BaseFlightMode {
+class BaseControlMode {
 public:
-    BaseFlightMode() = default;
+    BaseControlMode() = default;
 
-    virtual ~BaseFlightMode() = default;
+    virtual ~BaseControlMode() = default;
 
-    virtual FlightMode_t type() const {
+    virtual ControlMode_t type() const {
         return none;
     }
 
@@ -45,8 +45,8 @@ public:
     }
 };
 
-inline BaseFlightMode *flightModeNone() {
-    static BaseFlightMode instance;
+inline BaseControlMode *controlModeNone() {
+    static BaseControlMode instance;
     return &instance;
 }
 

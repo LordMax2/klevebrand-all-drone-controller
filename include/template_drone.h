@@ -4,9 +4,7 @@
 #include "base_drone_gyro.h"
 #include "base_pid_repository.h"
 #include "base_hardware_processor.h"
-#include "base_flight_mode.h"
-#include "flight_mode_acro.h"
-#include "flight_mode_auto_level.h"
+#include "base_control_mode.h"
 #include "base_drone.h"
 #include "base_drone_position.h"
 #include <new>
@@ -67,7 +65,7 @@ public:
 
     void setFlightModeAcro();
 
-    void activateFlightMode(BaseFlightMode *flight_mode);
+    void activateControlMode(BaseControlMode *control_mode);
 
 private:
     unsigned long _last_pid_persist_timestamp_milliseconds = 0;

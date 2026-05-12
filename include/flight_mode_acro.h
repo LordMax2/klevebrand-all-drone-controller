@@ -1,12 +1,12 @@
 #ifndef FLIGHT_MODE_ACRO_H
 #define FLIGHT_MODE_ACRO_H
 
-#include "base_flight_mode.h"
+#include "base_control_mode.h"
 
-class FlightModeAcro : public BaseFlightMode
+class FlightModeAcro : public BaseControlMode
 {
 public:
-    FlightMode_t type() const override
+    ControlMode_t type() const override
     {
         return acro;
     }
@@ -28,13 +28,13 @@ public:
 
     void activate(BaseDrone* drone, BaseDroneGyro* gyro, BaseHardwareProcessor* processor) const override
     {
-        BaseFlightMode::activate(drone, gyro, processor);
+        BaseControlMode::activate(drone, gyro, processor);
 
         gyro->setModeAcro();
     }
 };
 
-inline BaseFlightMode* flightModeAcro()
+inline BaseControlMode* flightModeAcro()
 {
     static FlightModeAcro instance;
     return &instance;
