@@ -1,4 +1,5 @@
 #include "Arduino.h"
+#include "base_autopilot.h"
 #include "base_drone_gyro.h"
 #include "base_drone_motor.h"
 #include "base_hardware_processor.h"

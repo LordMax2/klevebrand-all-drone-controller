@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Max Klevebrand\\\\source\\\\repos\\\\klevebrand-all-drone-controller\" -Recurse -File | Where-Object {$_.Extension -in @\\('.h', '.cpp'\\)} | Select-Object FullName | Sort-Object FullName)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Max Klevebrand\\\\source\\\\repos\\\\klevebrand-maxfly-drone\" -Recurse -Include \"*.h\", \"*.cpp\", \"*.ipp\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Max Klevebrand\\\\source\\\\repos\\\\klevebrand-maxfly-drone\" -Recurse -File)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Max Klevebrand\\\\source\\\\repos\\\\klevebrand-maxfly-drone\" -Recurse -File | Where-Object { $_.Extension -in '.h', '.cpp', '.ipp', '.json' } | Select-Object FullName | Sort-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Max Klevebrand\\\\source\\\\repos\\\\klevebrand-maxfly-drone\" -Recurse -File | Where-Object { $_.Extension -match '\\\\.\\(h|cpp|ipp|json\\)$' } | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "PowerShell(Get-ChildItem *)"
+    ]
+  }
+}
