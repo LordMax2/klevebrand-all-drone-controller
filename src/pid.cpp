@@ -35,6 +35,7 @@ float Pid::error(const float current, const float desired) {
 
 void Pid::saveError(const float current, const float desired) {
     _previous_error = error(current, desired);
+    _previous_current = current;
 }
 
 float Pid::pidP(const float current, const float desired) {
@@ -46,7 +47,7 @@ float Pid::pidD(const float current, const float desired, const float delta_time
         return 0.0f;
     }
 
-    return _pid_optimizer.getKd() * ((error(current, desired) - _previous_error) / delta_time_seconds);
+    return _pid_optimizer.getKd() * ((_previous_current - current) / delta_time_seconds);
 }
 
 float Pid::pid(const float current, const float desired, const float delta_time_seconds) {

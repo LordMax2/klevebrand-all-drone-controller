@@ -10,6 +10,8 @@ public:
 
     float error(float current, float desired) override;
 
+    float pidD(float current, float desired, float delta_time_seconds) override;
+
     static float absoluteCompassError(float current, float desired);
 };
 

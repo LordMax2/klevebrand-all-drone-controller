@@ -35,14 +35,18 @@ public:
     virtual float error(float current, float desired);
 
     float pidP(float current, float desired);
-    float pidD(float current, float desired, float delta_time_seconds = 1.0f);
+    virtual float pidD(float current, float desired, float delta_time_seconds);
 
     static float fconstrain(float input, float min_value, float max_value);
+
+protected:
+    float previousError() const { return _previous_error; }
 
 private:
     float _pid_max;
     PidOptimizer _pid_optimizer;
     float _previous_error = 0;
+    float _previous_current = 0;
     float _pid_i = 0;
     float _kp;
     float _ki;
