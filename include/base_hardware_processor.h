@@ -1,5 +1,4 @@
-#ifndef BASE_HARDWARE_PROCESSOR_H
-#define BASE_HARDWARE_PROCESSOR_H
+#pragma once
 
 class BaseHardwareProcessor {
 public:
@@ -7,15 +6,13 @@ public:
 
     virtual ~BaseHardwareProcessor() = default;
 
-    virtual void setup();
+    virtual void setup() = 0;
 
-    virtual unsigned long microsecondsTimestamp();
+    virtual unsigned long microsecondsTimestamp() = 0;
 
-    virtual unsigned long millisecondsTimestamp();
+    virtual unsigned long millisecondsTimestamp() = 0;
 
-    virtual void sleepMilliseconds(int milliseconds);
+    virtual void sleepMilliseconds(int milliseconds) = 0;
 
-    virtual void print(const char *array);
+    virtual void print(const char *array) = 0;
 };
-
-#endif

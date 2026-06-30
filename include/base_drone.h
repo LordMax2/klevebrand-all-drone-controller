@@ -1,5 +1,4 @@
-#ifndef BASE_DRONE_H
-#define BASE_DRONE_H
+#pragma once
 
 #include "base_drone_gyro.h"
 #include "base_drone_position.h"
@@ -10,7 +9,7 @@ class BaseDrone {
 public:
     /*
      * Create a drone
-     * Default parameters that work are: 500, 200, 10000
+     * Default parameters that work are: 500, 200, 10 000
      */
     BaseDrone(
         long transmission_timeout_definition_milliseconds,
@@ -45,15 +44,15 @@ public:
 
     float getVelocityZ() const;
 
-    virtual void setup();
+    virtual void setup() = 0;
 
-    virtual bool run();
+    virtual bool run() = 0;
 
-    virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw, float delta_time_seconds);
+    virtual void runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw, float delta_time_seconds) = 0;
 
-    virtual void stopMotors();
+    virtual void stopMotors() = 0;
 
-    virtual void setupMotors();
+    virtual void setupMotors() = 0;
 
     bool updateGyro() const;
 
@@ -115,5 +114,3 @@ private:
     unsigned long _transmission_timeout_definition_milliseconds;
     int _feedback_loop_hz;
 };
-
-#endif

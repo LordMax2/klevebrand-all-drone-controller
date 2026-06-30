@@ -8,6 +8,8 @@
  */
 
 #include "pid_optimizer.h"
+#include <math.h>
+#include <stdlib.h>
 
 PidOptimizer::PidOptimizer(const float default_kp, const float default_ki, const float default_kd, const int feedback_loop_hz) :  best_kp(0), best_ki(0),
     best_kd(0), _feedback_loop_hz(feedback_loop_hz), trial_start_time(0), error_sum_squared(0), error_measurement_count(0) {

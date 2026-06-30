@@ -1,5 +1,4 @@
-#ifndef GYRO_PID_H
-#define GYRO_PID_H
+#pragma once
 
 #include "pid_optimizer.h"
 #include "pid.h"
@@ -114,5 +113,3 @@ private:
     Pid _pid_pitch;
     Pid _pid_roll;
 };
-
-#endif

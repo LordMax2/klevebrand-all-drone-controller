@@ -1,8 +1,6 @@
-#ifndef TEMPLATE_DRONE_H
-#define TEMPLATE_DRONE_H
+#pragma once
 
 #include "base_drone_gyro.h"
-#include "base_pid_repository.h"
 #include "base_hardware_processor.h"
 #include "base_control_mode.h"
 #include "base_drone.h"
@@ -23,14 +21,11 @@ public:
     TemplateDrone(
         float transmission_timeout_definition_milliseconds,
         int feedback_loop_hz,
-        int pid_persist_interval_milliseconds,
         BaseHardwareProcessor *processor,
         BaseDroneGyro *gyro,
-        BasePidRepository *pid_repository,
         BaseDronePosition *position);
 
     SomeGyroPidType pid;
-    BasePidRepository *pid_repository;
 
     void printPid();
 
@@ -59,15 +54,7 @@ public:
     void setPidConstants(float yaw_kp, float yaw_ki, float yaw_kd, bool yaw_compass_mode, float pitch_kp,
                          float pitch_ki, float pitch_kd, float roll_kp, float roll_ki, float roll_kd);
 
-    void persistPidConstants();
-
     void activateControlMode(BaseControlMode *control_mode);
-
-private:
-    unsigned long _last_pid_persist_timestamp_milliseconds = 0;
-    unsigned long _pid_persist_interval_milliseconds;
 };
 
 #include "template_drone.ipp"
-
-#endif

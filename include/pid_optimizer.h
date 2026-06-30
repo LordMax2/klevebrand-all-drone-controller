@@ -7,18 +7,19 @@
 *
 */
 
-#ifndef PID_OPTIMIZER_H
-#define PID_OPTIMIZER_H
+#pragma once
 
-#include "pid_optimizer_state.h"
 #include <limits.h>
-#include <math.h>
-#include <stdlib.h>
 
 #define TRIAL_DURATION_MILLISECONDS 1000
 
+enum PidOptimizerState {
+    IDLE,
+    MEASURING,
+    DECIDING
+};
+
 class PidOptimizer {
-private:
     float best_kp;
     float best_ki;
     float best_kd;
@@ -79,5 +80,3 @@ public:
 
     static long randomLimited(long min_value, long max_value);
 };
-
-#endif

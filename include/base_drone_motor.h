@@ -1,5 +1,4 @@
-#ifndef BASE_DRONE_MOTOR_H
-#define BASE_DRONE_MOTOR_H
+#pragma once
 
 class BaseDroneMotor {
 public:
@@ -7,7 +6,5 @@ public:
 
     virtual ~BaseDroneMotor() = default;
 
-    virtual void setSpeed(float percentage);
+    virtual void setSpeed(float percentage) = 0;
 };
-
-#endif

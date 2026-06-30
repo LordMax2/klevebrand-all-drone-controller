@@ -1,5 +1,4 @@
-#ifndef BASE_CONTROL_MODE_H
-#define BASE_CONTROL_MODE_H
+#pragma once
 
 #include "base_drone_gyro.h"
 #include "base_hardware_processor.h"
@@ -49,5 +48,3 @@ inline BaseControlMode *controlModeNone() {
     static BaseControlMode instance;
     return &instance;
 }
-
-#endif

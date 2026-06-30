@@ -1,5 +1,4 @@
-#ifndef PID_H
-#define PID_H
+#pragma once
 
 #include "pid_optimizer.h"
 
@@ -53,5 +52,3 @@ private:
     float _kd;
     int _feedback_loop_hz;
 };
-
-#endif

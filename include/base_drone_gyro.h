@@ -1,5 +1,4 @@
-#ifndef BASE_DRONE_GYRO_H
-#define BASE_DRONE_GYRO_H
+#pragma once
 
 class BaseDroneGyro {
 public:
@@ -7,31 +6,29 @@ public:
 
     virtual ~BaseDroneGyro() = default;
 
-    virtual void setup();
+    virtual void setup() = 0;
 
-    virtual bool reload();
+    virtual bool reload() = 0;
 
-    virtual void reset();
+    virtual void reset() = 0;
 
-    virtual float yaw();
+    virtual float yaw() = 0;
 
-    virtual float pitch();
+    virtual float pitch() = 0;
 
-    virtual float roll();
+    virtual float roll() = 0;
 
-    virtual float accelerationX();
+    virtual float accelerationX() = 0;
 
-    virtual float accelerationY();
+    virtual float accelerationY() = 0;
 
-    virtual float accelerationZ();
+    virtual float accelerationZ() = 0;
 
-    virtual void printYawPitchRoll();
+    virtual void printYawPitchRoll() = 0;
 
-    virtual bool setModeAcro();
+    virtual bool setModeAcro() = 0;
 
-    virtual bool setModeEuler();
+    virtual bool setModeEuler() = 0;
 
-    virtual long timestampMilliseconds();
+    virtual long timestampMilliseconds() = 0;
 };
-
-#endif

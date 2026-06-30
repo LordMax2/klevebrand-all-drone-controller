@@ -1,5 +1,4 @@
-#ifndef PID_CONSTANTS_H
-#define PID_CONSTANTS_H
+#pragma once
 
 struct PidConstants_t {
     PidConstants_t() : yaw_kp(0.0f), yaw_ki(0.0f), yaw_kd(0.0f),
@@ -33,5 +32,3 @@ struct PidConstants_t {
         return everything_is_not_zero;
     }
 };
-
-#endif

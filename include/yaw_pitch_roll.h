@@ -1,5 +1,4 @@
-#ifndef YAW_PITCH_ROLL_H
-#define YAW_PITCH_ROLL_H
+#pragma once
 
 struct YawPitchRoll_t
 {
@@ -8,5 +7,3 @@ struct YawPitchRoll_t
     float roll;
     long timestamp_milliseconds;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef BASE_PID_REPOSITORY_H
-#define BASE_PID_REPOSITORY_H
+#pragma once
 
 #include "pid_constants.h"
 
@@ -9,15 +8,13 @@ public:
 
     virtual ~BasePidRepository() = default;
 
-    virtual PidConstants_t get();
+    virtual PidConstants_t get() = 0;
 
-    virtual PidConstants_t get(int key);
+    virtual PidConstants_t get(int key) = 0;
 
-    virtual void setup();
+    virtual void setup() = 0;
 
-    virtual void save(const PidConstants_t &pid_constants);
+    virtual void save(const PidConstants_t &pid_constants) = 0;
 
-    virtual void save(int key, const PidConstants_t &pid_constants);
+    virtual void save(int key, const PidConstants_t &pid_constants) = 0;
 };
-
-#endif

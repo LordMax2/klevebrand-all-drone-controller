@@ -1,5 +1,4 @@
-#ifndef BASE_DRONE_POSITION_H
-#define BASE_DRONE_POSITION_H
+#pragma once
 
 class BaseDronePosition {
 public:
@@ -7,17 +6,15 @@ public:
 
     virtual ~BaseDronePosition() = default;
 
-    virtual float getAltitude();
+    virtual float getAltitude() = 0;
 
-    virtual float getLongitude();
+    virtual float getLongitude() = 0;
 
-    virtual float getLatitude();
+    virtual float getLatitude() = 0;
 
-    virtual float getVelocityX();
+    virtual float getVelocityX() = 0;
 
-    virtual float getVelocityY();
+    virtual float getVelocityY() = 0;
 
-    virtual float getVelocityZ();
+    virtual float getVelocityZ() = 0;
 };
-
-#endif

@@ -1,8 +1,6 @@
-#ifndef PID_YAW_COMPASS_H
-#define PID_YAW_COMPASS_H
+#pragma once
 
 #include "pid.h"
-#include "math.h"
 
 class PidYawCompass : public Pid {
 public:
@@ -15,4 +13,3 @@ public:
     static float absoluteCompassError(float current, float desired);
 };
 
-#endif

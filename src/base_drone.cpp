@@ -57,22 +57,6 @@ float BaseDrone::getVelocityZ() const {
     return position->getVelocityZ();
 }
 
-void BaseDrone::setup() {
-};
-
-bool BaseDrone::run() {
-    return false;
-};
-
-void BaseDrone::runMotors(float gyro_roll, float gyro_pitch, float gyro_yaw, float delta_time_seconds) {
-};
-
-void BaseDrone::stopMotors() {
-};
-
-void BaseDrone::setupMotors() {
-};
-
 void BaseDrone::printGyro() const {
     gyro->printYawPitchRoll();
 }
