@@ -6,15 +6,15 @@ public:
 
     virtual ~BaseDronePosition() = default;
 
-    virtual float getAltitude() = 0;
+    virtual float getAltitude() { return 0.0f; }
 
-    virtual float getLongitude() = 0;
+    virtual float getLongitude() { return 0.0f; }
 
-    virtual float getLatitude() = 0;
+    virtual float getLatitude() { return 0.0f; }
 
-    virtual float getVelocityX() = 0;
+    virtual float getVelocityX() { return 0.0f; }
 
-    virtual float getVelocityY() = 0;
+    virtual float getVelocityY() { return 0.0f; }
 
-    virtual float getVelocityZ() = 0;
+    virtual float getVelocityZ() { return 0.0f; }
 };
