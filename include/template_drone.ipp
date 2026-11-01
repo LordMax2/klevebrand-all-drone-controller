@@ -4,13 +4,14 @@ template <class SomeGyroPidType, DronePositionConcept SomePositionType, DroneGyr
 TemplateDrone<SomeGyroPidType, SomePositionType, SomeGyroType, SomeHardwareProcessorType>::TemplateDrone(
     const unsigned long transmission_timeout_definition_milliseconds,
     const int feedback_loop_hz,
-    const int gyro_reset_pin) : _transmission_timeout_definition_milliseconds(
-                                    transmission_timeout_definition_milliseconds),
-                                _feedback_loop_hz(feedback_loop_hz),
-                                pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0, 0, feedback_loop_hz),
-                                processor(),
-                                gyro(gyro_reset_pin),
-                                position(&gyro)
+    SomeGyroType &drone_gyro,
+    SomePositionType &drone_position) : _transmission_timeout_definition_milliseconds(
+                                            transmission_timeout_definition_milliseconds),
+                                        _feedback_loop_hz(feedback_loop_hz),
+                                        pid(0, 0, 0, false, 0, 0, 0, 0, 0, 0, 0, feedback_loop_hz),
+                                        processor(),
+                                        gyro(drone_gyro),
+                                        position(drone_position)
 {
 }
 

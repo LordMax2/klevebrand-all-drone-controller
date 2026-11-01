@@ -4,3 +4,11 @@
 cache
 build/
 **.tar.bz
+
+# EasyEDA local caches and recovery (keep schematic/PCB JSON)
+hardware/easyeda/**/cache/
+hardware/easyeda/**/*.bak
+hardware/easyeda/**/*autosave*
+hardware/easyeda/**/*.tmp
+hardware/export/**/*.zip
+*.epro

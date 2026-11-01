@@ -27,20 +27,21 @@ class TemplateDrone
 
 public:
     /*
-     * Create a drone
-     * Default parameters that work are: 500, 200, 10000
+     * Create a drone around a gyro and a position that the application constructs with the board's wiring, so the
+     * drone never has to know it. Both must outlive the drone. Default parameters that work are: 500, 200
      */
     TemplateDrone(
         unsigned long transmission_timeout_definition_milliseconds,
         int feedback_loop_hz,
-        int gyro_reset_pin);
+        SomeGyroType &drone_gyro,
+        SomePositionType &drone_position);
 
     virtual ~TemplateDrone() = default;
 
     SomeGyroPidType pid;
     SomeHardwareProcessorType processor;
-    SomeGyroType gyro;
-    SomePositionType position;
+    SomeGyroType &gyro;
+    SomePositionType &position;
 
     void printPid();
 

@@ -81,8 +81,9 @@ class TemplateDroneMock : public TemplateDrone<SomeGyroPidType, SomePositionType
     using Base = TemplateDrone<SomeGyroPidType, SomePositionType, SomeGyroType, SomeHardwareProcessorType>;
 
 public:
-    TemplateDroneMock(const unsigned long transmission_timeout_ms, const int feedback_loop_hz, const int gyro_reset_pin)
-        : Base(transmission_timeout_ms, feedback_loop_hz, gyro_reset_pin)
+    TemplateDroneMock(const unsigned long transmission_timeout_ms, const int feedback_loop_hz, SomeGyroType &gyro,
+                      SomePositionType &position)
+        : Base(transmission_timeout_ms, feedback_loop_hz, gyro, position)
     {
     }
 
@@ -110,7 +111,9 @@ void TemplateDroneMock<SomeGyroPidType, SomePositionType, SomeGyroType, SomeHard
 
 using MockDrone = TemplateDroneMock<MockGyroPid, MockDronePosition, MockDroneGyro, MockHardwareProcessor>;
 
-static MockDrone drone(500, 200, 10);
+static MockDroneGyro gyro(10);
+static MockDronePosition position(&gyro);
+static MockDrone drone(500, 200, gyro, position);
 
 static void validateTemplateDroneApi(MockDrone& d)
 {
